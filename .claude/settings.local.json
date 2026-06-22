@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v ':0$' echo \"---\")",
+      "Bash(grep -v ':0$')",
+      "Bash(perl:*)",
+      "Bash(bash .claude/commands/convert-obsidian.sh *)",
+      "Bash(mv * content/dao/*)",
+      "Bash(grep -r '^order:' content/dao/*)",
+      "Bash(sort -t: -k3 -n)",
+      "Bash(tail -5)",
+      "Bash(python3:*)",
+      "Bash(sqlite3 /Users/ruimin/Desktop/code/mental-model/.data/content/contents.sqlite \"SELECT slug FROM _content_buffett WHERE slug LIKE '%--%\")",
+      "Bash(npm run:*)",
+      "Read(//tmp/**)",
+      "Bash(head -5 /Users/ruimin/Desktop/code/mental-model/content/notes/*.md)",
+      "Bash(npm list:*)",
+      "Bash(npm install:*)",
+      "Bash(node scripts/fix-buffett-slugs.mjs)",
+      "Bash(curl:*)",
+      "Bash(find /Users/ruimin/Desktop/code/mental-model/content -name \"*.md\" -exec grep -l \"\\\\]\\\\\\(/\" {} \\\\;)"
+    ]
+  }
+}
