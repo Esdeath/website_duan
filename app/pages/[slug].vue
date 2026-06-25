@@ -320,7 +320,7 @@ useHead({
   border-right-color: #c0392b;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .article-content {
     grid-template-columns: 1fr;
   }
@@ -337,6 +337,17 @@ useHead({
 
   .article-header {
     margin: 24px 0 28px;
+    padding-bottom: 22px;
+  }
+
+  .article-header h1 {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+
+  .article-header .desc {
+    font-size: 15px;
+    line-height: 1.75;
   }
 }
 </style>

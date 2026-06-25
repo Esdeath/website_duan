@@ -87,14 +87,15 @@ watch(() => route.path, () => {
 .shell {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
-  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
   overflow: hidden;
   max-width: 1440px;
   margin: 0 auto;
 }
 
 .desktop-sidebar {
-  height: 100vh;
+  height: 100dvh;
   min-height: 0;
 }
 
@@ -125,7 +126,7 @@ watch(() => route.path, () => {
   left: 0;
   top: 0;
   bottom: 0;
-  width: min(300px, 85vw);
+  width: min(340px, 88vw);
   background: var(--bg);
   display: flex;
   flex-direction: column;
@@ -193,7 +194,7 @@ watch(() => route.path, () => {
   transform: translateX(-100%);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1024px) {
   .shell {
     grid-template-columns: 1fr;
   }
@@ -203,11 +204,17 @@ watch(() => route.path, () => {
   }
 
   .mobile-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 12px var(--px);
     border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     flex-shrink: 0;
   }
 
@@ -233,7 +240,7 @@ watch(() => route.path, () => {
   }
 }
 
-@media (min-width: 721px) {
+@media (min-width: 1025px) {
   .mobile-overlay {
     display: none;
   }

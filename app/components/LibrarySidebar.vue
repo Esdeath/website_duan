@@ -456,4 +456,46 @@ watch(() => props.currentSlug, () => {
   opacity: 0;
   transform: rotate(90deg) scale(0.8);
 }
+
+@media (max-width: 1024px) {
+  .sidebar-header {
+    padding: 20px 18px 16px;
+  }
+
+  .brand-text {
+    font-size: 15px;
+    letter-spacing: 0.05em;
+  }
+
+  .sidebar-nav {
+    padding: 8px 8px 20px;
+  }
+
+  .category-summary {
+    padding: 10px 10px;
+    font-size: 14px;
+  }
+
+  .article-list {
+    padding-left: 16px;
+  }
+
+  .article-list a {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .sidebar-footer {
+    padding: 14px 18px;
+  }
+
+  .icp-link {
+    font-size: 10px;
+  }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+  }
+}
 </style>
