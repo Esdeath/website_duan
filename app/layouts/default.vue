@@ -4,7 +4,7 @@ const { theme, toggle: toggleTheme } = useTheme()
 const daoCategoryOrder = ['核心哲学', '投资理念', '企业经营', '品格与心性', '财务指标', '访谈实录', '投资问答录', '公司与人物']
 
 const { data: daoArticles } = await useAsyncData('layout-dao', () =>
-  queryCollection('dao').select('title', 'slug', 'category', 'order', 'type').order('order', 'ASC').all()
+  queryCollection('dao').select('title', 'slug', 'description', 'category', 'order', 'type', 'body').order('order', 'ASC').all()
 )
 
 const sections = computed(() => [

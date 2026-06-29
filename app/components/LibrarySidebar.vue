@@ -1,5 +1,13 @@
 <script setup lang="ts">
-type Article = { title: string; slug: string; category: string; order: number; type?: string }
+type Article = {
+  title: string
+  slug: string
+  category: string
+  order: number
+  type?: string
+  description?: string
+  body?: unknown
+}
 
 const props = defineProps<{
   sections: Array<{
@@ -87,6 +95,36 @@ function normalizeSearch(value: string | undefined) {
   return (value || '').toLocaleLowerCase('zh-CN')
 }
 
+function extractText(value: unknown): string {
+  if (typeof value === 'string') return value
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value)
+  if (!value) return ''
+
+  if (Array.isArray(value)) {
+    return value.map(extractText).filter(Boolean).join(' ')
+  }
+
+  if (typeof value === 'object') {
+    return Object.entries(value)
+      .filter(([key]) => !['props', 'tag', 'toc', 'type'].includes(key))
+      .map(([, child]) => extractText(child))
+      .filter(Boolean)
+      .join(' ')
+  }
+
+  return ''
+}
+
+function getArticleSearchText(article: Article) {
+  return normalizeSearch([
+    article.title,
+    article.slug,
+    article.description,
+    article.category,
+    extractText(article.body),
+  ].filter(Boolean).join(' '))
+}
+
 const filteredGroups = computed(() => {
   if (!searchTerm.value) return groups.value
 
@@ -99,8 +137,7 @@ const filteredGroups = computed(() => {
           const items = subgroup.items.filter((article) =>
             categoryMatches ||
             subgroupMatches ||
-            normalizeSearch(article.title).includes(searchTerm.value) ||
-            normalizeSearch(article.slug).includes(searchTerm.value)
+            getArticleSearchText(article).includes(searchTerm.value)
           )
 
           return { ...subgroup, items }
