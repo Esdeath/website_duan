@@ -80,6 +80,42 @@ const groups = computed(() => {
   }))
 })
 
+const searchQuery = ref('')
+const searchTerm = computed(() => searchQuery.value.trim().toLocaleLowerCase('zh-CN'))
+
+function normalizeSearch(value: string | undefined) {
+  return (value || '').toLocaleLowerCase('zh-CN')
+}
+
+const filteredGroups = computed(() => {
+  if (!searchTerm.value) return groups.value
+
+  return groups.value
+    .map((group) => {
+      const categoryMatches = normalizeSearch(group.category).includes(searchTerm.value)
+      const subgroups = group.subgroups
+        .map((subgroup) => {
+          const subgroupMatches = normalizeSearch(subgroup.label).includes(searchTerm.value)
+          const items = subgroup.items.filter((article) =>
+            categoryMatches ||
+            subgroupMatches ||
+            normalizeSearch(article.title).includes(searchTerm.value) ||
+            normalizeSearch(article.slug).includes(searchTerm.value)
+          )
+
+          return { ...subgroup, items }
+        })
+        .filter((subgroup) => subgroup.items.length > 0)
+
+      return {
+        ...group,
+        count: subgroups.reduce((total, subgroup) => total + subgroup.items.length, 0),
+        subgroups,
+      }
+    })
+    .filter((group) => group.count > 0)
+})
+
 // Auto-open category of current article
 const currentCategory = computed(() => {
   const section = props.sections[0]
@@ -93,6 +129,8 @@ const openCategories = ref(new Set<string>(
 ))
 
 function onToggleCategory(cat: string, event: Event) {
+  if (searchTerm.value) return
+
   const details = event.target as HTMLDetailsElement
   if (details.open) {
     openCategories.value.add(cat)
@@ -141,11 +179,36 @@ watch(() => props.currentSlug, () => {
     </header>
 
     <div ref="navRef" class="sidebar-nav">
+      <div class="sidebar-search">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input
+          v-model="searchQuery"
+          type="search"
+          class="search-input"
+          placeholder="搜索文章"
+          aria-label="搜索文章"
+        >
+        <button
+          v-if="searchQuery"
+          type="button"
+          class="search-clear"
+          aria-label="清空搜索"
+          @click="searchQuery = ''"
+        >
+          <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4.5 4.5l9 9M13.5 4.5l-9 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
       <details
-        v-for="group in groups"
+        v-for="group in filteredGroups"
         :key="group.category"
         class="category-group"
-        :open="openCategories.has(group.category)"
+        :open="searchTerm ? true : openCategories.has(group.category)"
         @toggle="onToggleCategory(group.category, $event)"
       >
         <summary class="category-summary">
@@ -173,6 +236,8 @@ watch(() => props.currentSlug, () => {
           </div>
         </div>
       </details>
+
+      <p v-if="searchTerm && filteredGroups.length === 0" class="search-empty">没有找到相关文章</p>
     </div>
 
     <div class="sidebar-footer">
@@ -289,6 +354,83 @@ watch(() => props.currentSlug, () => {
 
 .sidebar-nav:hover::-webkit-scrollbar-thumb {
   background: var(--sb-subtle);
+}
+
+/* Search */
+.sidebar-search {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  margin: 0 0 8px;
+  padding: 0 8px 0 10px;
+  border: 1px solid color-mix(in srgb, var(--sb-line) 78%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--sb-bg) 92%, var(--sb-surface));
+  color: var(--sb-subtle);
+}
+
+.sidebar-search:focus-within {
+  border-color: color-mix(in srgb, var(--sb-accent) 58%, var(--sb-line));
+  color: var(--sb-muted);
+  box-shadow: 0 0 0 2px var(--sb-accent-soft);
+}
+
+.search-icon {
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--sb-fg);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.search-input::placeholder {
+  color: color-mix(in srgb, var(--sb-subtle) 72%, transparent);
+}
+
+.search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search-clear {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--sb-subtle);
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.search-clear:hover {
+  background: var(--sb-surface);
+  color: var(--sb-fg);
+}
+
+.search-empty {
+  margin: 18px 8px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--sb-subtle);
+  text-align: center;
 }
 
 /* Category */
@@ -469,6 +611,16 @@ watch(() => props.currentSlug, () => {
 
   .sidebar-nav {
     padding: 8px 8px 20px;
+  }
+
+  .sidebar-search {
+    min-height: 42px;
+    margin-bottom: 10px;
+  }
+
+  .search-input {
+    height: 40px;
+    font-size: 14px;
   }
 
   .category-summary {
