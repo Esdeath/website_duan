@@ -102,6 +102,7 @@ watch(() => route.path, () => {
 .main-area {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   min-height: 0;
   overflow-y: auto;
   scroll-behavior: smooth;
@@ -126,7 +127,7 @@ watch(() => route.path, () => {
   left: 0;
   top: 0;
   bottom: 0;
-  width: min(340px, 88vw);
+  width: min(360px, 92vw);
   background: var(--bg);
   display: flex;
   flex-direction: column;
@@ -137,7 +138,8 @@ watch(() => route.path, () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 16px 12px;
+  min-height: 58px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--line);
   font-size: 13px;
   font-weight: 700;
@@ -210,7 +212,8 @@ watch(() => route.path, () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px var(--px);
+    min-height: 58px;
+    padding: 10px var(--px);
     border-bottom: 1px solid var(--line);
     background: color-mix(in srgb, var(--bg) 92%, transparent);
     backdrop-filter: blur(10px);
@@ -222,12 +225,12 @@ watch(() => route.path, () => {
   .mobile-theme-btn {
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     padding: 0;
     border: 1px solid var(--line);
-    border-radius: 6px;
-    background: transparent;
+    border-radius: 8px;
+    background: var(--bg-elevated);
     color: var(--muted);
     cursor: pointer;
     transition: color 0.2s, border-color 0.2s;

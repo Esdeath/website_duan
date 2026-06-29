@@ -670,8 +670,13 @@ watch(() => props.currentSlug, () => {
   }
 
   .article-list a {
+    display: -webkit-box;
+    min-height: 34px;
     padding: 6px 10px;
     font-size: 13px;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .sidebar-footer {

@@ -237,9 +237,10 @@ useHead({
 
 <style scoped>
 .home-content {
-  padding: 36px var(--px) 72px;
+  width: 100%;
   max-width: 720px;
   margin: 0 auto;
+  padding: 20px var(--px) 56px;
   animation: fadeInUp 0.5s var(--ease-out) both;
 }
 
@@ -247,32 +248,33 @@ useHead({
 
 .book-cover {
   text-align: center;
-  padding: 48px 0 40px;
-  margin-bottom: 40px;
+  padding: 30px 0 28px;
+  margin-bottom: 30px;
 }
 
 .cover-accent-line {
-  width: 120px;
+  width: 88px;
   height: 2px;
   background: var(--accent);
   margin: 0 auto;
 }
 
 .cover-title {
-  margin: 20px 0;
+  margin: 18px 0;
   font-family: var(--serif);
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 700;
-  letter-spacing: 0.35em;
+  line-height: 1.35;
+  letter-spacing: 0.18em;
   color: var(--fg);
 }
 
 .cover-quotes {
   max-width: 600px;
-  margin: 30px auto 30px;
+  margin: 24px auto;
   font-family: var(--reading);
-  font-size: 21px;
-  line-height: 1.85;
+  font-size: 16px;
+  line-height: 1.8;
   color: var(--muted);
 }
 
@@ -280,10 +282,10 @@ useHead({
 
 .author-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 10px;
   max-width: 600px;
-  margin: 28px auto 0;
+  margin: 24px auto 0;
   text-align: left;
 }
 
@@ -291,7 +293,7 @@ useHead({
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   background: var(--bg-elevated);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -315,7 +317,7 @@ useHead({
 }
 
 .author-card-label {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
 }
@@ -349,8 +351,8 @@ useHead({
 .shelf-divider {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .shelf-divider::before,
@@ -363,7 +365,7 @@ useHead({
 
 .shelf-divider span {
   font-family: var(--serif);
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: var(--fg);
@@ -375,8 +377,10 @@ useHead({
   align-items: center;
   justify-content: center;
   gap: 6px;
-  margin: -12px 0 24px;
+  margin: -8px 0 22px;
   font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
   color: var(--accent);
 }
 
@@ -417,8 +421,8 @@ useHead({
 .book-row {
   display: flex;
   align-items: stretch;
-  gap: 18px;
-  padding: 18px 0;
+  gap: 12px;
+  padding: 16px 0;
   border-top: 1px solid var(--line);
 }
 
@@ -432,7 +436,7 @@ useHead({
   flex-shrink: 0;
   align-self: flex-start;
   display: block;
-  width: 80px;
+  width: 64px;
   border-radius: 5px;
   overflow: hidden;
   background: #fff;
@@ -450,6 +454,7 @@ useHead({
 
 /* Hover overlay — "buy genuine" affordance (desktop) */
 .book-buy {
+  display: none;
   position: absolute;
   inset-inline: 0;
   bottom: 0;
@@ -482,7 +487,7 @@ useHead({
 
 .book-row-title {
   font-family: var(--serif);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.4;
   color: var(--fg);
@@ -496,7 +501,7 @@ useHead({
 
 .book-comment {
   margin: 7px 0 0;
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.7;
   color: var(--muted);
 }
@@ -506,8 +511,8 @@ useHead({
   align-items: center;
   flex-wrap: wrap;
   gap: 6px 14px;
-  margin-top: auto;
-  padding-top: 10px;
+  margin-top: 8px;
+  padding-top: 0;
 }
 
 .book-cite {
@@ -530,7 +535,7 @@ useHead({
 /* ── QR column (scan to buy) ── white box keeps it scannable in dark mode ── */
 .book-qr {
   flex-shrink: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   gap: 5px;
@@ -590,24 +595,26 @@ useHead({
 
 .overview-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
 .overview-card {
   display: flex;
-  gap: 16px;
-  padding: 22px 24px;
-  background: var(--bg-elevated);
-  border: 1.5px solid var(--accent);
-  border-radius: 6px;
+  gap: 12px;
+  padding: 16px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
   animation: cardIn 0.5s var(--ease-out) both;
 }
 
 .overview-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(181, 70, 42, 0.1);
+  transform: none;
+  box-shadow: none;
   border-color: var(--accent);
 }
 
@@ -625,9 +632,9 @@ useHead({
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
   background: var(--accent-soft);
   transition: background 0.25s var(--ease-out);
 }
@@ -663,7 +670,7 @@ useHead({
 
 .overview-card h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.01em;
   transition: color 0.2s var(--ease-out);
@@ -708,73 +715,148 @@ useHead({
 
 /* ── Responsive ── */
 
-@media (max-width: 720px) {
+@media (min-width: 721px) {
   .home-content {
-    padding: 20px var(--px) 56px;
-  }
-
-  .shelf-divider span {
-    font-size: 17px;
-  }
-
-  .book-row {
-    gap: 14px;
-  }
-
-  .book-cover-link {
-    width: 66px;
-  }
-
-  .book-row-title {
-    font-size: 15px;
-  }
-
-  .book-comment {
-    font-size: 13px;
-  }
-
-  /* QR is pointless on the phone you're holding — tap the cover/button instead */
-  .book-qr {
-    display: none;
+    padding: 32px var(--px) 72px;
   }
 
   .book-cover {
-    padding: 32px 0 28px;
-    margin-bottom: 28px;
+    padding: 42px 0 36px;
+    margin-bottom: 38px;
+  }
+
+  .cover-accent-line {
+    width: 112px;
   }
 
   .cover-title {
-    font-size: 34px;
+    font-size: 38px;
+    letter-spacing: 0.28em;
   }
 
   .cover-quotes {
-    font-size: 16px;
+    font-size: 19px;
   }
 
-  .author-cards {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+  .author-cards,
+  .overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .author-card {
-    padding: 12px 14px;
+    padding: 14px 16px;
+  }
+
+  .book-row {
+    gap: 16px;
+    padding: 18px 0;
+  }
+
+  .book-cover-link {
+    width: 76px;
+  }
+
+  .book-row-title {
+    font-size: 16px;
+  }
+
+  .book-comment {
+    font-size: 13.5px;
+  }
+
+  .book-meta {
+    margin-top: auto;
+    padding-top: 10px;
   }
 
   .author-card-label {
-    font-size: 14px;
-  }
-
-  .overview-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    font-size: 15px;
   }
 
   .overview-card {
-    padding: 18px 20px;
+    padding: 20px 22px;
+    background: var(--bg-elevated);
+    border: 1.5px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    border-radius: 6px;
+  }
+
+  .overview-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(181, 70, 42, 0.1);
+  }
+
+  .card-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .home-content {
+    padding: 36px var(--px) 72px;
+  }
+
+  .book-cover {
+    padding: 48px 0 40px;
+    margin-bottom: 40px;
+  }
+
+  .cover-accent-line {
+    width: 120px;
+  }
+
+  .cover-title {
+    font-size: 42px;
+    letter-spacing: 0.35em;
+  }
+
+  .cover-quotes {
+    margin: 30px auto;
+    font-size: 21px;
+    line-height: 1.85;
+  }
+
+  .author-cards {
+    margin-top: 28px;
+  }
+
+  .shelf-divider {
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .shelf-divider span {
+    font-size: 19px;
+  }
+
+  .shelf-hint {
+    margin: -12px 0 24px;
+  }
+
+  .book-row {
+    gap: 18px;
+  }
+
+  .book-cover-link {
+    width: 80px;
+  }
+
+  .book-buy {
+    display: block;
+  }
+
+  .book-qr {
+    display: flex;
+  }
+
+  .overview-card {
+    gap: 16px;
+    padding: 22px 24px;
   }
 
   .overview-card h2 {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 </style>

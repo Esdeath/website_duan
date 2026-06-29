@@ -186,21 +186,21 @@ useHead({
 
 <style scoped>
 .article-page {
-  padding: 0 var(--px) 96px;
+  padding: 0 var(--px) 64px;
   animation: fadeInUp 0.5s var(--ease-out) 0.1s both;
 }
 
 .article-header {
   max-width: var(--reading-width);
-  margin: 40px 0 40px;
-  padding-bottom: 28px;
+  margin: 24px 0 28px;
+  padding-bottom: 22px;
   border-bottom: 1px solid var(--line);
 }
 
 .article-content {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 180px;
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: 0;
   max-width: var(--reading-width);
 }
 
@@ -220,18 +220,18 @@ useHead({
 .article-header h1 {
   margin: 14px 0 0;
   font-family: var(--sans);
-  font-size: clamp(26px, 4vw, 36px);
+  font-size: 28px;
   font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  line-height: 1.3;
+  letter-spacing: 0;
 }
 
 .article-header .desc {
   margin: 16px 0 0;
   color: var(--muted);
   font-family: var(--reading);
-  font-size: 16px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 1.75;
 }
 
 /* 原始出处 footer */
@@ -275,6 +275,7 @@ useHead({
 
 /* TOC — sticky in the right grid column */
 .article-toc {
+  display: none;
   position: sticky;
   top: 48px;
   align-self: start;
@@ -320,34 +321,45 @@ useHead({
   border-right-color: #c0392b;
 }
 
-@media (max-width: 1024px) {
-  .article-content {
-    grid-template-columns: 1fr;
-  }
-
-  .article-toc {
-    display: none;
-  }
-}
-
-@media (max-width: 720px) {
-  .article-page {
-    padding: 0 var(--px) 64px;
-  }
-
+@media (min-width: 721px) {
   .article-header {
-    margin: 24px 0 28px;
-    padding-bottom: 22px;
+    margin: 34px 0 36px;
+    padding-bottom: 26px;
   }
 
   .article-header h1 {
-    font-size: 28px;
-    line-height: 1.3;
+    font-size: 34px;
+    line-height: 1.25;
+  }
+}
+
+@media (min-width: 1025px) {
+  .article-page {
+    padding-bottom: 96px;
+  }
+
+  .article-header {
+    margin: 40px 0;
+    padding-bottom: 28px;
+  }
+
+  .article-header h1 {
+    font-size: 36px;
+    letter-spacing: -0.02em;
   }
 
   .article-header .desc {
-    font-size: 15px;
-    line-height: 1.75;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .article-content {
+    grid-template-columns: minmax(0, 1fr) 180px;
+    gap: 24px;
+  }
+
+  .article-toc {
+    display: block;
   }
 }
 </style>
