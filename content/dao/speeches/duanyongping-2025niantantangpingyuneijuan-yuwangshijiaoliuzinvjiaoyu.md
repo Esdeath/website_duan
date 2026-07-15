@@ -3,7 +3,7 @@ title: "2025年谈躺平与内卷、与王石交流子女教育"
 slug: "duanyongping-2025niantantangpingyuneijuan-yuwangshijiaoliuzinvjiaoyu"
 description: "段永平与王石对谈，论投资哲学、文化传承、营销本质、子女教育及平常心即长期主义。"
 category: "访谈实录"
-order: 126
+order: 130
 seoTitle: "2025年谈躺平与内卷、与王石交流子女教育｜段永平投资问答录"
 seoDescription: "段永平与王石对谈，论投资哲学、文化传承、营销本质、子女教育及平常心即长期主义。"
 ---

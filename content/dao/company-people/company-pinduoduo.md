@@ -79,5 +79,5 @@ tags: ["拼多多", "黄峥", "本分", "渠道", "商业模式"]
 ## 原始出处
 
 - [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
-- [问答录：第五章 演讲与访谈](/dadaotouziwendalu-diwuzhangyanjiangyufangtan)
-
+- [2025年浙江大学演讲及问答完整版](/duanyongping-2025nianzhejiangdaxueyanjiangjiwendawanzhengban)
+- [2025年方三文对话段永平](/duanyongping-2025nian-fangsanwenduihuaduanyongping-zuozijinenggouxihuandeshiqing)

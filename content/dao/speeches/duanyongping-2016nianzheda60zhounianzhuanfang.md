@@ -3,7 +3,7 @@ title: "2016年浙大60周年专访"
 slug: "duanyongping-2016nianzheda60zhounianzhuanfang"
 description: "段永平回忆浙大岁月，阐述做对的事情哲学、北极星概念及人生选择建议。"
 category: "访谈实录"
-order: 124
+order: 126
 seoTitle: "2016年浙大60周年专访｜段永平投资问答录"
 seoDescription: "段永平回忆浙大岁月，阐述做对的事情哲学、北极星概念及人生选择建议。"
 ---

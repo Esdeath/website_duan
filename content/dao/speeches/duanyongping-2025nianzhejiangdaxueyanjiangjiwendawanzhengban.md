@@ -3,7 +3,7 @@ title: "2025年浙江大学演讲及问答完整版"
 slug: "duanyongping-2025nianzhejiangdaxueyanjiangjiwendawanzhengban"
 description: "段永平浙大最新演讲，谈做对的事情、AI时代机遇、创业投资心得及本分文化实践。"
 category: "访谈实录"
-order: 125
+order: 129
 seoTitle: "2025年浙江大学演讲及问答完整版｜段永平投资问答录"
 seoDescription: "段永平浙大最新演讲，谈做对的事情、AI时代机遇、创业投资心得及本分文化实践。"
 ---

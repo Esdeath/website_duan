@@ -93,5 +93,4 @@ tags: ["泡泡玛特", "王宁", "情绪价值", "IP", "品牌", "重估案例"]
 
 - [问答录：第六章 更新](/dadaotouziwendalu-diliuzhangduzhegengxin)
 - [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
-- [问答录：第五章 演讲与访谈](/dadaotouziwendalu-diwuzhangyanjiangyufangtan)
-
+- [2025年谈躺平与内卷、与王石交流子女教育](/duanyongping-2025niantantangpingyuneijuan-yuwangshijiaoliuzinvjiaoyu)
