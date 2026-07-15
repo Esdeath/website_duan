@@ -57,28 +57,14 @@ export const TOPICS = [
   topic('公司案例', 'qanda', 264, 'wenda-company-maotai-02', '贵州茅台：治理、渠道与i茅台', ['贵州茅台', '公司治理', 'i茅台']),
   topic('公司案例', 'qanda', 265, 'wenda-company-maotai-03', '贵州茅台：估值与投资判断', ['贵州茅台', '估值', '长期持有']),
   topic('公司案例', 'qanda', 266, 'wenda-company-bbk', '小霸王与步步高', ['小霸王', '步步高']),
-  topic('公司案例', 'qanda', 267, 'wenda-company-oppo', 'OPPO', ['OPPO', '消费电子']),
-  topic('公司案例', 'qanda', 268, 'wenda-company-vivo', 'vivo', ['vivo', '消费电子']),
-  topic('公司案例', 'qanda', 269, 'wenda-company-netease', '网易', ['网易', '丁磊', '游戏']),
-  topic('公司案例', 'qanda', 270, 'wenda-company-tencent', '腾讯', ['腾讯', '马化腾', '微信']),
-  topic('公司案例', 'qanda', 271, 'wenda-company-alibaba-yahoo', '阿里巴巴与雅虎', ['阿里巴巴', '雅虎', '马云']),
-  topic('公司案例', 'qanda', 272, 'wenda-company-pinduoduo', '拼多多', ['拼多多', '黄峥']),
-  topic('公司案例', 'qanda', 273, 'wenda-company-costco', 'Costco', ['Costco', '零售']),
-  topic('公司案例', 'qanda', 274, 'wenda-company-pop-mart', '泡泡玛特', ['泡泡玛特', '情绪价值']),
-  topic('公司案例', 'qanda', 275, 'wenda-company-nvidia', '英伟达', ['英伟达', '黄仁勋', 'AI']),
-  topic('公司案例', 'qanda', 276, 'wenda-company-google', '谷歌', ['谷歌', '科技公司']),
-  topic('公司案例', 'qanda', 277, 'wenda-company-tesla', '特斯拉', ['特斯拉', '新能源汽车']),
-  topic('公司案例', 'qanda', 278, 'wenda-company-oxy', 'OXY（西方石油）', ['OXY', '西方石油']),
-  topic('公司案例', 'qanda', 279, 'wenda-company-nintendo', '任天堂', ['任天堂', '游戏']),
-  topic('公司案例', 'qanda', 280, 'wenda-company-sony', '索尼', ['索尼', '消费电子']),
-  topic('公司案例', 'qanda', 281, 'wenda-company-panasonic', '松下', ['松下', '消费电子']),
-  topic('公司案例', 'qanda', 282, 'wenda-company-ge', 'GE（通用电气）', ['GE', '通用电气', '反思']),
-  topic('公司案例', 'qanda', 283, 'wenda-company-new-oriental', '新东方', ['新东方', '俞敏洪']),
-  topic('公司案例', 'qanda', 284, 'wenda-company-perfect-world', '完美世界', ['完美世界', '游戏']),
-  topic('公司案例', 'qanda', 285, 'wenda-company-giant-network', '巨人网络', ['巨人网络', '史玉柱']),
-  topic('公司案例', 'qanda', 286, 'wenda-company-kingsoft', '金山', ['金山', '游戏']),
-  topic('公司案例', 'qanda', 287, 'wenda-company-changyou', '畅游', ['畅游', '游戏']),
-  topic('公司案例', 'qanda', 288, 'wenda-company-the9', '第九城市', ['第九城市', '游戏']),
+  topic('公司案例', 'qanda', 267, 'wenda-company-netease', '网易', ['网易', '丁磊', '游戏']),
+  topic('公司案例', 'qanda', 268, 'wenda-company-alibaba-yahoo', '阿里巴巴与雅虎', ['阿里巴巴', '雅虎', '马云']),
+  topic('公司案例', 'qanda', 269, 'wenda-company-pop-mart', '泡泡玛特', ['泡泡玛特', '情绪价值']),
+  topic('公司案例', 'qanda', 270, 'wenda-company-consumer-electronics', '消费电子与日本制造', ['消费电子', '日本制造']),
+  topic('公司案例', 'qanda', 271, 'wenda-company-china-games', '中国游戏公司群像', ['游戏公司', '中国游戏']),
+  topic('公司案例', 'qanda', 272, 'wenda-company-tech-platforms', '互联网、科技与新产业', ['互联网平台', '科技产业']),
+  topic('公司案例', 'qanda', 273, 'wenda-company-retail-services', '零售与服务业案例', ['零售', '服务业']),
+  topic('公司案例', 'qanda', 274, 'wenda-company-energy-industrial', '能源与工业企业案例', ['能源', '工业企业']),
 
   topic('人生与成长', 'qanda', 320, 'wenda-life-01', '做对的事情与把事情做对', ['做对的事情', '把事情做对']),
   topic('人生与成长', 'qanda', 321, 'wenda-life-02', '正直、理性与长期视角', ['正直', '理性', '长期主义']),
@@ -87,6 +73,28 @@ export const TOPICS = [
   topic('人生与成长', 'qanda', 324, 'wenda-life-05', '开放学习、公益与社会责任', ['开放心态', '公益', '社会责任']),
   topic('人生与成长', 'qanda', 325, 'wenda-life-06', '睡眠、减重、Zone 2与日常健康', ['健康', '睡眠', 'Zone 2']),
 ]
+
+export const MERGED_COMPANY_REDIRECTS = new Map([
+  ['wenda-company-oppo', 'wenda-company-consumer-electronics'],
+  ['wenda-company-vivo', 'wenda-company-consumer-electronics'],
+  ['wenda-company-nintendo', 'wenda-company-consumer-electronics'],
+  ['wenda-company-sony', 'wenda-company-consumer-electronics'],
+  ['wenda-company-panasonic', 'wenda-company-consumer-electronics'],
+  ['wenda-company-perfect-world', 'wenda-company-china-games'],
+  ['wenda-company-giant-network', 'wenda-company-china-games'],
+  ['wenda-company-kingsoft', 'wenda-company-china-games'],
+  ['wenda-company-changyou', 'wenda-company-china-games'],
+  ['wenda-company-the9', 'wenda-company-china-games'],
+  ['wenda-company-tencent', 'wenda-company-tech-platforms'],
+  ['wenda-company-pinduoduo', 'wenda-company-tech-platforms'],
+  ['wenda-company-google', 'wenda-company-tech-platforms'],
+  ['wenda-company-nvidia', 'wenda-company-tech-platforms'],
+  ['wenda-company-tesla', 'wenda-company-tech-platforms'],
+  ['wenda-company-costco', 'wenda-company-retail-services'],
+  ['wenda-company-new-oriental', 'wenda-company-retail-services'],
+  ['wenda-company-oxy', 'wenda-company-energy-industrial'],
+  ['wenda-company-ge', 'wenda-company-energy-industrial'],
+])
 
 export const TOPIC_BY_SLUG = new Map(TOPICS.map((item) => [item.slug, item]))
 
@@ -98,15 +106,12 @@ const SECTION_CATALOGS = new Map(Object.entries({
   'wenda-invest-01': [
     section('买股票就是买公司', 1, ['买股票就是买公司', '上市公司看成非上市公司']),
     section('价值投资的定义', 2, ['价值投资', '投资是什么', '投资理解']),
-    section('投资的信仰', 3, ['信仰', '称重机', '投票器', 'must believe']),
-    section('价格与价值', 4, ['价格围绕价值', '内在价值', '市场价格']),
-    section('原则的边界', 5, ['捷径', '唯一的路', '容易', '困难']),
+    section('价值、价格与原则边界', 3, ['信仰', '称重机', '投票器', 'must believe', '价格围绕价值', '内在价值', '市场价格', '捷径', '唯一的路', '容易', '困难']),
   ],
   'wenda-invest-02': [
-    section('简单但不容易', 1, ['简单但不容易', '简单但绝不容易']),
+    section('简单、不容易与长期学习', 1, ['简单但不容易', '简单但绝不容易', '道需悟', '术可学', '学习', '悟性']),
     section('投资没有捷径', 2, ['捷径', '大道', '小路', '快即是慢']),
-    section('道、术与长期学习', 3, ['道需悟', '术可学', '学习', '悟性']),
-    section('什么人适合投资', 4, ['适合', '85%', '投资者', '小额投资者']),
+    section('什么人适合投资', 3, ['适合', '85%', '投资者', '小额投资者']),
   ],
   'wenda-invest-03': [
     section('什么叫看懂', 1, ['什么是懂', '什么叫懂', '看懂', '懂公司']),
@@ -115,11 +120,10 @@ const SECTION_CATALOGS = new Map(Object.entries({
     section('理解企业的方法', 4, ['企业文化', '财报', '调研', '产品']),
   ],
   'wenda-invest-04': [
-    section('风险是第一考量', 1, ['风险第一', '风险', '安全', '黑天鹅', '错误率']),
+    section('风险考量与纪律', 1, ['风险第一', '风险', '安全', '黑天鹅', '错误率', '概率', '期货', '衍生品', '保险', '风险纪律']),
     section('不做空', 2, ['做空', '空头', 'short']),
     section('不借钱、不加杠杆', 3, ['margin', '杠杆', '借钱', '贷款', '有息负债']),
     section('不懂不碰', 4, ['不懂不碰', '不懂', '能力圈']),
-    section('风险纪律', 5, ['概率', '期货', '衍生品', '保险']),
   ],
   'wenda-invest-05': [
     section('把波动当作朋友', 1, ['波动', '下跌', '涨跌']),
@@ -128,24 +132,19 @@ const SECTION_CATALOGS = new Map(Object.entries({
     section('牛市与熊市', 4, ['牛市', '熊市', '萧条', '金融危机']),
   ],
   'wenda-invest-06': [
-    section('长期持有', 1, ['长期持有', '持有十年', '封仓', '十年', '二十年']),
-    section('集中投资', 2, ['集中投资', '集中', '满仓', '仓位']),
-    section('机会成本', 3, ['机会成本', '更好的机会']),
-    section('耐心与复利', 4, ['耐心', '复利', '等待']),
+    section('长期持有与集中投资', 1, ['长期持有', '持有十年', '封仓', '十年', '二十年', '集中投资', '集中', '满仓', '仓位']),
+    section('机会成本', 2, ['机会成本', '更好的机会']),
+    section('耐心与复利', 3, ['耐心', '复利', '等待']),
   ],
   'wenda-invest-07': [
-    section('估值的核心逻辑', 1, ['估值', '价值怎么算', '毛估估']),
+    section('估值逻辑与定性判断', 1, ['估值', '价值怎么算', '毛估估', '定性', '定量', '计算器']),
     section('未来现金流折现', 2, ['现金流', '折现', 'dcf']),
-    section('定性重于定量', 3, ['定性', '定量', '计算器']),
-    section('PE与估值指标', 4, ['市盈率', 'pe', '市净率', 'pb']),
-    section('估值案例', 5, ['雅虎', 'uhal', '万科', '中石油']),
+    section('PE、估值指标与案例', 3, ['市盈率', 'pe', '市净率', 'pb', '雅虎', 'uhal', '万科', '中石油']),
   ],
   'wenda-invest-08': [
     section('持有就是买入', 1, ['持有就是买入', '持有=买入']),
-    section('什么时候买入', 2, ['买入', '买股票', '加仓']),
-    section('什么时候卖出', 3, ['卖出', '卖股票', '该卖']),
-    section('忘记成本与市场', 4, ['成本', '市场', '涨了', '跌了']),
-    section('买卖案例', 5, ['网易', '苹果', '茅台']),
+    section('买入、卖出与成本', 2, ['买入', '买股票', '加仓', '卖出', '卖股票', '该卖', '成本', '市场', '涨了', '跌了']),
+    section('买卖案例', 3, ['网易', '苹果', '茅台']),
   ],
   'wenda-invest-09': [
     section('财报的作用', 1, ['财报', '财务报表', '会计']),
@@ -157,8 +156,7 @@ const SECTION_CATALOGS = new Map(Object.entries({
   'wenda-invest-10': [
     section('资本配置原则', 1, ['资本配置', '资金使用', '现金']),
     section('分红', 2, ['分红', '股息']),
-    section('回购', 3, ['回购', '注销']),
-    section('负债与回购', 4, ['负债', '借债', 'ibm']),
+    section('回购与负债边界', 3, ['回购', '注销', '负债', '借债', 'ibm']),
   ],
   'wenda-invest-11': [
     section('投资与投机', 1, ['投机', '赌博', '短线']),
@@ -167,20 +165,18 @@ const SECTION_CATALOGS = new Map(Object.entries({
     section('不做空', 4, ['做空', '空头']),
   ],
   'wenda-invest-12': [
-    section('平常心与理性', 1, ['平常心', '理性', '恐惧', '贪婪']),
+    section('平常心、理性与投资经验', 1, ['平常心', '理性', '恐惧', '贪婪', '经验', '心态', '耐心']),
     section('Golf与投资', 2, ['golf', '高尔夫']),
     section('阅读与学习', 3, ['书', '阅读', '学习', '芒格主义']),
-    section('投资经验与心态', 4, ['经验', '心态', '耐心']),
   ],
   'wenda-business-01': [
     section('伟大企业的标准', 1, ['伟大企业', '伟大的企业', '好公司']),
     section('长坡厚雪与长期价值', 2, ['长坡', '厚雪', '滚雪球', '长期']),
   ],
   'wenda-business-02': [
-    section('商业模式的定义', 1, ['什么是商业模式', '商业模式', '生意模式']),
+    section('商业模式与好坏生意', 1, ['什么是商业模式', '商业模式', '生意模式', '好生意', '坏生意', '烂生意']),
     section('确定性与未来现金流', 2, ['确定性', '现金流', '风险']),
-    section('好生意与坏生意', 3, ['好生意', '坏生意', '烂生意']),
-    section('商业模式案例', 4, ['案例', '行业', '公司']),
+    section('商业模式案例', 3, ['案例', '行业', '公司']),
   ],
   'wenda-business-03': [
     section('护城河的本质', 1, ['护城河', '垄断', '竞争优势']),
@@ -189,10 +185,8 @@ const SECTION_CATALOGS = new Map(Object.entries({
     section('行业与产品案例', 4, ['航空', '硅片', '白酒', '游戏']),
   ],
   'wenda-business-04': [
-    section('好产品的标准', 1, ['好产品', '产品质量', '最好产品']),
-    section('用户与消费者导向', 2, ['用户导向', '消费者导向', '用户体验', '消费者体验']),
-    section('真实需求与产品取舍', 3, ['真实需求', '用户需要', '取舍', '功能']),
-    section('产品案例', 4, ['苹果', 'oppo', 'vivo', '小天才']),
+    section('产品标准、用户需求与取舍', 1, ['好产品', '产品质量', '最好产品', '用户导向', '消费者导向', '用户体验', '消费者体验', '真实需求', '用户需要', '取舍', '功能']),
+    section('产品案例', 2, ['苹果', 'oppo', 'vivo', '小天才']),
   ],
   'wenda-business-05': [
     section('创新的目的', 1, ['创新', '用户需要', '产品']),
@@ -209,8 +203,7 @@ const SECTION_CATALOGS = new Map(Object.entries({
   'wenda-business-07': [
     section('营销的边界', 1, ['营销', '市场推广']),
     section('广告只表达产品', 2, ['广告', '夸大其词']),
-    section('渠道与零售', 3, ['渠道', '经销商', '零售', '直营']),
-    section('出海与国际市场', 4, ['出海', '国际化', '海外']),
+    section('渠道、零售与出海', 3, ['渠道', '经销商', '零售', '直营', '出海', '国际化', '海外']),
   ],
   'wenda-business-08': [
     section('企业文化的定义', 1, ['什么是企业文化', '企业文化就是', '企业文化讲的', '好的企业文化']),
@@ -240,15 +233,13 @@ const SECTION_CATALOGS = new Map(Object.entries({
   ],
   'wenda-business-12': [
     section('收购的成功条件', 1, ['收购', '并购', 'm&a']),
-    section('多元化的边界', 2, ['多元化', '跨行业']),
-    section('聚焦与能力圈', 3, ['聚焦', '能力圈']),
-    section('收购与多元化案例', 4, ['ge', '谷歌', '苹果', '联想', '吉利']),
+    section('多元化、聚焦与能力圈', 2, ['多元化', '跨行业', '聚焦', '能力圈']),
+    section('收购与多元化案例', 3, ['ge', '谷歌', '苹果', '联想', '吉利']),
   ],
   'wenda-company-apple-01': [
     section('产品与用户体验', 1, ['产品', '用户体验', '消费者导向', 'iphone', 'ipad']),
-    section('商业模式与生态系统', 2, ['商业模式', '生意模式', '生态', '系统', '黏性']),
-    section('聚焦与单一产品', 3, ['聚焦', '单一产品', '产品线']),
-    section('竞争与长期优势', 4, ['安卓', 'android', '三星', '竞争', '差异化']),
+    section('商业模式、生态与聚焦', 2, ['商业模式', '生意模式', '生态', '系统', '黏性', '聚焦', '单一产品', '产品线']),
+    section('竞争与长期优势', 3, ['安卓', 'android', '三星', '竞争', '差异化']),
   ],
   'wenda-company-apple-02': [
     section('乔布斯与造钟', 1, ['乔布斯', 'jobs', '造钟人']),
@@ -257,16 +248,14 @@ const SECTION_CATALOGS = new Map(Object.entries({
     section('传承、治理与接班', 4, ['接班', '传承', '董事会', '治理']),
   ],
   'wenda-company-apple-03': [
-    section('看懂苹果与估值', 1, ['看懂', '估值', '市值', '便宜', '贵']),
+    section('看懂苹果、估值与长期风险', 1, ['看懂', '估值', '市值', '便宜', '贵', '十年', '长期', '风险', '关税']),
     section('买入、持有与卖出', 2, ['买入', '持有', '卖出', '成本']),
     section('分红、回购与现金', 3, ['分红', '回购', '现金中性', '现金']),
-    section('长期判断与风险', 4, ['十年', '长期', '风险', '关税']),
   ],
   'wenda-company-maotai-01': [
     section('产品与品质', 1, ['产品', '品质', '好酒', '口感', '年份酒']),
     section('品牌与消费者心智', 2, ['品牌', '心智', '国酒', '少喝酒']),
-    section('商业模式与供需', 3, ['商业模式', '生意模式', '需求', '供不应求', '提价']),
-    section('产品边界与长期优势', 4, ['多元化', '系列酒', '葡萄酒', '差异化']),
+    section('商业模式、供需与长期优势', 3, ['商业模式', '生意模式', '需求', '供不应求', '提价', '多元化', '系列酒', '葡萄酒', '差异化']),
   ],
   'wenda-company-maotai-02': [
     section('管理层与公司治理', 1, ['管理层', '换帅', '季克良', '治理', '董事会']),
@@ -284,9 +273,8 @@ const SECTION_CATALOGS = new Map(Object.entries({
   'wenda-company-bbk': [
     section('从小霸王到步步高', 1, ['小霸王', '创立步步高', '历史']),
     section('企业文化与本分', 2, ['企业文化', '本分', '核心竞争力']),
-    section('产品、品牌与渠道', 3, ['产品', '品牌', '渠道', '经销商']),
+    section('产品、品牌、渠道与公司案例', 3, ['产品', '品牌', '渠道', '经销商', 'oppo', 'vivo', '小天才']),
     section('步步高的不为清单', 4, ['不做', '不讨价还价', '不代工', '不贷款', '不赊账']),
-    section('OPPO、vivo与小天才', 5, ['oppo', 'vivo', '小天才']),
   ],
   'wenda-company-netease': [
     section('发现与买入网易', 1, ['买入', '一块钱', '现金', '负债', '诉讼']),
@@ -305,10 +293,9 @@ const SECTION_CATALOGS = new Map(Object.entries({
     section('长期视角与脚踏实地', 3, ['长期', '脚踏实地', '长远', '本质']),
   ],
   'wenda-life-03': [
-    section('职业选择', 1, ['职业', '工作', '选择']),
-    section('创业', 2, ['创业', '生意']),
-    section('做喜欢的事情', 3, ['喜欢做', '享受过程', '兴趣']),
-    section('迷惘、成长与时间', 4, ['迷惘', '成长', '时光', '过程']),
+    section('职业选择与创业', 1, ['职业', '工作', '选择', '创业', '生意']),
+    section('做喜欢的事情', 2, ['喜欢做', '享受过程', '兴趣']),
+    section('迷惘、成长与时间', 3, ['迷惘', '成长', '时光', '过程']),
   ],
   'wenda-life-04': [
     section('家庭与陪伴', 1, ['家庭', '家人', '陪伴', '妻子']),
@@ -330,6 +317,55 @@ const SECTION_CATALOGS = new Map(Object.entries({
   ],
 }))
 
+const companySubsection = (title, order, keywords) => ({ title, order, keywords })
+const industrySection = (title, order, companies) => ({ title, order, companies })
+
+const MERGED_COMPANY_SECTION_CATALOGS = new Map(Object.entries({
+  'wenda-company-consumer-electronics': [
+    industrySection('国产消费电子', 1, [
+      companySubsection('OPPO', 1, ['oppo']),
+      companySubsection('vivo', 2, ['vivo']),
+    ]),
+    industrySection('日本消费电子与游戏', 2, [
+      companySubsection('任天堂', 1, ['任天堂', 'nintendo']),
+      companySubsection('索尼', 2, ['索尼', 'sony']),
+      companySubsection('松下', 3, ['松下', 'panasonic']),
+    ]),
+  ],
+  'wenda-company-china-games': [
+    industrySection('中国游戏公司案例', 1, [
+      companySubsection('完美世界', 1, ['完美世界']),
+      companySubsection('巨人网络', 2, ['巨人网络', '史玉柱']),
+      companySubsection('金山', 3, ['金山']),
+      companySubsection('畅游', 4, ['畅游']),
+      companySubsection('第九城市', 5, ['第九城市', '九城']),
+    ]),
+  ],
+  'wenda-company-tech-platforms': [
+    industrySection('互联网平台', 1, [
+      companySubsection('腾讯', 1, ['腾讯', '马化腾', '微信']),
+      companySubsection('拼多多', 2, ['拼多多', '黄峥']),
+      companySubsection('谷歌', 3, ['谷歌', 'google']),
+    ]),
+    industrySection('科技与新产业', 2, [
+      companySubsection('英伟达', 1, ['英伟达', 'nvidia', '黄仁勋']),
+      companySubsection('特斯拉', 2, ['特斯拉', 'tesla', '马斯克']),
+    ]),
+  ],
+  'wenda-company-retail-services': [
+    industrySection('零售与服务业', 1, [
+      companySubsection('Costco', 1, ['costco']),
+      companySubsection('新东方', 2, ['新东方', '俞敏洪']),
+    ]),
+  ],
+  'wenda-company-energy-industrial': [
+    industrySection('能源与工业企业', 1, [
+      companySubsection('OXY（西方石油）', 1, ['oxy', '西方石油']),
+      companySubsection('GE（通用电气）', 2, ['通用电气', 'ge', '韦尔奇']),
+    ]),
+  ],
+}))
+
 function cleanInheritedHeading(value) {
   return value
     .replace(/^第[零一二三四五六七八九十百千\d]+[章节]\s*/u, '')
@@ -340,6 +376,34 @@ function cleanInheritedHeading(value) {
 
 export function sectionForBlock(topicSlug, block) {
   const context = `${(block.headingPath || []).join(' > ')}\n${block.markdown || ''}`
+  const mergedCompanyCatalogue = MERGED_COMPANY_SECTION_CATALOGS.get(topicSlug)
+  if (mergedCompanyCatalogue) {
+    const lowerContext = context.toLowerCase()
+    const lowerMarkdown = (block.markdown || '').toLowerCase()
+    const matched = mergedCompanyCatalogue
+      .flatMap((parent) => parent.companies.map((company) => {
+        const contextHits = company.keywords.filter((keyword) => lowerContext.includes(keyword.toLowerCase()))
+        const markdownOccurrences = company.keywords.reduce((count, keyword) => {
+          const escaped = keyword.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+          return count + (lowerMarkdown.match(new RegExp(escaped, 'g')) || []).length
+        }, 0)
+        const longest = contextHits.reduce((length, keyword) => Math.max(length, Array.from(keyword).length), 0)
+        return { parent, company, score: markdownOccurrences * 10000 + longest * 100 + contextHits.length }
+      }))
+      .filter((candidate) => candidate.score > 0)
+      .sort((left, right) => right.score - left.score
+        || left.parent.order - right.parent.order
+        || left.company.order - right.company.order)[0]
+    if (matched) {
+      return {
+        title: matched.parent.title,
+        order: matched.parent.order,
+        subsectionTitle: matched.company.title,
+        subsectionOrder: matched.company.order,
+      }
+    }
+    return { title: '跨公司比较', order: mergedCompanyCatalogue.length + 1 }
+  }
   const catalogue = SECTION_CATALOGS.get(topicSlug)
   if (catalogue) {
     const lower = context.toLowerCase()
@@ -352,7 +416,8 @@ export function sectionForBlock(topicSlug, block) {
       .filter((candidate) => candidate.score > 0)
       .sort((left, right) => right.score - left.score || left.item.order - right.item.order)[0]?.item
     if (matched) return { title: matched.title, order: matched.order }
-    return { title: '相关问答', order: catalogue.length + 1 }
+    const fallback = catalogue.at(-1)
+    return { title: fallback.title, order: fallback.order }
   }
 
   const topic = TOPIC_BY_SLUG.get(topicSlug)
@@ -382,28 +447,28 @@ function classifyCompany(context) {
 
   const entities = [
     [['小霸王', '步步高'], 'wenda-company-bbk'],
-    [['oppo'], 'wenda-company-oppo'],
-    [['vivo'], 'wenda-company-vivo'],
+    [['oppo'], 'wenda-company-consumer-electronics'],
+    [['vivo'], 'wenda-company-consumer-electronics'],
     [['网易', '丁磊'], 'wenda-company-netease'],
-    [['腾讯', '马化腾', '微信'], 'wenda-company-tencent'],
+    [['腾讯', '马化腾', '微信'], 'wenda-company-tech-platforms'],
     [['阿里巴巴', '雅虎', '马云'], 'wenda-company-alibaba-yahoo'],
-    [['拼多多', '黄峥'], 'wenda-company-pinduoduo'],
-    [['costco'], 'wenda-company-costco'],
+    [['拼多多', '黄峥'], 'wenda-company-tech-platforms'],
+    [['costco'], 'wenda-company-retail-services'],
     [['泡泡玛特', '王宁'], 'wenda-company-pop-mart'],
-    [['英伟达', 'nvidia', '黄仁勋'], 'wenda-company-nvidia'],
-    [['谷歌', 'google'], 'wenda-company-google'],
-    [['特斯拉', 'tesla', '马斯克'], 'wenda-company-tesla'],
-    [['oxy', '西方石油'], 'wenda-company-oxy'],
-    [['任天堂', 'nintendo'], 'wenda-company-nintendo'],
-    [['索尼', 'sony'], 'wenda-company-sony'],
-    [['松下'], 'wenda-company-panasonic'],
-    [['通用电气', 'ge', '韦尔奇'], 'wenda-company-ge'],
-    [['新东方', '俞敏洪'], 'wenda-company-new-oriental'],
-    [['完美世界'], 'wenda-company-perfect-world'],
-    [['巨人网络', '史玉柱'], 'wenda-company-giant-network'],
-    [['金山'], 'wenda-company-kingsoft'],
-    [['畅游'], 'wenda-company-changyou'],
-    [['第九城市', '九城'], 'wenda-company-the9'],
+    [['英伟达', 'nvidia', '黄仁勋'], 'wenda-company-tech-platforms'],
+    [['谷歌', 'google'], 'wenda-company-tech-platforms'],
+    [['特斯拉', 'tesla', '马斯克'], 'wenda-company-tech-platforms'],
+    [['oxy', '西方石油'], 'wenda-company-energy-industrial'],
+    [['任天堂', 'nintendo'], 'wenda-company-consumer-electronics'],
+    [['索尼', 'sony'], 'wenda-company-consumer-electronics'],
+    [['松下'], 'wenda-company-consumer-electronics'],
+    [['通用电气', 'ge', '韦尔奇'], 'wenda-company-energy-industrial'],
+    [['新东方', '俞敏洪'], 'wenda-company-retail-services'],
+    [['完美世界'], 'wenda-company-china-games'],
+    [['巨人网络', '史玉柱'], 'wenda-company-china-games'],
+    [['金山'], 'wenda-company-china-games'],
+    [['畅游'], 'wenda-company-china-games'],
+    [['第九城市', '九城'], 'wenda-company-china-games'],
   ]
   for (const [aliases, slug] of entities) if (includesAny(context, aliases)) return slug
   return null
@@ -480,23 +545,23 @@ export function classifyBlock(block) {
     if (heading.includes('茅台')) return classifyMaotaiDetail(`${lastHeading}\n${block.markdown || ''}`)
     if (includesAny(lastHeading, ['oppo、vivo', 'oppo、vivo、小天才'])) {
       return classifyCompositeCompany(block.markdown || '', [
-        [['oppo'], 'wenda-company-oppo'],
-        [['vivo'], 'wenda-company-vivo'],
+        [['oppo'], 'wenda-company-consumer-electronics'],
+        [['vivo'], 'wenda-company-consumer-electronics'],
         [['小天才', '步步高'], 'wenda-company-bbk'],
       ]) || 'wenda-company-bbk'
     }
     if (includesAny(lastHeading, ['costco、拼多多'])) {
       return classifyCompositeCompany(block.markdown || '', [
-        [['costco'], 'wenda-company-costco'],
-        [['拼多多', '黄峥'], 'wenda-company-pinduoduo'],
-      ]) || 'wenda-company-pinduoduo'
+        [['costco'], 'wenda-company-retail-services'],
+        [['拼多多', '黄峥'], 'wenda-company-tech-platforms'],
+      ]) || 'wenda-company-tech-platforms'
     }
     if (includesAny(lastHeading, ['松下、索尼、任天堂'])) {
       return classifyCompositeCompany(block.markdown || '', [
-        [['松下'], 'wenda-company-panasonic'],
-        [['索尼', 'sony'], 'wenda-company-sony'],
-        [['任天堂', 'nintendo'], 'wenda-company-nintendo'],
-      ]) || 'wenda-company-nintendo'
+        [['松下'], 'wenda-company-consumer-electronics'],
+        [['索尼', 'sony'], 'wenda-company-consumer-electronics'],
+        [['任天堂', 'nintendo'], 'wenda-company-consumer-electronics'],
+      ]) || 'wenda-company-consumer-electronics'
     }
     return classifyCompany(lastHeading) || classifyCompany(heading) || classifyCompany(context) || 'wenda-business-02'
   }

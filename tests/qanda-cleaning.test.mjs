@@ -13,7 +13,13 @@ import {
   splitMarkdownByLength,
   visibleTextLength,
 } from '../scripts/qanda-cleaning-lib.mjs'
-import { TOPICS, VOLUMES, classifyBlock, sectionForBlock } from '../scripts/qanda-cleaning-config.mjs'
+import {
+  MERGED_COMPANY_REDIRECTS,
+  TOPICS,
+  VOLUMES,
+  classifyBlock,
+  sectionForBlock,
+} from '../scripts/qanda-cleaning-config.mjs'
 import {
   buildTopicChapter,
   extractBlockDate,
@@ -121,9 +127,9 @@ test('long markdown splits only at heading boundaries and stays within limit', (
   assert.match(parts[2], /## 三/)
 })
 
-test('topic catalogue defines four continuous volumes and 59 chapters', () => {
-  assert.equal(TOPICS.length, 59)
-  assert.equal(new Set(TOPICS.map((topic) => topic.slug)).size, 59)
+test('topic catalogue defines four continuous volumes and 45 chapters', () => {
+  assert.equal(TOPICS.length, 45)
+  assert.equal(new Set(TOPICS.map((topic) => topic.slug)).size, 45)
   assert.deepEqual(VOLUMES.map((volume) => volume.name), [
     '投资原则与方法',
     '商业模式与经营',
@@ -132,13 +138,31 @@ test('topic catalogue defines four continuous volumes and 59 chapters', () => {
   ])
   assert.deepEqual(
     VOLUMES.map((volume) => TOPICS.filter((topic) => topic.volume === volume.name).length),
-    [12, 12, 29, 6],
+    [12, 12, 15, 6],
   )
   for (const volume of VOLUMES) {
     const topics = TOPICS.filter((topic) => topic.volumeOrder === volume.order)
     assert.deepEqual(topics.map((topic) => topic.chapterOrder), topics.map((_, index) => index + 1))
   }
   assert.ok(TOPICS.every((topic) => topic.tags.length >= 3 && topic.tags.length <= 6))
+})
+
+test('merged company catalogue replaces 19 short articles with five industry chapters', () => {
+  const activeSlugs = new Set(TOPICS.map((topic) => topic.slug))
+  const mergedSlugs = [
+    'wenda-company-consumer-electronics',
+    'wenda-company-china-games',
+    'wenda-company-tech-platforms',
+    'wenda-company-retail-services',
+    'wenda-company-energy-industrial',
+  ]
+
+  assert.equal(MERGED_COMPANY_REDIRECTS.size, 19)
+  assert.ok(mergedSlugs.every((slug) => activeSlugs.has(slug)))
+  for (const [oldSlug, newSlug] of MERGED_COMPANY_REDIRECTS) {
+    assert.equal(activeSlugs.has(oldSlug), false)
+    assert.equal(activeSlugs.has(newSlug), true)
+  }
 })
 
 test('source heading context routes representative blocks to their canonical topic', () => {
@@ -170,7 +194,7 @@ test('source heading context routes representative blocks to their canonical top
     sourceSlug: 'dadaotouziwendalu-disanzhanggongsidianping',
     headingPath: ['第三章 公司点评', '其他', '通用电气'],
     markdown: '网友在问题中比较了雅虎与通用电气。\n\n**段永平：** GE的问题在企业文化。',
-  }), 'wenda-company-ge')
+  }), 'wenda-company-energy-industrial')
 
   assert.equal(classifyBlock({
     sourceSlug: 'dadaotouziwendalu-disanzhanggongsidianping',
@@ -182,7 +206,7 @@ test('source heading context routes representative blocks to their canonical top
     sourceSlug: 'dadaotouziwendalu-disanzhanggongsidianping',
     headingPath: ['第三章 公司点评', '其他', '松下、索尼、任天堂'],
     markdown: '网友：怎么看索尼？\n\n**段永平：** 索尼的问题还是索尼自己的产品。',
-  }), 'wenda-company-sony')
+  }), 'wenda-company-consumer-electronics')
 })
 
 test('exact duplicate blocks keep the version with fuller source context', () => {
@@ -329,7 +353,83 @@ test('curated sections replace inherited source-book headings for major chapters
   assert.deepEqual(sectionForBlock('wenda-invest-07', {
     headingPath: ['估值逻辑'],
     markdown: '**段永平：** 定性比定量分析重要，不能只依赖计算器。',
-  }), { title: '定性重于定量', order: 3 })
+  }), { title: '估值逻辑与定性判断', order: 1 })
+})
+
+test('merged company blocks receive an industry section and company subsection', () => {
+  assert.deepEqual(sectionForBlock('wenda-company-tech-platforms', {
+    headingPath: ['公司点评', '腾讯'],
+    markdown: '网友：怎么看腾讯？\n\n**段永平：** 微信是很好的产品。',
+  }), {
+    title: '互联网平台',
+    order: 1,
+    subsectionTitle: '腾讯',
+    subsectionOrder: 1,
+  })
+
+  assert.deepEqual(sectionForBlock('wenda-company-consumer-electronics', {
+    headingPath: ['其他公司', '松下、索尼、任天堂'],
+    markdown: '网友：怎么看索尼？\n\n**段永平：** 索尼的问题还是产品。',
+  }), {
+    title: '日本消费电子与游戏',
+    order: 2,
+    subsectionTitle: '索尼',
+    subsectionOrder: 2,
+  })
+})
+
+test('merged company chapters render ordered level-three company headings', () => {
+  const topic = TOPICS.find((item) => item.slug === 'wenda-company-tech-platforms')
+  const article = buildTopicChapter(topic, [
+    { id: 'pdd', headingPath: ['拼多多'], markdown: '网友：怎么看拼多多？\n\n**段永平：** 黄峥很关注消费者。（2020-01-01）' },
+    { id: 'tencent-later', headingPath: ['腾讯'], markdown: '网友：怎么看腾讯？\n\n**段永平：** 微信是好产品。（2021-01-01）' },
+    { id: 'tencent-earlier', headingPath: ['腾讯'], markdown: '网友：腾讯如何？\n\n**段永平：** 商业模式不错。（2019-01-01）' },
+    { id: 'nvidia', headingPath: ['英伟达'], markdown: '网友：怎么看英伟达？\n\n**段永平：** 我不懂。（2024-01-01）' },
+  ])
+
+  assert.match(article.body, /^## 第一节 互联网平台$/m)
+  assert.match(article.body, /^### 腾讯$/m)
+  assert.match(article.body, /^### 拼多多$/m)
+  assert.match(article.body, /^## 第二节 科技与新产业$/m)
+  assert.match(article.body, /^### 英伟达$/m)
+  assert.ok(article.body.indexOf('商业模式不错') < article.body.indexOf('微信是好产品'))
+  assert.ok(article.body.indexOf('### 腾讯') < article.body.indexOf('### 拼多多'))
+})
+
+test('curated chapters use a specific final section instead of generic related questions', () => {
+  const fallback = sectionForBlock('wenda-invest-01', {
+    headingPath: ['其他问答'],
+    markdown: '网友：还有一个没有命中关键词的问题？\n\n**段永平：** 慢慢想。',
+  })
+
+  assert.deepEqual(fallback, { title: '价值、价格与原则边界', order: 3 })
+  const article = buildTopicChapter(TOPICS.find((item) => item.slug === 'wenda-invest-01'), [{
+    id: 'fallback',
+    headingPath: ['相关问答'],
+    markdown: '网友：还有一个问题？\n\n**段永平：** 慢慢想。',
+  }])
+  assert.doesNotMatch(article.body, /相关问答|补充问答/)
+})
+
+test('closely related sparse sections share one stronger editorial section', () => {
+  const cases = [
+    ['wenda-company-apple-03', '估值', '长期风险', '看懂苹果、估值与长期风险'],
+    ['wenda-company-bbk', '品牌与渠道', 'OPPO与vivo', '产品、品牌、渠道与公司案例'],
+    ['wenda-life-03', '职业选择', '创业', '职业选择与创业'],
+    ['wenda-invest-04', '风险第一', '风险纪律', '风险考量与纪律'],
+    ['wenda-invest-07', '定性分析', '估值逻辑', '估值逻辑与定性判断'],
+    ['wenda-invest-08', '买入', '卖出和成本', '买入、卖出与成本'],
+    ['wenda-invest-10', '回购', '负债回购', '回购与负债边界'],
+    ['wenda-invest-12', '平常心', '投资经验和心态', '平常心、理性与投资经验'],
+    ['wenda-business-02', '商业模式', '好生意和坏生意', '商业模式与好坏生意'],
+    ['wenda-business-07', '渠道', '出海', '渠道、零售与出海'],
+    ['wenda-business-12', '多元化', '聚焦与能力圈', '多元化、聚焦与能力圈'],
+  ]
+
+  for (const [slug, left, right, title] of cases) {
+    assert.equal(sectionForBlock(slug, { headingPath: [], markdown: left }).title, title)
+    assert.equal(sectionForBlock(slug, { headingPath: [], markdown: right }).title, title)
+  }
 })
 
 test('topic builder orders curated sections and dated Q&A chronologically', () => {

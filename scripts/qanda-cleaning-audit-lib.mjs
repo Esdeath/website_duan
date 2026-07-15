@@ -1,7 +1,7 @@
 export function validateAuditData(audit) {
   const errors = []
   if (audit.sourceArticles?.length !== 20) errors.push(`Expected 20 source articles, found ${audit.sourceArticles?.length || 0}`)
-  if (audit.baseTopics !== 59) errors.push(`Expected 59 base topics, found ${audit.baseTopics}`)
+  if (audit.baseTopics !== 45) errors.push(`Expected 45 base topics, found ${audit.baseTopics}`)
   if (audit.generatedArticles !== audit.articles?.length) errors.push('Generated article count does not match article records')
 
   const slugs = new Set()
@@ -26,6 +26,23 @@ export function validateAuditData(audit) {
       errors.push(`Part redirect has invalid chapter target: ${redirect.from}`)
     }
     if (redirectSources.has(redirect.from)) errors.push(`Duplicate part redirect source: ${redirect.from}`)
+    redirectSources.add(redirect.from)
+  }
+
+  if (audit.companyRedirects?.length !== 19) {
+    errors.push(`Expected 19 company redirects, found ${audit.companyRedirects?.length || 0}`)
+  }
+  for (const redirect of audit.companyRedirects || []) {
+    if (!/^\/wenda-company-[a-z0-9-]+$/.test(redirect.from || '')) {
+      errors.push(`Invalid company redirect source: ${redirect.from}`)
+    }
+    if (slugs.has(String(redirect.from || '').replace(/^\//, ''))) {
+      errors.push(`Company redirect source is still an active chapter: ${redirect.from}`)
+    }
+    if (!slugs.has(String(redirect.to || '').replace(/^\//, ''))) {
+      errors.push(`Company redirect has invalid chapter target: ${redirect.from}`)
+    }
+    if (redirectSources.has(redirect.from)) errors.push(`Duplicate redirect source: ${redirect.from}`)
     redirectSources.add(redirect.from)
   }
 

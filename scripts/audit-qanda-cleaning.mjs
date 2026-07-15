@@ -21,9 +21,16 @@ const REDIRECTS_PATH = path.join(ROOT, 'public', '_redirects')
 const EXPECTED_VOLUMES = [
   ['投资原则与方法', 12],
   ['商业模式与经营', 12],
-  ['公司案例', 29],
+  ['公司案例', 15],
   ['人生与成长', 6],
 ]
+const MERGED_COMPANY_SUBSECTIONS = new Map([
+  ['wenda-company-consumer-electronics', ['OPPO', 'vivo', '任天堂', '索尼', '松下']],
+  ['wenda-company-china-games', ['完美世界', '巨人网络', '金山', '畅游', '第九城市']],
+  ['wenda-company-tech-platforms', ['腾讯', '拼多多', '谷歌', '英伟达', '特斯拉']],
+  ['wenda-company-retail-services', ['Costco', '新东方']],
+  ['wenda-company-energy-industrial', ['OXY（西方石油）', 'GE（通用电气）']],
+])
 
 async function contentFiles() {
   const files = []
@@ -84,6 +91,26 @@ async function main() {
       if (heading[1] !== expected) {
         errors.push(`Chapter section order is not continuous: ${parsed.data.slug} (${heading[1]} != ${expected})`)
       }
+      if (/相关问答|补充问答/u.test(heading[2])) {
+        errors.push(`Generic section heading remains: ${parsed.data.slug} (${heading[2]})`)
+      }
+    })
+
+    const expectedSubsections = MERGED_COMPANY_SUBSECTIONS.get(parsed.data.slug)
+    if (expectedSubsections) {
+      const actualSubsections = [...parsed.body.matchAll(/^###\s+(.+)$/gm)].map((match) => match[1].trim())
+      if (actualSubsections.join('\n') !== expectedSubsections.join('\n')) {
+        errors.push(`Merged company subsections are incomplete or out of order: ${parsed.data.slug}`)
+      }
+    }
+
+    const sectionBodies = parsed.body.split(/^## 第.+?节\s+.+$/gm).slice(1)
+    sectionBodies.forEach((sectionBody, index) => {
+      const qandaCount = splitQuestionAnswerBlocks(sectionBody, { sourceSlug: `${parsed.data.slug}-section-${index + 1}` }).length
+      const sectionLength = visibleTextLength(sectionBody)
+      if (qandaCount < 4 || sectionLength < 600) {
+        warnings.push(`Sparse section ${parsed.data.slug} #${index + 1}: ${qandaCount} Q&A, ${sectionLength} chars`)
+      }
     })
 
     for (const paragraph of parsed.body.split(/\n\s*\n+/)) {
@@ -101,7 +128,7 @@ async function main() {
 
   if (legacy.length !== 20) errors.push(`Expected 20 legacy guides, found ${legacy.length}`)
   if (indexes.length !== 1 || indexes[0]?.data.slug !== 'wenda-topic-index') errors.push('Expected one wenda-topic-index page')
-  if (active.length !== 59) errors.push(`Expected 59 qanda chapters, found ${active.length}`)
+  if (active.length !== 45) errors.push(`Expected 45 qanda chapters, found ${active.length}`)
   if (active.length !== audit.generatedArticles) {
     errors.push(`Manifest lists ${audit.generatedArticles} active articles, found ${active.length}`)
   }
@@ -135,6 +162,12 @@ async function main() {
       errors.push(`Missing or invalid part redirect: ${redirect.from} -> ${redirect.to}`)
     }
   }
+  for (const redirect of audit.companyRedirects || []) {
+    const actual = redirects.get(redirect.from)
+    if (!actual || actual.to !== redirect.to || actual.status !== '301') {
+      errors.push(`Missing or invalid company redirect: ${redirect.from} -> ${redirect.to}`)
+    }
+  }
 
   const repeatedParagraphGroups = [...duplicateParagraphs.entries()]
     .map(([text, articleSlugs]) => ({ text, articleSlugs: [...new Set(articleSlugs)] }))
@@ -151,7 +184,9 @@ async function main() {
   const result = {
     activeArticles: active.length,
     volumeCounts: Object.fromEntries(EXPECTED_VOLUMES.map(([volume]) => [volume, volumeChapters.get(volume)?.length || 0])),
-    partRedirects: redirects.size,
+    partRedirects: audit.redirects?.length || 0,
+    companyRedirects: audit.companyRedirects?.length || 0,
+    generatedRedirects: redirects.size,
     legacyGuides: legacy.length,
     topicIndexes: indexes.length,
     longestArticle: Math.max(...active.map((article) => article.length)),
@@ -159,6 +194,7 @@ async function main() {
     crossArticleDuplicateQanda: crossArticleDuplicateQanda.length,
     repeatedParagraphGroups: repeatedParagraphGroups.length,
     longParagraphWarnings: warnings.filter((warning) => warning.startsWith('Long paragraph')).length,
+    sparseSectionWarnings: warnings.filter((warning) => warning.startsWith('Sparse section')).length,
     errors: errors.length,
     warnings: warnings.length,
   }

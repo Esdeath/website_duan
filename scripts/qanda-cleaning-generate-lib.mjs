@@ -139,22 +139,39 @@ export function buildTopicChapter(topic, blocks) {
   const sections = new Map()
   for (const [sourceIndex, block] of blocks.entries()) {
     const sectionInfo = sectionForBlock(topic.slug, block)
-    const current = sections.get(sectionInfo.title) || { ...sectionInfo, units: [] }
+    const current = sections.get(sectionInfo.title) || { ...sectionInfo, units: [], subsections: new Map() }
     const cleaned = shortenParagraphs(standardizeQaMarkers(rewriteLegacyLinks(block.markdown)))
-    current.units.push({ markdown: cleaned, date: extractBlockDate(block), sourceIndex })
+    const unit = { markdown: cleaned, date: extractBlockDate(block), sourceIndex }
+    if (sectionInfo.subsectionTitle) {
+      const subsection = current.subsections.get(sectionInfo.subsectionTitle) || {
+        title: sectionInfo.subsectionTitle,
+        order: sectionInfo.subsectionOrder,
+        units: [],
+      }
+      subsection.units.push(unit)
+      current.subsections.set(sectionInfo.subsectionTitle, subsection)
+    } else {
+      current.units.push(unit)
+    }
     sections.set(sectionInfo.title, current)
   }
+
+  const sortedUnits = (units) => [...units].sort((left, right) => {
+    if (left.date && right.date) return left.date.localeCompare(right.date) || left.sourceIndex - right.sourceIndex
+    if (left.date) return -1
+    if (right.date) return 1
+    return left.sourceIndex - right.sourceIndex
+  })
 
   const body = [...sections.values()]
     .sort((left, right) => left.order - right.order)
     .map((item, index) => {
-      const units = [...item.units].sort((left, right) => {
-        if (left.date && right.date) return left.date.localeCompare(right.date) || left.sourceIndex - right.sourceIndex
-        if (left.date) return -1
-        if (right.date) return 1
-        return left.sourceIndex - right.sourceIndex
-      })
-      return `## 第${chineseNumber(index + 1)}节 ${item.title}\n\n${units.map((unit) => unit.markdown).join('\n\n')}`
+      const direct = sortedUnits(item.units).map((unit) => unit.markdown).join('\n\n')
+      const nested = [...item.subsections.values()]
+        .sort((left, right) => left.order - right.order)
+        .map((subsection) => `### ${subsection.title}\n\n${sortedUnits(subsection.units).map((unit) => unit.markdown).join('\n\n')}`)
+        .join('\n\n')
+      return `## 第${chineseNumber(index + 1)}节 ${item.title}\n\n${[direct, nested].filter(Boolean).join('\n\n')}`
     })
     .join('\n\n')
 

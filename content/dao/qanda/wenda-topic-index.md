@@ -16,16 +16,12 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 - [第一节 买股票就是买公司](/wenda-invest-01#第一节-买股票就是买公司)
 - [第二节 价值投资的定义](/wenda-invest-01#第二节-价值投资的定义)
-- [第三节 投资的信仰](/wenda-invest-01#第三节-投资的信仰)
-- [第四节 价格与价值](/wenda-invest-01#第四节-价格与价值)
-- [第五节 原则的边界](/wenda-invest-01#第五节-原则的边界)
-- [第六节 相关问答](/wenda-invest-01#第六节-相关问答)
+- [第三节 价值、价格与原则边界](/wenda-invest-01#第三节-价值价格与原则边界)
 
 ### 第二章 [投资为什么简单但不容易](/wenda-invest-02)
 
-- [第一节 简单但不容易](/wenda-invest-02#第一节-简单但不容易)
-- [第二节 道、术与长期学习](/wenda-invest-02#第二节-道术与长期学习)
-- [第三节 什么人适合投资](/wenda-invest-02#第三节-什么人适合投资)
+- [第一节 简单、不容易与长期学习](/wenda-invest-02#第一节-简单不容易与长期学习)
+- [第二节 什么人适合投资](/wenda-invest-02#第二节-什么人适合投资)
 
 ### 第三章 [看懂生意与能力圈](/wenda-invest-03)
 
@@ -36,11 +32,10 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 ### 第四章 [风险第一：不做空、不借钱、不懂不碰](/wenda-invest-04)
 
-- [第一节 风险是第一考量](/wenda-invest-04#第一节-风险是第一考量)
+- [第一节 风险考量与纪律](/wenda-invest-04#第一节-风险考量与纪律)
 - [第二节 不做空](/wenda-invest-04#第二节-不做空)
 - [第三节 不借钱、不加杠杆](/wenda-invest-04#第三节-不借钱不加杠杆)
 - [第四节 不懂不碰](/wenda-invest-04#第四节-不懂不碰)
-- [第五节 风险纪律](/wenda-invest-04#第五节-风险纪律)
 
 ### 第五章 [市场波动、宏观与牛熊](/wenda-invest-05)
 
@@ -51,24 +46,19 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 ### 第六章 [长期持有、集中投资与机会成本](/wenda-invest-06)
 
-- [第一节 长期持有](/wenda-invest-06#第一节-长期持有)
-- [第二节 集中投资](/wenda-invest-06#第二节-集中投资)
-- [第三节 机会成本](/wenda-invest-06#第三节-机会成本)
+- [第一节 长期持有与集中投资](/wenda-invest-06#第一节-长期持有与集中投资)
+- [第二节 机会成本](/wenda-invest-06#第二节-机会成本)
 
 ### 第七章 [现金流折现、PE与定性判断](/wenda-invest-07)
 
-- [第一节 估值的核心逻辑](/wenda-invest-07#第一节-估值的核心逻辑)
+- [第一节 估值逻辑与定性判断](/wenda-invest-07#第一节-估值逻辑与定性判断)
 - [第二节 未来现金流折现](/wenda-invest-07#第二节-未来现金流折现)
-- [第三节 定性重于定量](/wenda-invest-07#第三节-定性重于定量)
-- [第四节 PE与估值指标](/wenda-invest-07#第四节-pe与估值指标)
-- [第五节 估值案例](/wenda-invest-07#第五节-估值案例)
+- [第三节 PE、估值指标与案例](/wenda-invest-07#第三节-pe估值指标与案例)
 
 ### 第八章 [买卖时机与“持有就是买入”](/wenda-invest-08)
 
 - [第一节 持有就是买入](/wenda-invest-08#第一节-持有就是买入)
-- [第二节 什么时候买入](/wenda-invest-08#第二节-什么时候买入)
-- [第三节 什么时候卖出](/wenda-invest-08#第三节-什么时候卖出)
-- [第四节 忘记成本与市场](/wenda-invest-08#第四节-忘记成本与市场)
+- [第二节 买入、卖出与成本](/wenda-invest-08#第二节-买入卖出与成本)
 
 ### 第九章 [财报、现金流、ROE与净资产](/wenda-invest-09)
 
@@ -82,8 +72,7 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 - [第一节 资本配置原则](/wenda-invest-10#第一节-资本配置原则)
 - [第二节 分红](/wenda-invest-10#第二节-分红)
-- [第三节 回购](/wenda-invest-10#第三节-回购)
-- [第四节 负债与回购](/wenda-invest-10#第四节-负债与回购)
+- [第三节 回购与负债边界](/wenda-invest-10#第三节-回购与负债边界)
 
 ### 第十一章 [投机、套利、量化与衍生品](/wenda-invest-11)
 
@@ -93,10 +82,9 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 ### 第十二章 [投资心态、Golf、阅读与学习](/wenda-invest-12)
 
-- [第一节 平常心与理性](/wenda-invest-12#第一节-平常心与理性)
+- [第一节 平常心、理性与投资经验](/wenda-invest-12#第一节-平常心理性与投资经验)
 - [第二节 Golf与投资](/wenda-invest-12#第二节-golf与投资)
 - [第三节 阅读与学习](/wenda-invest-12#第三节-阅读与学习)
-- [第四节 投资经验与心态](/wenda-invest-12#第四节-投资经验与心态)
 
 ## 第二卷 商业模式与经营
 
@@ -106,9 +94,8 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 ### 第二章 [商业模式与投资确定性](/wenda-business-02)
 
-- [第一节 商业模式的定义](/wenda-business-02#第一节-商业模式的定义)
-- [第二节 好生意与坏生意](/wenda-business-02#第二节-好生意与坏生意)
-- [第三节 商业模式案例](/wenda-business-02#第三节-商业模式案例)
+- [第一节 商业模式与好坏生意](/wenda-business-02#第一节-商业模式与好坏生意)
+- [第二节 商业模式案例](/wenda-business-02#第二节-商业模式案例)
 
 ### 第三章 [护城河与差异化](/wenda-business-03)
 
@@ -117,11 +104,8 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 ### 第四章 [好产品与用户导向](/wenda-business-04)
 
-- [第一节 好产品的标准](/wenda-business-04#第一节-好产品的标准)
-- [第二节 用户与消费者导向](/wenda-business-04#第二节-用户与消费者导向)
-- [第三节 真实需求与产品取舍](/wenda-business-04#第三节-真实需求与产品取舍)
-- [第四节 产品案例](/wenda-business-04#第四节-产品案例)
-- [第五节 相关问答](/wenda-business-04#第五节-相关问答)
+- [第一节 产品标准、用户需求与取舍](/wenda-business-04#第一节-产品标准用户需求与取舍)
+- [第二节 产品案例](/wenda-business-04#第二节-产品案例)
 
 ### 第五章 [创新与敢为天下后](/wenda-business-05)
 
@@ -137,8 +121,7 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 - [第一节 营销的边界](/wenda-business-07#第一节-营销的边界)
 - [第二节 广告只表达产品](/wenda-business-07#第二节-广告只表达产品)
-- [第三节 渠道与零售](/wenda-business-07#第三节-渠道与零售)
-- [第四节 出海与国际市场](/wenda-business-07#第四节-出海与国际市场)
+- [第三节 渠道、零售与出海](/wenda-business-07#第三节-渠道零售与出海)
 
 ### 第八章 [企业文化](/wenda-business-08)
 
@@ -147,7 +130,6 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 - [第三节 如何判断企业文化](/wenda-business-08#第三节-如何判断企业文化)
 - [第四节 企业文化与长期经营](/wenda-business-08#第四节-企业文化与长期经营)
 - [第五节 文化案例](/wenda-business-08#第五节-文化案例)
-- [第六节 相关问答](/wenda-business-08#第六节-相关问答)
 
 ### 第九章 [本分、核心价值观与利润之上的追求](/wenda-business-09)
 
@@ -173,7 +155,7 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 ### 第十二章 [收购与多元化](/wenda-business-12)
 
 - [第一节 收购的成功条件](/wenda-business-12#第一节-收购的成功条件)
-- [第二节 多元化的边界](/wenda-business-12#第二节-多元化的边界)
+- [第二节 多元化、聚焦与能力圈](/wenda-business-12#第二节-多元化聚焦与能力圈)
 - [第三节 收购与多元化案例](/wenda-business-12#第三节-收购与多元化案例)
 
 ## 第三卷 公司案例
@@ -181,10 +163,8 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 ### 第一章 [苹果：产品、商业模式与生态](/wenda-company-apple-01)
 
 - [第一节 产品与用户体验](/wenda-company-apple-01#第一节-产品与用户体验)
-- [第二节 商业模式与生态系统](/wenda-company-apple-01#第二节-商业模式与生态系统)
-- [第三节 聚焦与单一产品](/wenda-company-apple-01#第三节-聚焦与单一产品)
-- [第四节 竞争与长期优势](/wenda-company-apple-01#第四节-竞争与长期优势)
-- [第五节 相关问答](/wenda-company-apple-01#第五节-相关问答)
+- [第二节 商业模式、生态与聚焦](/wenda-company-apple-01#第二节-商业模式生态与聚焦)
+- [第三节 竞争与长期优势](/wenda-company-apple-01#第三节-竞争与长期优势)
 
 ### 第二章 [苹果：管理层与企业文化](/wenda-company-apple-02)
 
@@ -194,18 +174,15 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 ### 第三章 [苹果：估值、持有与资本配置](/wenda-company-apple-03)
 
-- [第一节 看懂苹果与估值](/wenda-company-apple-03#第一节-看懂苹果与估值)
+- [第一节 看懂苹果、估值与长期风险](/wenda-company-apple-03#第一节-看懂苹果估值与长期风险)
 - [第二节 买入、持有与卖出](/wenda-company-apple-03#第二节-买入持有与卖出)
 - [第三节 分红、回购与现金](/wenda-company-apple-03#第三节-分红回购与现金)
-- [第四节 相关问答](/wenda-company-apple-03#第四节-相关问答)
 
 ### 第四章 [贵州茅台：产品、品牌与商业模式](/wenda-company-maotai-01)
 
 - [第一节 产品与品质](/wenda-company-maotai-01#第一节-产品与品质)
 - [第二节 品牌与消费者心智](/wenda-company-maotai-01#第二节-品牌与消费者心智)
-- [第三节 商业模式与供需](/wenda-company-maotai-01#第三节-商业模式与供需)
-- [第四节 产品边界与长期优势](/wenda-company-maotai-01#第四节-产品边界与长期优势)
-- [第五节 相关问答](/wenda-company-maotai-01#第五节-相关问答)
+- [第三节 商业模式、供需与长期优势](/wenda-company-maotai-01#第三节-商业模式供需与长期优势)
 
 ### 第五章 [贵州茅台：治理、渠道与i茅台](/wenda-company-maotai-02)
 
@@ -226,102 +203,64 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 - [第一节 从小霸王到步步高](/wenda-company-bbk#第一节-从小霸王到步步高)
 - [第二节 企业文化与本分](/wenda-company-bbk#第二节-企业文化与本分)
-- [第三节 产品、品牌与渠道](/wenda-company-bbk#第三节-产品品牌与渠道)
+- [第三节 产品、品牌、渠道与公司案例](/wenda-company-bbk#第三节-产品品牌渠道与公司案例)
 - [第四节 步步高的不为清单](/wenda-company-bbk#第四节-步步高的不为清单)
-- [第五节 OPPO、vivo与小天才](/wenda-company-bbk#第五节-oppovivo与小天才)
-- [第六节 相关问答](/wenda-company-bbk#第六节-相关问答)
 
-### 第八章 [OPPO](/wenda-company-oppo)
-
-- [第一节 OPPO](/wenda-company-oppo#第一节-oppo)
-
-### 第九章 [vivo](/wenda-company-vivo)
-
-- [第一节 vivo](/wenda-company-vivo#第一节-vivo)
-
-### 第十章 [网易](/wenda-company-netease)
+### 第八章 [网易](/wenda-company-netease)
 
 - [第一节 发现与买入网易](/wenda-company-netease#第一节-发现与买入网易)
 - [第二节 游戏是好生意](/wenda-company-netease#第二节-游戏是好生意)
 - [第三节 丁磊与管理团队](/wenda-company-netease#第三节-丁磊与管理团队)
 - [第四节 持有、加仓与卖出](/wenda-company-netease#第四节-持有加仓与卖出)
-- [第五节 相关问答](/wenda-company-netease#第五节-相关问答)
 
-### 第十一章 [腾讯](/wenda-company-tencent)
-
-- [第一节 腾讯](/wenda-company-tencent#第一节-腾讯)
-
-### 第十二章 [阿里巴巴与雅虎](/wenda-company-alibaba-yahoo)
+### 第九章 [阿里巴巴与雅虎](/wenda-company-alibaba-yahoo)
 
 - [第一节 阿里巴巴与雅虎](/wenda-company-alibaba-yahoo#第一节-阿里巴巴与雅虎)
 
-### 第十三章 [拼多多](/wenda-company-pinduoduo)
-
-- [第一节 拼多多](/wenda-company-pinduoduo#第一节-拼多多)
-
-### 第十四章 [Costco](/wenda-company-costco)
-
-- [第一节 Costco](/wenda-company-costco#第一节-costco)
-
-### 第十五章 [泡泡玛特](/wenda-company-pop-mart)
+### 第十章 [泡泡玛特](/wenda-company-pop-mart)
 
 - [第一节 泡泡玛特](/wenda-company-pop-mart#第一节-泡泡玛特)
 
-### 第十六章 [英伟达](/wenda-company-nvidia)
+### 第十一章 [消费电子与日本制造](/wenda-company-consumer-electronics)
 
-- [第一节 英伟达](/wenda-company-nvidia#第一节-英伟达)
+- [第一节 国产消费电子](/wenda-company-consumer-electronics#第一节-国产消费电子)
+  - [OPPO](/wenda-company-consumer-electronics#oppo)
+  - [vivo](/wenda-company-consumer-electronics#vivo)
+- [第二节 日本消费电子与游戏](/wenda-company-consumer-electronics#第二节-日本消费电子与游戏)
+  - [任天堂](/wenda-company-consumer-electronics#任天堂)
+  - [索尼](/wenda-company-consumer-electronics#索尼)
+  - [松下](/wenda-company-consumer-electronics#松下)
 
-### 第十七章 [谷歌](/wenda-company-google)
+### 第十二章 [中国游戏公司群像](/wenda-company-china-games)
 
-- [第一节 谷歌](/wenda-company-google#第一节-谷歌)
+- [第一节 中国游戏公司案例](/wenda-company-china-games#第一节-中国游戏公司案例)
+  - [完美世界](/wenda-company-china-games#完美世界)
+  - [巨人网络](/wenda-company-china-games#巨人网络)
+  - [金山](/wenda-company-china-games#金山)
+  - [畅游](/wenda-company-china-games#畅游)
+  - [第九城市](/wenda-company-china-games#第九城市)
 
-### 第十八章 [特斯拉](/wenda-company-tesla)
+### 第十三章 [互联网、科技与新产业](/wenda-company-tech-platforms)
 
-- [第一节 特斯拉](/wenda-company-tesla#第一节-特斯拉)
+- [第一节 互联网平台](/wenda-company-tech-platforms#第一节-互联网平台)
+  - [腾讯](/wenda-company-tech-platforms#腾讯)
+  - [拼多多](/wenda-company-tech-platforms#拼多多)
+  - [谷歌](/wenda-company-tech-platforms#谷歌)
+- [第二节 科技与新产业](/wenda-company-tech-platforms#第二节-科技与新产业)
+  - [英伟达](/wenda-company-tech-platforms#英伟达)
+  - [特斯拉](/wenda-company-tech-platforms#特斯拉)
 
-### 第十九章 [OXY（西方石油）](/wenda-company-oxy)
+### 第十四章 [零售与服务业案例](/wenda-company-retail-services)
 
-- [第一节 OXY（西方石油）](/wenda-company-oxy#第一节-oxy西方石油)
+- [第一节 零售与服务业](/wenda-company-retail-services#第一节-零售与服务业)
+  - [Costco](/wenda-company-retail-services#costco)
+  - [新东方](/wenda-company-retail-services#新东方)
 
-### 第二十章 [任天堂](/wenda-company-nintendo)
+### 第十五章 [能源与工业企业案例](/wenda-company-energy-industrial)
 
-- [第一节 任天堂](/wenda-company-nintendo#第一节-任天堂)
-
-### 第二十一章 [索尼](/wenda-company-sony)
-
-- [第一节 索尼](/wenda-company-sony#第一节-索尼)
-
-### 第二十二章 [松下](/wenda-company-panasonic)
-
-- [第一节 松下](/wenda-company-panasonic#第一节-松下)
-
-### 第二十三章 [GE（通用电气）](/wenda-company-ge)
-
-- [第一节 GE（通用电气）](/wenda-company-ge#第一节-ge通用电气)
-
-### 第二十四章 [新东方](/wenda-company-new-oriental)
-
-- [第一节 新东方](/wenda-company-new-oriental#第一节-新东方)
-
-### 第二十五章 [完美世界](/wenda-company-perfect-world)
-
-- [第一节 完美世界](/wenda-company-perfect-world#第一节-完美世界)
-
-### 第二十六章 [巨人网络](/wenda-company-giant-network)
-
-- [第一节 巨人网络](/wenda-company-giant-network#第一节-巨人网络)
-
-### 第二十七章 [金山](/wenda-company-kingsoft)
-
-- [第一节 金山](/wenda-company-kingsoft#第一节-金山)
-
-### 第二十八章 [畅游](/wenda-company-changyou)
-
-- [第一节 畅游](/wenda-company-changyou#第一节-畅游)
-
-### 第二十九章 [第九城市](/wenda-company-the9)
-
-- [第一节 第九城市](/wenda-company-the9#第一节-第九城市)
+- [第一节 能源与工业企业](/wenda-company-energy-industrial#第一节-能源与工业企业)
+  - [OXY（西方石油）](/wenda-company-energy-industrial#oxy西方石油)
+  - [GE（通用电气）](/wenda-company-energy-industrial#ge通用电气)
 
 ## 第四卷 人生与成长
 
@@ -329,7 +268,6 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 - [第一节 做对的事情](/wenda-life-01#第一节-做对的事情)
 - [第二节 长期选择与机会成本](/wenda-life-01#第二节-长期选择与机会成本)
-- [第三节 相关问答](/wenda-life-01#第三节-相关问答)
 
 ### 第二章 [正直、理性与长期视角](/wenda-life-02)
 
@@ -339,9 +277,8 @@ tags: ["投资问答录","主题目录","投资原则","商业经营","公司案
 
 ### 第三章 [职业、创业与享受过程](/wenda-life-03)
 
-- [第一节 职业选择](/wenda-life-03#第一节-职业选择)
-- [第二节 创业](/wenda-life-03#第二节-创业)
-- [第三节 做喜欢的事情](/wenda-life-03#第三节-做喜欢的事情)
+- [第一节 职业选择与创业](/wenda-life-03#第一节-职业选择与创业)
+- [第二节 做喜欢的事情](/wenda-life-03#第二节-做喜欢的事情)
 
 ### 第四章 [家庭、孩子与教育](/wenda-life-04)
 

@@ -78,6 +78,6 @@ tags: ["拼多多", "黄峥", "本分", "渠道", "商业模式"]
 
 ## 原始出处
 
-- [拼多多公司问答](/wenda-company-pinduoduo)
+- [拼多多公司问答](/wenda-company-tech-platforms)
 - [2025年浙江大学演讲及问答完整版](/duanyongping-2025nianzhejiangdaxueyanjiangjiwendawanzhengban)
 - [2025年方三文对话段永平](/duanyongping-2025nian-fangsanwenduihuaduanyongping-zuozijinenggouxihuandeshiqing)

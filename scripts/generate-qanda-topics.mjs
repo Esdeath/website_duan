@@ -14,7 +14,13 @@ import {
   splitQuestionAnswerBlocks,
   visibleTextLength,
 } from './qanda-cleaning-lib.mjs'
-import { TOPICS, TOPIC_BY_SLUG, VOLUMES, classifyBlock } from './qanda-cleaning-config.mjs'
+import {
+  MERGED_COMPANY_REDIRECTS,
+  TOPICS,
+  TOPIC_BY_SLUG,
+  VOLUMES,
+  classifyBlock,
+} from './qanda-cleaning-config.mjs'
 import { buildTopicChapter, chineseNumber, isNoInformation, renderArticleFile } from './qanda-cleaning-generate-lib.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -109,8 +115,8 @@ function renderIndexFile(articles) {
       .filter((article) => article.volumeOrder === volume.order)
       .sort((left, right) => left.chapterOrder - right.chapterOrder)
       .map((article) => {
-        const sections = [...article.body.matchAll(/^##\s+(.+)$/gm)]
-          .map((match) => `- [${match[1]}](/${article.slug}#${headingId(match[1])})`)
+        const sections = [...article.body.matchAll(/^(#{2,3})\s+(.+)$/gm)]
+          .map((match) => `${match[1] === '###' ? '  ' : ''}- [${match[2]}](/${article.slug}#${headingId(match[2])})`)
           .join('\n')
         return `### 第${chineseNumber(article.chapterOrder)}章 [${article.title}](/${article.slug})\n\n${sections}`
       })
@@ -207,6 +213,15 @@ async function writePartRedirects(redirects) {
   await writeFile(REDIRECTS_PATH, output, 'utf8')
 }
 
+function activeRedirectTarget(pathname) {
+  const slug = String(pathname || '').replace(/^\//, '')
+  return `/${MERGED_COMPANY_REDIRECTS.get(slug) || slug}`
+}
+
+function buildCompanyRedirects() {
+  return [...MERGED_COMPANY_REDIRECTS].map(([from, to]) => ({ from: `/${from}`, to: `/${to}` }))
+}
+
 async function pinnedSourceManifest() {
   const existingAudit = JSON.parse(await readFile(AUDIT_PATH, 'utf8'))
   let committedAudit = null
@@ -232,6 +247,8 @@ async function pinnedSourceManifest() {
 
 async function main() {
   const { sourceCommit, sourceArticles, redirects } = await pinnedSourceManifest()
+  const partRedirects = redirects.map((redirect) => ({ ...redirect, to: activeRedirectTarget(redirect.to) }))
+  const companyRedirects = buildCompanyRedirects()
   priorityBySlug = new Map(sourceArticles.map((source, index) => [source.slug, index]))
   const sources = loadSources(sourceCommit, new Set(sourceArticles.map((source) => source.slug)))
   const allBlocks = buildBlocks(sources)
@@ -322,7 +339,8 @@ async function main() {
       visibleLength: visibleTextLength(article.body),
       blockIds: article.blockIds,
     })),
-    redirects,
+    redirects: partRedirects,
+    companyRedirects,
     nearDuplicateCandidates,
     records,
   }
@@ -349,7 +367,7 @@ async function main() {
     await writeFile(target, renderArticleFile(article), 'utf8')
   }
   await writeFile(path.join(CONTENT_ROOT, 'qanda', 'wenda-topic-index.md'), renderIndexFile(articles), 'utf8')
-  await writePartRedirects(redirects)
+  await writePartRedirects([...partRedirects, ...companyRedirects])
 
   const recordBySource = new Map()
   for (const record of records) {
@@ -364,7 +382,7 @@ async function main() {
 
   await mkdir(path.dirname(AUDIT_PATH), { recursive: true })
   await writeFile(AUDIT_PATH, `${JSON.stringify(audit, null, 2)}\n`, 'utf8')
-  console.log(`Wrote ${articles.length} chapters, 1 topic index, 20 legacy guides, ${redirects.length} redirects and ${path.relative(ROOT, AUDIT_PATH)}.`)
+  console.log(`Wrote ${articles.length} chapters, 1 topic index, 20 legacy guides, ${partRedirects.length} part redirects, ${companyRedirects.length} company redirects and ${path.relative(ROOT, AUDIT_PATH)}.`)
 }
 
 main().catch((error) => {

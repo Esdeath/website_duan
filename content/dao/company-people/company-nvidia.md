@@ -82,4 +82,4 @@ tags: ["英伟达", "黄仁勋", "CUDA", "AI", "护城河", "能力圈"]
 
 ## 原始出处
 
-- [英伟达公司问答](/wenda-company-nvidia)
+- [英伟达公司问答](/wenda-company-tech-platforms)

@@ -2,6 +2,8 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 
+import { MERGED_COMPANY_REDIRECTS } from '../scripts/qanda-cleaning-config.mjs'
+
 const read = (file) => fs.readFileSync(new URL(`../${file}`, import.meta.url), 'utf8')
 
 test('public catalogue and sidebar filter legacy migration guides', () => {
@@ -75,6 +77,31 @@ test('sitemap excludes legacy routes while Nuxt still prerenders the 20 source g
 test('all historical qanda part URLs keep permanent redirects after regeneration', () => {
   const redirects = read('public/_redirects')
   const partRedirects = redirects.match(/^\/wenda-.*-part-\d+\s+\/wenda-\S+\s+301$/gm) || []
+  const removedTargets = new Set([...MERGED_COMPANY_REDIRECTS.keys()].map((slug) => `/${slug}`))
 
   assert.equal(partRedirects.length, 208)
+  assert.ok(partRedirects.every((line) => !removedTargets.has(line.split(/\s+/)[1])))
+})
+
+test('removed company article URLs redirect directly to five active industry chapters', () => {
+  const redirects = read('public/_redirects')
+  const lines = new Set(redirects.split(/\r?\n/).map((line) => line.trim()))
+
+  assert.equal(MERGED_COMPANY_REDIRECTS.size, 19)
+  for (const [from, to] of MERGED_COMPANY_REDIRECTS) {
+    assert.ok(lines.has(`/${from} /${to} 301`), `${from} should redirect to ${to}`)
+  }
+})
+
+test('company and person pages link directly to active merged company chapters', () => {
+  const directory = new URL('../content/dao/company-people/', import.meta.url)
+  const removedSlugs = [...MERGED_COMPANY_REDIRECTS.keys()]
+  const staleLinks = fs.readdirSync(directory)
+    .filter((name) => name.endsWith('.md'))
+    .flatMap((name) => {
+      const body = fs.readFileSync(new URL(name, directory), 'utf8')
+      return removedSlugs.filter((slug) => body.includes(`(/${slug})`)).map((slug) => `${name}: /${slug}`)
+    })
+
+  assert.deepEqual(staleLinks, [])
 })

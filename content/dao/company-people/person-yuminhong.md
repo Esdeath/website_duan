@@ -76,5 +76,5 @@ tags: ["俞敏洪", "新东方", "教育", "韧性", "企业家"]
 
 ## 原始出处
 
-- [新东方公司问答](/wenda-company-new-oriental)
+- [新东方公司问答](/wenda-company-retail-services)
 - [企业文化](/wenda-business-08)

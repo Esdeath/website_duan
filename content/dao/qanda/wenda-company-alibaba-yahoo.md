@@ -3,13 +3,13 @@ title: "阿里巴巴与雅虎"
 slug: "wenda-company-alibaba-yahoo"
 description: "汇集段永平关于“阿里巴巴与雅虎”的公开问答，按主题重排并删除重复内容。"
 category: "投资问答录"
-order: 271
+order: 268
 seoTitle: "阿里巴巴与雅虎｜段永平投资问答录"
 seoDescription: "汇集段永平关于“阿里巴巴与雅虎”的公开问答，按主题重排并删除重复内容。"
 type: "qanda-chapter"
 volume: "公司案例"
 volumeOrder: 3
-chapterOrder: 12
+chapterOrder: 9
 tags: ["公司案例","阿里巴巴","雅虎","马云"]
 ---
 

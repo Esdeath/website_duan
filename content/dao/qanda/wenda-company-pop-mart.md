@@ -3,13 +3,13 @@ title: "泡泡玛特"
 slug: "wenda-company-pop-mart"
 description: "汇集段永平关于“泡泡玛特”的公开问答，按主题重排并删除重复内容。"
 category: "投资问答录"
-order: 274
+order: 269
 seoTitle: "泡泡玛特｜段永平投资问答录"
 seoDescription: "汇集段永平关于“泡泡玛特”的公开问答，按主题重排并删除重复内容。"
 type: "qanda-chapter"
 volume: "公司案例"
 volumeOrder: 3
-chapterOrder: 15
+chapterOrder: 10
 tags: ["公司案例","泡泡玛特","情绪价值"]
 ---
 

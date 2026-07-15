@@ -71,5 +71,5 @@ tags: ["任天堂", "游戏", "渠道", "单一产品", "能力圈"]
 
 ## 原始出处
 
-- [任天堂公司问答](/wenda-company-nintendo)
+- [任天堂公司问答](/wenda-company-consumer-electronics)
 - [核心概念：渠道](/qudao)
