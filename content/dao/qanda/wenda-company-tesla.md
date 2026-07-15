@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 277
 seoTitle: "特斯拉｜段永平投资问答录"
 seoDescription: "汇集段永平关于“特斯拉”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 18
 tags: ["公司案例","特斯拉","新能源汽车"]
 ---
 
-## 特斯拉
+## 第一节 特斯拉
 
 网友：对于musk的人品，大道有新看法吗？
 

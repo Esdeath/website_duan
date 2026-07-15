@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 287
 seoTitle: "畅游｜段永平投资问答录"
 seoDescription: "汇集段永平关于“畅游”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 28
 tags: ["公司案例","畅游","游戏"]
 ---
 
-## 畅游
+## 第一节 畅游
 
 汗了，怪不得畅游股价上不去，原来他们还搞副业啊。电影广告公司居然也买?看不懂。刚刚知道他们居然已经买了几家公司了。对国内喜欢买公司的公司还是小心为上。
 

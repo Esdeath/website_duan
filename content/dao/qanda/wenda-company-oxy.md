@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 278
 seoTitle: "OXY（西方石油）｜段永平投资问答录"
 seoDescription: "汇集段永平关于“OXY（西方石油）”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 19
 tags: ["公司案例","OXY","西方石油"]
 ---
 
-## 【OXY】
+## 第一节 OXY
 
 网友：如何看待**巴菲特**对于OXY的收购？
 

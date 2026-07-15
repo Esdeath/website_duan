@@ -14,16 +14,16 @@ tags: ["投资问答录","旧版导读","主题索引"]
 
 原地址继续保留。正文已去重并迁移到以下主题文章：
 
-- [商业模式与投资确定性](/wenda-business-02-part-2)
-- [好产品与用户导向](/wenda-business-04-part-1)
-- [创新与敢为天下后](/wenda-business-05-part-1)
-- [品牌的本质](/wenda-business-06-part-1)
-- [营销、广告、渠道与出海](/wenda-business-07-part-1)
-- [企业文化](/wenda-business-08-part-3)
-- [本分、核心价值观与利润之上的追求](/wenda-business-09-part-2)
-- [创始人、CEO、团队与激励](/wenda-business-10-part-17)
-- [Stop Doing List、聚焦与更健康更长久](/wenda-business-11-part-6)
-- [收购与多元化](/wenda-business-12-part-2)
-- [小霸王与步步高](/wenda-company-bbk-part-2)
+- [商业模式与投资确定性](/wenda-business-02)
+- [好产品与用户导向](/wenda-business-04)
+- [创新与敢为天下后](/wenda-business-05)
+- [品牌的本质](/wenda-business-06)
+- [营销、广告、渠道与出海](/wenda-business-07)
+- [企业文化](/wenda-business-08)
+- [本分、核心价值观与利润之上的追求](/wenda-business-09)
+- [创始人、CEO、团队与激励](/wenda-business-10)
+- [Stop Doing List、聚焦与更健康更长久](/wenda-business-11)
+- [收购与多元化](/wenda-business-12)
+- [小霸王与步步高](/wenda-company-bbk)
 
 完整目录见：[投资问答录主题目录](/wenda-topic-index)。

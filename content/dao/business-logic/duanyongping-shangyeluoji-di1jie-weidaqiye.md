@@ -16,9 +16,9 @@ tags: ["投资问答录","旧版导读","主题索引"]
 
 - [伟大企业与长坡厚雪](/wenda-business-01)
 - [护城河与差异化](/wenda-business-03)
-- [好产品与用户导向](/wenda-business-04-part-1)
-- [企业文化](/wenda-business-08-part-9)
-- [本分、核心价值观与利润之上的追求](/wenda-business-09-part-2)
-- [创始人、CEO、团队与激励](/wenda-business-10-part-4)
+- [好产品与用户导向](/wenda-business-04)
+- [企业文化](/wenda-business-08)
+- [本分、核心价值观与利润之上的追求](/wenda-business-09)
+- [创始人、CEO、团队与激励](/wenda-business-10)
 
 完整目录见：[投资问答录主题目录](/wenda-topic-index)。

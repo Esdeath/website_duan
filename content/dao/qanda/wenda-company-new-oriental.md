@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 283
 seoTitle: "新东方｜段永平投资问答录"
 seoDescription: "汇集段永平关于“新东方”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 24
 tags: ["公司案例","新东方","俞敏洪"]
 ---
 
-## 新东方
+## 第一节 新东方
 
 **网友:昨晚看到浑水做空新东方，俞老师这次有得考验的。**
 

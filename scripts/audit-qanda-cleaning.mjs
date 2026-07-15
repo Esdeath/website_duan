@@ -6,10 +6,18 @@ import { fileURLToPath } from 'node:url'
 
 import { normalizeForDuplicate, parseFrontmatter, visibleTextLength } from './qanda-cleaning-lib.mjs'
 import { validateAuditData } from './qanda-cleaning-audit-lib.mjs'
+import { chineseNumber } from './qanda-cleaning-generate-lib.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const AUDIT_PATH = path.join(ROOT, 'docs', 'content-audits', 'investment-qanda-cleaning-map.json')
 const CONTENT_ROOT = path.join(ROOT, 'content', 'dao')
+const REDIRECTS_PATH = path.join(ROOT, 'public', '_redirects')
+const EXPECTED_VOLUMES = [
+  ['投资原则与方法', 12],
+  ['商业模式与经营', 12],
+  ['公司案例', 29],
+  ['人生与成长', 6],
+]
 
 async function contentFiles() {
   const files = []
@@ -35,6 +43,7 @@ async function main() {
   const indexes = []
   const slugs = new Map()
   const duplicateParagraphs = new Map()
+  const volumeChapters = new Map(EXPECTED_VOLUMES.map(([volume]) => [volume, []]))
 
   for (const file of await contentFiles()) {
     const parsed = parseFrontmatter(await readFile(file, 'utf8'))
@@ -45,15 +54,29 @@ async function main() {
     }
     if (parsed.data.type === 'legacy-index') legacy.push({ file, ...parsed })
     if (parsed.data.type === 'topic-index') indexes.push({ file, ...parsed })
-    if (parsed.data.type !== 'qanda-topic') continue
+    if (parsed.data.type !== 'qanda-chapter') continue
 
     const length = visibleTextLength(parsed.body)
     const article = { file, ...parsed, length }
     active.push(article)
-    if (length > 5600) errors.push(`Generated article exceeds 5600 characters: ${parsed.data.slug} (${length})`)
+    if (/-part-\d+$/.test(parsed.data.slug)) errors.push(`Chapter still uses a part slug: ${parsed.data.slug}`)
+    if (!volumeChapters.has(parsed.data.volume)) errors.push(`Unknown chapter volume: ${parsed.data.slug}`)
+    else volumeChapters.get(parsed.data.volume).push(parsed.data.chapterOrder)
+    if (!Number.isInteger(parsed.data.volumeOrder) || !Number.isInteger(parsed.data.chapterOrder)) {
+      errors.push(`Chapter needs integer volumeOrder/chapterOrder: ${parsed.data.slug}`)
+    }
     if (!Array.isArray(parsed.data.tags) || parsed.data.tags.length < 3 || parsed.data.tags.length > 6) {
       errors.push(`Generated article needs 3-6 tags: ${parsed.data.slug}`)
     }
+
+    const sectionHeadings = [...parsed.body.matchAll(/^## 第(.+?)节\s+(.+)$/gm)]
+    if (!sectionHeadings.length) errors.push(`Chapter has no numbered sections: ${parsed.data.slug}`)
+    sectionHeadings.forEach((heading, index) => {
+      const expected = chineseNumber(index + 1)
+      if (heading[1] !== expected) {
+        errors.push(`Chapter section order is not continuous: ${parsed.data.slug} (${heading[1]} != ${expected})`)
+      }
+    })
 
     for (const paragraph of parsed.body.split(/\n\s*\n+/)) {
       const normalized = normalizeForDuplicate(paragraph)
@@ -70,14 +93,40 @@ async function main() {
 
   if (legacy.length !== 20) errors.push(`Expected 20 legacy guides, found ${legacy.length}`)
   if (indexes.length !== 1 || indexes[0]?.data.slug !== 'wenda-topic-index') errors.push('Expected one wenda-topic-index page')
+  if (active.length !== 59) errors.push(`Expected 59 qanda chapters, found ${active.length}`)
   if (active.length !== audit.generatedArticles) {
     errors.push(`Manifest lists ${audit.generatedArticles} active articles, found ${active.length}`)
   }
+
+  EXPECTED_VOLUMES.forEach(([volume, expectedCount], volumeIndex) => {
+    const chapterOrders = (volumeChapters.get(volume) || []).sort((left, right) => left - right)
+    if (chapterOrders.length !== expectedCount) errors.push(`Expected ${expectedCount} chapters in ${volume}, found ${chapterOrders.length}`)
+    const expectedOrders = Array.from({ length: expectedCount }, (_, index) => index + 1)
+    if (chapterOrders.join(',') !== expectedOrders.join(',')) errors.push(`Non-continuous chapter order in ${volume}`)
+    for (const article of active.filter((item) => item.data.volume === volume)) {
+      if (article.data.volumeOrder !== volumeIndex + 1) errors.push(`Wrong volumeOrder: ${article.data.slug}`)
+    }
+  })
 
   const manifestSlugs = new Set(audit.articles.map((article) => article.slug))
   const fileSlugs = new Set(active.map((article) => article.data.slug))
   for (const slug of manifestSlugs) if (!fileSlugs.has(slug)) errors.push(`Manifest article missing on disk: ${slug}`)
   for (const slug of fileSlugs) if (!manifestSlugs.has(slug)) errors.push(`Generated article missing from manifest: ${slug}`)
+
+  const redirectText = await readFile(REDIRECTS_PATH, 'utf8')
+  const redirects = new Map()
+  for (const line of redirectText.split(/\r?\n/)) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) continue
+    const [from, to, status] = trimmed.split(/\s+/)
+    redirects.set(from, { to, status })
+  }
+  for (const redirect of audit.redirects || []) {
+    const actual = redirects.get(redirect.from)
+    if (!actual || actual.to !== redirect.to || actual.status !== '301') {
+      errors.push(`Missing or invalid part redirect: ${redirect.from} -> ${redirect.to}`)
+    }
+  }
 
   const repeatedParagraphGroups = [...duplicateParagraphs.entries()]
     .map(([text, articleSlugs]) => ({ text, articleSlugs: [...new Set(articleSlugs)] }))
@@ -88,6 +137,8 @@ async function main() {
 
   const result = {
     activeArticles: active.length,
+    volumeCounts: Object.fromEntries(EXPECTED_VOLUMES.map(([volume]) => [volume, volumeChapters.get(volume)?.length || 0])),
+    partRedirects: redirects.size,
     legacyGuides: legacy.length,
     topicIndexes: indexes.length,
     longestArticle: Math.max(...active.map((article) => article.length)),

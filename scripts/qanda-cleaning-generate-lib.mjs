@@ -1,7 +1,7 @@
-import { answerFingerprint, normalizeForDuplicate, splitMarkdownByLength, visibleTextLength } from './qanda-cleaning-lib.mjs'
+import { answerFingerprint, normalizeForDuplicate } from './qanda-cleaning-lib.mjs'
 
 const LEGACY_LINK_TARGETS = new Map([
-  ['duanyongping-shangyeluoji-di3jie-qiyewenhua', 'wenda-business-08-part-1'],
+  ['duanyongping-shangyeluoji-di3jie-qiyewenhua', 'wenda-business-08'],
 ])
 
 export function rewriteLegacyLinks(markdown) {
@@ -90,66 +90,63 @@ export function shortenParagraphs(markdown, limit = 180) {
     .replace(/[ \t]+$/gm, '')
 }
 
-function fragmentBlock(block, limit) {
-  const section = plainHeading(block.headingPath?.at(-1) || '相关问答') || '相关问答'
-  const cleaned = standardizeQaMarkers(rewriteLegacyLinks(block.markdown))
-  const markdown = `## ${section}\n\n${shortenParagraphs(cleaned)}`
-  if (visibleTextLength(markdown) <= limit) return [{ markdown, blockIds: [block.id] }]
-  return splitMarkdownByLength(markdown, limit).map((part) => ({ markdown: part, blockIds: [block.id] }))
+const SECTION_ALIASES = new Map([
+  ['其他', '补充问答'],
+  ['其他话题', '补充问答'],
+  ['其他问答', '补充问答'],
+  ['其他公司', '相关公司比较'],
+  ['其他投资问答', '补充投资问答'],
+])
+
+export function chineseNumber(value) {
+  const digits = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
+  if (value < 10) return digits[value]
+  if (value < 20) return `十${value % 10 ? digits[value % 10] : ''}`
+  if (value < 100) return `${digits[Math.floor(value / 10)]}十${value % 10 ? digits[value % 10] : ''}`
+  const hundreds = Math.floor(value / 100)
+  const remainder = value % 100
+  if (!remainder) return `${digits[hundreds]}百`
+  if (remainder < 10) return `${digits[hundreds]}百零${digits[remainder]}`
+  return `${digits[hundreds]}百${chineseNumber(remainder)}`
 }
 
-function collapseRepeatedHeadings(markdown) {
-  let lastHeading = null
-  return markdown
-    .split('\n')
-    .filter((line) => {
-      const heading = line.match(/^##\s+(.+)$/)
-      if (!heading) return true
-      if (heading[1] === lastHeading) return false
-      lastHeading = heading[1]
-      return true
-    })
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n')
+function sectionTitle(block, topic) {
+  const raw = plainHeading(block.headingPath?.at(-1) || '相关问答') || '相关问答'
+  const withoutDecoration = raw
+    .replace(/^【|】$/g, '')
+    .replace(/^第[零一二三四五六七八九十百千\d]+[章节]\s*/u, '')
+    .replace(/^(?:[零一二三四五六七八九十百千\d]+)[、.．]\s*/u, '')
+    .trim()
+  const normalized = SECTION_ALIASES.get(withoutDecoration) || withoutDecoration
+  if (normalized === '补充问答' || normalized === '相关问答') return `${topic.title}补充问答`
+  return normalized || `${topic.title}补充问答`
 }
 
-export function buildTopicArticles(topic, blocks, { limit = 5600 } = {}) {
-  const fragments = blocks.flatMap((block) => fragmentBlock(block, limit))
-  const parts = []
-  let current = null
-  for (const fragment of fragments) {
-    const candidate = collapseRepeatedHeadings(current
-      ? `${current.body}\n\n${fragment.markdown}`
-      : fragment.markdown)
-    if (current && visibleTextLength(candidate) > limit) {
-      parts.push(current)
-      current = { body: fragment.markdown, blockIds: [...fragment.blockIds] }
-    } else if (current) {
-      current.body = candidate
-      current.blockIds.push(...fragment.blockIds)
-    } else {
-      current = { body: fragment.markdown, blockIds: [...fragment.blockIds] }
-    }
+export function buildTopicChapter(topic, blocks) {
+  const sections = new Map()
+  for (const block of blocks) {
+    const title = sectionTitle(block, topic)
+    const units = sections.get(title) || []
+    const cleaned = shortenParagraphs(standardizeQaMarkers(rewriteLegacyLinks(block.markdown)))
+    units.push(cleaned)
+    sections.set(title, units)
   }
-  if (current) parts.push(current)
 
-  return parts.map((part, index) => {
-    const split = parts.length > 1
-    return {
-      ...topic,
-      slug: split ? `${topic.slug}-part-${index + 1}` : topic.slug,
-      title: split ? `${topic.title}（${index + 1}/${parts.length}）` : topic.title,
-      body: collapseRepeatedHeadings(part.body).trim(),
-      blockIds: [...new Set(part.blockIds)],
-      baseSlug: topic.slug,
-      part: index + 1,
-      partCount: parts.length,
-    }
-  })
+  const body = [...sections.entries()]
+    .map(([title, units], index) => `## 第${chineseNumber(index + 1)}节 ${title}\n\n${units.join('\n\n')}`)
+    .join('\n\n')
+
+  return {
+    ...topic,
+    slug: topic.slug,
+    body: body.trim(),
+    blockIds: [...new Set(blocks.map((block) => block.id))],
+    baseSlug: topic.slug,
+  }
 }
 
 export function renderArticleFile(article) {
-  const description = `汇集段永平关于“${article.title.replace(/（\d+\/\d+）$/, '')}”的公开问答，按主题重排并删除重复内容。`
+  const description = `汇集段永平关于“${article.title}”的公开问答，按主题重排并删除重复内容。`
   const lines = [
     '---',
     `title: ${JSON.stringify(article.title)}`,
@@ -159,7 +156,10 @@ export function renderArticleFile(article) {
     `order: ${article.order}`,
     `seoTitle: ${JSON.stringify(`${article.title}｜段永平投资问答录`)}`,
     `seoDescription: ${JSON.stringify(description)}`,
-    'type: "qanda-topic"',
+    'type: "qanda-chapter"',
+    `volume: ${JSON.stringify(article.volume)}`,
+    `volumeOrder: ${article.volumeOrder}`,
+    `chapterOrder: ${article.chapterOrder}`,
     `tags: ${JSON.stringify(article.tags)}`,
     '---',
     '',

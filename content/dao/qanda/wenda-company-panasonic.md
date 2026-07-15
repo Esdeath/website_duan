@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 281
 seoTitle: "松下｜段永平投资问答录"
 seoDescription: "汇集段永平关于“松下”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 22
 tags: ["公司案例","松下","消费电子"]
 ---
 
-## 松下
+## 第一节 松下
 
 以前就说过想把很久以前(大概是2003年)去**松下**参观的一点点感想写一下，但好像一直就抽不出心情写。
 

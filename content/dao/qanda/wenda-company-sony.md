@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 280
 seoTitle: "索尼｜段永平投资问答录"
 seoDescription: "汇集段永平关于“索尼”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 21
 tags: ["公司案例","索尼","消费电子"]
 ---
 
-## 索尼
+## 第一节 索尼
 
 **网友:2010年5月，索尼公司发布了2008年至2009年财年严重亏损989亿日元的业绩报告……**
 

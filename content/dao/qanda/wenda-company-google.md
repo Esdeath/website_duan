@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 276
 seoTitle: "谷歌｜段永平投资问答录"
 seoDescription: "汇集段永平关于“谷歌”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 17
 tags: ["公司案例","谷歌","科技公司"]
 ---
 
-## 谷歌
+## 第一节 谷歌
 
 网友：大道您好，关于**伯克希尔**建仓**Google**，是**巴菲特**看懂了呢，还是**伯克希尔**接班人的操作呢，建仓**Google**证明在AI龙头并没存在泡沫吗？感谢您的解答。
 

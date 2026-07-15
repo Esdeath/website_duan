@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 272
 seoTitle: "拼多多｜段永平投资问答录"
 seoDescription: "汇集段永平关于“拼多多”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 13
 tags: ["公司案例","拼多多","黄峥"]
 ---
 
-## 拼多多
+## 第一节 拼多多
 
 “拼多多要上市了。很多人都感觉震惊。一个成立不足3年的‘初生儿’，居然就要上市了?而且是以高达300亿美元的估值上市。”(新闻)
 

@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 284
 seoTitle: "完美世界｜段永平投资问答录"
 seoDescription: "汇集段永平关于“完美世界”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 25
 tags: ["公司案例","完美世界","游戏"]
 ---
 
-## 完美世界、巨人网络等
+## 第一节 完美世界、巨人网络等
 
 完美世界
 

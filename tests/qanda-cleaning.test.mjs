@@ -12,9 +12,9 @@ import {
   splitMarkdownByLength,
   visibleTextLength,
 } from '../scripts/qanda-cleaning-lib.mjs'
-import { TOPICS, classifyBlock } from '../scripts/qanda-cleaning-config.mjs'
+import { TOPICS, VOLUMES, classifyBlock } from '../scripts/qanda-cleaning-config.mjs'
 import {
-  buildTopicArticles,
+  buildTopicChapter,
   isNoInformation,
   renderArticleFile,
   rewriteLegacyLinks,
@@ -65,13 +65,23 @@ test('long markdown splits only at heading boundaries and stays within limit', (
   assert.match(parts[2], /## 三/)
 })
 
-test('topic catalogue has exactly 59 unique active article slugs', () => {
+test('topic catalogue defines four continuous volumes and 59 chapters', () => {
   assert.equal(TOPICS.length, 59)
   assert.equal(new Set(TOPICS.map((topic) => topic.slug)).size, 59)
+  assert.deepEqual(VOLUMES.map((volume) => volume.name), [
+    '投资原则与方法',
+    '商业模式与经营',
+    '公司案例',
+    '人生与成长',
+  ])
   assert.deepEqual(
-    [...new Set(TOPICS.map((topic) => topic.group))],
-    ['投资原则', '商业经营', '公司案例', '人生与成长'],
+    VOLUMES.map((volume) => TOPICS.filter((topic) => topic.volume === volume.name).length),
+    [12, 12, 29, 6],
   )
+  for (const volume of VOLUMES) {
+    const topics = TOPICS.filter((topic) => topic.volumeOrder === volume.order)
+    assert.deepEqual(topics.map((topic) => topic.chapterOrder), topics.map((_, index) => index + 1))
+  }
   assert.ok(TOPICS.every((topic) => topic.tags.length >= 3 && topic.tags.length <= 6))
 })
 
@@ -175,29 +185,29 @@ test('only greetings and empty acknowledgements count as no-information', () => 
   assert.equal(isNoInformation({ markdown: '**段永平：** 不做空。' }), false)
 })
 
-test('topic builder splits at complete source blocks and assigns part slugs', () => {
-  const topic = { slug: 'wenda-test', title: '测试主题', order: 200, tags: ['投资原则', '测试', '问答'] }
+test('topic builder emits one unlimited chapter with continuous numbered sections', () => {
+  const topic = {
+    slug: 'wenda-test',
+    title: '测试主题',
+    order: 200,
+    volume: '投资原则与方法',
+    volumeOrder: 1,
+    chapterOrder: 1,
+    tags: ['投资原则', '测试', '问答'],
+  }
   const blocks = [
-    { id: 'a', headingPath: ['原则'], markdown: `网友：问题一？\n\n**段永平：** ${'甲'.repeat(45)}。` },
-    { id: 'b', headingPath: ['案例'], markdown: `网友：问题二？\n\n**段永平：** ${'乙'.repeat(45)}。` },
+    { id: 'a', headingPath: ['原则'], markdown: `网友：问题一？\n\n**段永平：** ${'甲'.repeat(80)}。` },
+    { id: 'b', headingPath: ['原则'], markdown: `网友：问题二？\n\n**段永平：** ${'乙'.repeat(80)}。` },
+    { id: 'c', headingPath: ['案例'], markdown: `网友：问题三？\n\n**段永平：** ${'丙'.repeat(80)}。` },
   ]
-  const articles = buildTopicArticles(topic, blocks, { limit: 80 })
+  const article = buildTopicChapter(topic, blocks)
 
-  assert.equal(articles.length, 2)
-  assert.deepEqual(articles.map((item) => item.slug), ['wenda-test-part-1', 'wenda-test-part-2'])
-  assert.deepEqual(articles.map((item) => item.blockIds), [['a'], ['b']])
-  assert.ok(articles.every((item) => visibleTextLength(item.body) <= 80))
-})
-
-test('topic builder does not repeat the same section heading for adjacent blocks', () => {
-  const topic = { slug: 'wenda-test', title: '测试主题', order: 200, tags: ['投资原则', '测试', '问答'] }
-  const blocks = [
-    { id: 'a', headingPath: ['原则'], markdown: '网友：问题一？\n\n**段永平：** 回答一。' },
-    { id: 'b', headingPath: ['原则'], markdown: '网友：问题二？\n\n**段永平：** 回答二。' },
-  ]
-  const [article] = buildTopicArticles(topic, blocks, { limit: 200 })
-
-  assert.equal((article.body.match(/^## 原则$/gm) || []).length, 1)
+  assert.equal(article.slug, 'wenda-test')
+  assert.deepEqual(article.blockIds, ['a', 'b', 'c'])
+  assert.equal((article.body.match(/^## /gm) || []).length, 2)
+  assert.match(article.body, /^## 第一节 原则$/m)
+  assert.match(article.body, /^## 第二节 案例$/m)
+  assert.ok(visibleTextLength(article.body) > 200)
 })
 
 test('long English prose splits at original sentence boundaries', () => {
@@ -214,7 +224,7 @@ test('paragraph cleanup removes trailing whitespace from source hard breaks', ()
 
 test('generated answers rewrite an unambiguous legacy link to its topic master', () => {
   const source = '[企业文化](/duanyongping-shangyeluoji-di3jie-qiyewenhua)'
-  assert.equal(rewriteLegacyLinks(source), '[企业文化](/wenda-business-08-part-1)')
+  assert.equal(rewriteLegacyLinks(source), '[企业文化](/wenda-business-08)')
 })
 
 test('question blocks receive a missing answer speaker marker without changing the answer', () => {
@@ -233,12 +243,19 @@ test('rendered article has complete Nuxt Content metadata and visible tags', () 
     slug: 'wenda-test',
     title: '测试主题',
     order: 200,
+    volume: '投资原则与方法',
+    volumeOrder: 1,
+    chapterOrder: 1,
     tags: ['投资原则', '测试', '问答'],
-    body: '## 原则\n\n**段永平：** 回答。',
+    body: '## 第一节 原则\n\n**段永平：** 回答。',
   })
 
   assert.match(output, /category: "投资问答录"/)
+  assert.match(output, /type: "qanda-chapter"/)
+  assert.match(output, /volume: "投资原则与方法"/)
+  assert.match(output, /volumeOrder: 1/)
+  assert.match(output, /chapterOrder: 1/)
   assert.match(output, /tags: \["投资原则","测试","问答"\]/)
   assert.match(output, /seoTitle:/)
-  assert.match(output, /## 原则/)
+  assert.match(output, /## 第一节 原则/)
 })

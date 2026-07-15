@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 275
 seoTitle: "英伟达｜段永平投资问答录"
 seoDescription: "汇集段永平关于“英伟达”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 16
 tags: ["公司案例","英伟达","黄仁勋","AI"]
 ---
 
-## 英伟达
+## 第一节 英伟达
 
 **网友:英伟达在AI行业处于上游，感觉很难做出差异。**
 

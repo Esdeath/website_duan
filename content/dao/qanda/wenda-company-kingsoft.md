@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 286
 seoTitle: "金山｜段永平投资问答录"
 seoDescription: "汇集段永平关于“金山”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 27
 tags: ["公司案例","金山","游戏"]
 ---
 
-## 金山文化
+## 第一节 金山文化
 
 **网友:投资游戏公司比较难把握。之前金山的剑侠情缘3，玩家很期待，画面很美，我以为还不错，谁知道现在没多少人玩了。**
 

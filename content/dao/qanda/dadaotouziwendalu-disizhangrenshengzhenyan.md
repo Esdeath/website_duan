@@ -14,13 +14,13 @@ tags: ["投资问答录","旧版导读","主题索引"]
 
 原地址继续保留。正文已去重并迁移到以下主题文章：
 
-- [本分、核心价值观与利润之上的追求](/wenda-business-09-part-4)
-- [网易](/wenda-company-netease-part-4)
-- [做对的事情与把事情做对](/wenda-life-01-part-2)
+- [本分、核心价值观与利润之上的追求](/wenda-business-09)
+- [网易](/wenda-company-netease)
+- [做对的事情与把事情做对](/wenda-life-01)
 - [正直、理性与长期视角](/wenda-life-02)
-- [职业、创业与享受过程](/wenda-life-03-part-1)
-- [家庭、孩子与教育](/wenda-life-04-part-1)
-- [开放学习、公益与社会责任](/wenda-life-05-part-1)
-- [睡眠、减重、Zone 2与日常健康](/wenda-life-06-part-1)
+- [职业、创业与享受过程](/wenda-life-03)
+- [家庭、孩子与教育](/wenda-life-04)
+- [开放学习、公益与社会责任](/wenda-life-05)
+- [睡眠、减重、Zone 2与日常健康](/wenda-life-06)
 
 完整目录见：[投资问答录主题目录](/wenda-topic-index)。

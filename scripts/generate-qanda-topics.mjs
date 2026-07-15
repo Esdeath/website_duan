@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from 'node:child_process'
-import { mkdir, readdir, rm, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -15,59 +15,37 @@ import {
   splitQuestionAnswerBlocks,
   visibleTextLength,
 } from './qanda-cleaning-lib.mjs'
-import { TOPICS, TOPIC_BY_SLUG, classifyBlock } from './qanda-cleaning-config.mjs'
-import { buildTopicArticles, isNoInformation, renderArticleFile } from './qanda-cleaning-generate-lib.mjs'
+import { TOPICS, TOPIC_BY_SLUG, VOLUMES, classifyBlock } from './qanda-cleaning-config.mjs'
+import { buildTopicChapter, chineseNumber, isNoInformation, renderArticleFile } from './qanda-cleaning-generate-lib.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const CONTENT_ROOT = path.join(ROOT, 'content', 'dao')
 const AUDIT_PATH = path.join(ROOT, 'docs', 'content-audits', 'investment-qanda-cleaning-map.json')
+const REDIRECTS_PATH = path.join(ROOT, 'public', '_redirects')
 const WRITE = process.argv.includes('--write')
-const BODY_LIMIT = 5400
 
-const sourcePriority = [
-  'duanyongping-shangyeluoji-qianyan-maiqushoujiiumaishangsi',
-  'dadaotouziwendalu-diyizhangtouzidadao',
-  'duanyongping-touziluoji-di1zhang-touzilinian',
-  'duanyongping-touziluoji-di2jie-touzilijie',
-  'duanyongping-touziluoji-di3zhang-golfhetouzi',
-  'duanyongping-touziluoji-di4zhang-caiwulijie',
-  'duanyongping-touziluoji-di5zhang-guzhiluoji',
-  'duanyongping-touziluoji-di6zhang-touzifangfalun',
-  'dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua',
-  'duanyongping-shangyeluoji-di1jie-weidaqiye',
-  'duanyongping-shangyeluoji-di2jie-shangyemoshi',
-  'duanyongping-shangyeluoji-di3jie-qiyewenhua',
-  'duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin',
-  'duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao',
-  'duanyongping-shangyeluoji-di6jie-shougouheduoyuanhua',
-  'duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan',
-  'dadaotouziwendalu-disanzhanggongsidianping',
-  'duanyongping-touziluoji-di7zhang-anlifenxi',
-  'dadaotouziwendalu-disizhangrenshengzhenyan',
-  'dadaotouziwendalu-diliuzhangduzhegengxin',
-]
-const priorityBySlug = new Map(sourcePriority.map((slug, index) => [slug, index]))
+let priorityBySlug = new Map()
 
 function git(args) {
   return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 })
 }
 
-function originalSourcePaths() {
-  return git(['ls-tree', '-r', '--name-only', 'HEAD', '--', 'content/dao/qanda', 'content/dao/investment-logic', 'content/dao/business-logic'])
+function originalSourcePaths(sourceCommit) {
+  return git(['ls-tree', '-r', '--name-only', sourceCommit, '--', 'content/dao/qanda', 'content/dao/investment-logic', 'content/dao/business-logic'])
     .split(/\r?\n/)
     .filter((file) => file.endsWith('.md'))
 }
 
-function readHeadFile(file) {
-  return git(['show', `HEAD:${file}`])
+function readSourceFile(sourceCommit, file) {
+  return git(['show', `${sourceCommit}:${file}`])
 }
 
-function loadSources() {
+function loadSources(sourceCommit, sourceSlugs) {
   const sources = []
-  for (const file of originalSourcePaths()) {
-    const raw = readHeadFile(file)
+  for (const file of originalSourcePaths(sourceCommit)) {
+    const raw = readSourceFile(sourceCommit, file)
     const parsed = parseFrontmatter(raw)
-    if (parsed.data.category !== '投资问答录') continue
+    if (parsed.data.category !== '投资问答录' || !sourceSlugs.has(parsed.data.slug)) continue
     sources.push({ file, raw, ...parsed })
   }
   sources.sort((left, right) => {
@@ -84,22 +62,6 @@ function buildBlocks(sources) {
     .map((block) => ({ ...block, sourceFile: source.file, sourceTitle: source.data.title })))
 }
 
-function assignOrders(articles) {
-  const byBase = new Map()
-  for (const article of articles) {
-    const list = byBase.get(article.baseSlug) || []
-    list.push(article)
-    byBase.set(article.baseSlug, list)
-  }
-  for (const list of byBase.values()) {
-    list.sort((left, right) => left.part - right.part)
-    list.forEach((article, index) => {
-      article.order = list.length === 1 ? article.order : Number((article.order + (index + 1) / 100).toFixed(2))
-    })
-  }
-  return articles
-}
-
 function buildArticles(blocks) {
   const grouped = new Map(TOPICS.map((topic) => [topic.slug, []]))
   for (const block of blocks) {
@@ -112,9 +74,9 @@ function buildArticles(blocks) {
   for (const topic of TOPICS) {
     const topicBlocks = grouped.get(topic.slug)
     if (!topicBlocks.length) throw new Error(`Topic has no content: ${topic.slug}`)
-    articles.push(...buildTopicArticles(topic, topicBlocks, { limit: BODY_LIMIT }))
+    articles.push(buildTopicChapter(topic, topicBlocks))
   }
-  return assignOrders(articles)
+  return articles
 }
 
 function nearDuplicateCanonical(left, right) {
@@ -171,15 +133,27 @@ function reviewNearDuplicates(blocks) {
   }
 }
 
+function headingId(value) {
+  return value
+    .toLocaleLowerCase('zh-CN')
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .trim()
+    .replace(/\s+/g, '-')
+}
+
 function renderIndexFile(articles) {
-  const grouped = new Map()
-  for (const topic of TOPICS) {
-    if (!grouped.has(topic.group)) grouped.set(topic.group, [])
-    grouped.get(topic.group).push(...articles.filter((article) => article.baseSlug === topic.slug))
-  }
-  const body = [...grouped.entries()].map(([group, items]) => {
-    const links = items.map((item) => `- [${item.title}](/${item.slug})`).join('\n')
-    return `## ${group}\n\n${links}`
+  const body = VOLUMES.map((volume) => {
+    const chapters = articles
+      .filter((article) => article.volumeOrder === volume.order)
+      .sort((left, right) => left.chapterOrder - right.chapterOrder)
+      .map((article) => {
+        const sections = [...article.body.matchAll(/^##\s+(.+)$/gm)]
+          .map((match) => `- [${match[1]}](/${article.slug}#${headingId(match[1])})`)
+          .join('\n')
+        return `### 第${chineseNumber(article.chapterOrder)}章 [${article.title}](/${article.slug})\n\n${sections}`
+      })
+      .join('\n\n')
+    return `## 第${chineseNumber(volume.order)}卷 ${volume.name}\n\n${chapters}`
   }).join('\n\n')
   const description = '按投资原则、商业经营、公司案例、人生与成长整理的段永平投资问答主题目录。'
   return [
@@ -201,20 +175,10 @@ function renderIndexFile(articles) {
 }
 
 function renderLegacyFile(source, targetSlugs) {
-  const firstTargetByBase = new Map()
-  for (const slug of targetSlugs) {
-    const base = slug.replace(/-part-\d+$/, '')
-    const current = firstTargetByBase.get(base)
-    const part = Number(slug.match(/-part-(\d+)$/)?.[1] || 1)
-    const currentPart = Number(current?.match(/-part-(\d+)$/)?.[1] || 1)
-    if (!current || part < currentPart) firstTargetByBase.set(base, slug)
-  }
+  const targets = new Set(targetSlugs)
   const links = TOPICS
-    .filter((topic) => firstTargetByBase.has(topic.slug))
-    .map((topic) => {
-      const slug = firstTargetByBase.get(topic.slug)
-      return `- [${topic.title}](/${slug})`
-    })
+    .filter((topic) => targets.has(topic.slug))
+    .map((topic) => `- [${topic.title}](/${topic.slug})`)
     .join('\n')
   const description = `${source.data.title}已按主题拆分，本页保留旧地址并提供新文章入口。`
   return [
@@ -252,8 +216,53 @@ async function removeGeneratedFiles() {
   }
 }
 
+async function collectPartRedirects() {
+  const redirects = []
+  for (const directory of ['qanda', 'investment-logic', 'business-logic']) {
+    const dir = path.join(CONTENT_ROOT, directory)
+    for (const name of await readdir(dir)) {
+      const match = name.match(/^(wenda-(?:invest|business|company|life)-.+)-part-(\d+)\.md$/)
+      if (!match) continue
+      redirects.push({ from: `/${match[1]}-part-${match[2]}`, to: `/${match[1]}` })
+    }
+  }
+  return redirects.sort((left, right) => left.from.localeCompare(right.from, 'en', { numeric: true }))
+}
+
+async function writePartRedirects(redirects) {
+  let existing = ''
+  try {
+    existing = await readFile(REDIRECTS_PATH, 'utf8')
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error
+  }
+  const start = '# BEGIN GENERATED QANDA CHAPTER REDIRECTS'
+  const end = '# END GENERATED QANDA CHAPTER REDIRECTS'
+  const block = [start, ...redirects.map((item) => `${item.from} ${item.to} 301`), end].join('\n')
+  const pattern = new RegExp(`${start}[\\s\\S]*?${end}\\n?`, 'g')
+  const withoutGenerated = existing.replace(pattern, '').trim()
+  const output = withoutGenerated ? `${withoutGenerated}\n\n${block}\n` : `${block}\n`
+  await writeFile(REDIRECTS_PATH, output, 'utf8')
+}
+
+async function pinnedSourceManifest() {
+  const existingAudit = JSON.parse(await readFile(AUDIT_PATH, 'utf8'))
+  if (!/^[0-9a-f]{40}$/.test(existingAudit.sourceCommit || '')) {
+    throw new Error('Existing audit does not contain a valid pinned sourceCommit')
+  }
+  if (!Array.isArray(existingAudit.sourceArticles) || existingAudit.sourceArticles.length !== 20) {
+    throw new Error('Existing audit does not contain the expected 20 sourceArticles')
+  }
+  return {
+    sourceCommit: existingAudit.sourceCommit,
+    sourceArticles: existingAudit.sourceArticles,
+  }
+}
+
 async function main() {
-  const sources = loadSources()
+  const { sourceCommit, sourceArticles } = await pinnedSourceManifest()
+  priorityBySlug = new Map(sourceArticles.map((source, index) => [source.slug, index]))
+  const sources = loadSources(sourceCommit, new Set(sourceArticles.map((source) => source.slug)))
   const allBlocks = buildBlocks(sources)
   const noInformation = allBlocks.filter(isNoInformation)
   const noInformationIds = new Set(noInformation.map((block) => block.id))
@@ -262,6 +271,7 @@ async function main() {
   const dedupAudit = new Map(deduplicated.audit.map((item) => [item.id, item]))
   const nearReview = reviewNearDuplicates(deduplicated.kept)
   const articles = buildArticles(nearReview.kept)
+  const redirects = await collectPartRedirects()
 
   const blockTargets = new Map()
   for (const article of articles) {
@@ -317,11 +327,11 @@ async function main() {
 
   const audit = {
     version: 1,
-    sourceCommit: git(['rev-parse', 'HEAD']).trim(),
+    sourceCommit,
     sourceArticles: sources.map((source) => ({ file: source.file, slug: source.data.slug, title: source.data.title })),
     baseTopics: TOPICS.length,
     generatedArticles: articles.length,
-    bodyLimit: BODY_LIMIT,
+    bodyLimit: null,
     counts: {
       sourceBlocks: allBlocks.length,
       keptBlocks: records.filter((item) => item.status === 'kept').length,
@@ -334,11 +344,15 @@ async function main() {
       baseSlug: article.baseSlug,
       title: article.title,
       group: article.group,
+      volume: article.volume,
+      volumeOrder: article.volumeOrder,
+      chapterOrder: article.chapterOrder,
       order: article.order,
       tags: article.tags,
       visibleLength: visibleTextLength(article.body),
       blockIds: article.blockIds,
     })),
+    redirects,
     nearDuplicateCandidates,
     records,
   }
@@ -365,6 +379,7 @@ async function main() {
     await writeFile(target, renderArticleFile(article), 'utf8')
   }
   await writeFile(path.join(CONTENT_ROOT, 'qanda', 'wenda-topic-index.md'), renderIndexFile(articles), 'utf8')
+  await writePartRedirects(redirects)
 
   const recordBySource = new Map()
   for (const record of records) {
@@ -379,7 +394,7 @@ async function main() {
 
   await mkdir(path.dirname(AUDIT_PATH), { recursive: true })
   await writeFile(AUDIT_PATH, `${JSON.stringify(audit, null, 2)}\n`, 'utf8')
-  console.log(`Wrote ${articles.length} topic articles, 1 topic index, 20 legacy guides and ${path.relative(ROOT, AUDIT_PATH)}.`)
+  console.log(`Wrote ${articles.length} chapters, 1 topic index, 20 legacy guides, ${redirects.length} redirects and ${path.relative(ROOT, AUDIT_PATH)}.`)
 }
 
 main().catch((error) => {

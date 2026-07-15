@@ -14,13 +14,13 @@ tags: ["投资问答录","旧版导读","主题索引"]
 
 原地址继续保留。正文已去重并迁移到以下主题文章：
 
-- [品牌的本质](/wenda-business-06-part-1)
-- [营销、广告、渠道与出海](/wenda-business-07-part-2)
-- [企业文化](/wenda-business-08-part-21)
-- [本分、核心价值观与利润之上的追求](/wenda-business-09-part-6)
-- [创始人、CEO、团队与激励](/wenda-business-10-part-18)
-- [收购与多元化](/wenda-business-12-part-2)
-- [贵州茅台：治理、渠道与i茅台](/wenda-company-maotai-02-part-2)
-- [贵州茅台：估值与投资判断](/wenda-company-maotai-03-part-4)
+- [品牌的本质](/wenda-business-06)
+- [营销、广告、渠道与出海](/wenda-business-07)
+- [企业文化](/wenda-business-08)
+- [本分、核心价值观与利润之上的追求](/wenda-business-09)
+- [创始人、CEO、团队与激励](/wenda-business-10)
+- [收购与多元化](/wenda-business-12)
+- [贵州茅台：治理、渠道与i茅台](/wenda-company-maotai-02)
+- [贵州茅台：估值与投资判断](/wenda-company-maotai-03)
 
 完整目录见：[投资问答录主题目录](/wenda-topic-index)。

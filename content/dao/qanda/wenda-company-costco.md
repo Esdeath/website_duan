@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 273
 seoTitle: "Costco｜段永平投资问答录"
 seoDescription: "汇集段永平关于“Costco”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 14
 tags: ["公司案例","Costco","零售"]
 ---
 
-## 【Costco、拼多多】
+## 第一节 Costco、拼多多
 
 网友：拼多多的报表令人震惊，我没见过这么干净的报表，总资产有5300亿，固定资产只有8亿，办公楼是租的，办公桌也是租的，服务器也是租的……员工电脑应该是自有的吧!经营性应收预付100亿左右,一个20亿左右LP的投资,其他都基本可以算是现金……
 

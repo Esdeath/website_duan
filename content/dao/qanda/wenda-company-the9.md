@@ -6,11 +6,14 @@ category: "投资问答录"
 order: 288
 seoTitle: "第九城市｜段永平投资问答录"
 seoDescription: "汇集段永平关于“第九城市”的公开问答，按主题重排并删除重复内容。"
-type: "qanda-topic"
+type: "qanda-chapter"
+volume: "公司案例"
+volumeOrder: 3
+chapterOrder: 29
 tags: ["公司案例","第九城市","游戏"]
 ---
 
-## 第九城市
+## 第一节 第九城市
 
 **网友:您怎么看九城现在现金及等价物超过市值?还有你怎么看朱骏本人?九城的[企业文化](/qiyewenhua)怎么样?**
 

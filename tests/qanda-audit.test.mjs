@@ -8,7 +8,15 @@ test('audit data accepts complete mappings and reviewed near duplicates', () => 
     sourceArticles: Array.from({ length: 20 }, (_, index) => ({ slug: `source-${index}` })),
     baseTopics: 59,
     generatedArticles: 1,
-    articles: [{ slug: 'article', visibleLength: 5000, tags: ['投资原则', '价值投资', '问答'] }],
+    bodyLimit: null,
+    articles: [{
+      slug: 'article',
+      visibleLength: 100000,
+      volumeOrder: 1,
+      chapterOrder: 1,
+      tags: ['投资原则', '价值投资', '问答'],
+    }],
+    redirects: [{ from: '/article-part-1', to: '/article' }],
     records: [
       { id: 'a', status: 'kept', targetSlugs: ['article'] },
       { id: 'b', status: 'duplicate', duplicateOf: 'a', targetSlugs: ['article'] },
@@ -20,7 +28,7 @@ test('audit data accepts complete mappings and reviewed near duplicates', () => 
   assert.deepEqual(errors, [])
 })
 
-test('audit data reports length, tag, target and unresolved review failures', () => {
+test('audit data reports metadata, tag, target and unresolved review failures', () => {
   const errors = validateAuditData({
     sourceArticles: [],
     baseTopics: 1,
@@ -32,7 +40,7 @@ test('audit data reports length, tag, target and unresolved review failures', ()
 
   assert.ok(errors.some((error) => error.includes('20 source articles')))
   assert.ok(errors.some((error) => error.includes('59 base topics')))
-  assert.ok(errors.some((error) => error.includes('length')))
+  assert.ok(errors.some((error) => error.includes('volume/chapter')))
   assert.ok(errors.some((error) => error.includes('tags')))
   assert.ok(errors.some((error) => error.includes('no target')))
   assert.ok(errors.some((error) => error.includes('unresolved')))

@@ -1,11 +1,27 @@
-const topic = (group, directory, order, slug, title, tags) => ({
-  group,
-  directory,
-  order,
-  slug,
-  title,
-  tags: [group, ...tags],
-})
+export const VOLUMES = [
+  { name: '投资原则与方法', order: 1, group: '投资原则' },
+  { name: '商业模式与经营', order: 2, group: '商业经营' },
+  { name: '公司案例', order: 3, group: '公司案例' },
+  { name: '人生与成长', order: 4, group: '人生与成长' },
+]
+
+const chapterCounters = new Map()
+const topic = (group, directory, order, slug, title, tags) => {
+  const volume = VOLUMES.find((item) => item.group === group)
+  const chapterOrder = (chapterCounters.get(group) || 0) + 1
+  chapterCounters.set(group, chapterOrder)
+  return {
+    group,
+    volume: volume.name,
+    volumeOrder: volume.order,
+    chapterOrder,
+    directory,
+    order,
+    slug,
+    title,
+    tags: [group, ...tags],
+  }
+}
 
 export const TOPICS = [
   topic('投资原则', 'investment-logic', 200, 'wenda-invest-01', '买股票就是买公司与价值投资', ['买股票就是买公司', '价值投资']),
