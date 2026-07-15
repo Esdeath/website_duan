@@ -7,6 +7,9 @@ type Article = {
   type?: string
   description?: string
   body?: unknown
+  volume?: string
+  volumeOrder?: number
+  chapterOrder?: number
 }
 
 const props = defineProps<{
@@ -36,6 +39,27 @@ const articleTypeLabels: Record<string, string> = {
 const articleTypeOrder = ['index', 'company', 'person', 'topic']
 
 function getSubgroups(category: string, items: Article[]): ArticleSubgroup[] {
+  if (category === '投资问答录') {
+    const index = items.filter((item) => item.type === 'topic-index')
+    const volumes = new Map<string, Article[]>()
+    for (const item of items.filter((article) => article.type === 'qanda-chapter')) {
+      const label = item.volume || '其他'
+      const list = volumes.get(label) || []
+      list.push(item)
+      volumes.set(label, list)
+    }
+    const volumeGroups = [...volumes.entries()]
+      .sort((left, right) => (left[1][0]?.volumeOrder || 999) - (right[1][0]?.volumeOrder || 999))
+      .map(([label, volumeItems]) => ({
+        label,
+        items: volumeItems.sort((left, right) => (left.chapterOrder || 999) - (right.chapterOrder || 999)),
+      }))
+    return [
+      ...(index.length ? [{ label: '主题总目录', items: index }] : []),
+      ...volumeGroups,
+    ]
+  }
+
   if (category !== '公司与人物') {
     return [{ label: '', items }]
   }
@@ -76,17 +100,34 @@ const groups = computed(() => {
       .filter((cat) => map.has(cat))
       .map((cat) => {
         const items = map.get(cat)!
-        return { category: cat, items, count: items.length, subgroups: getSubgroups(cat, items) }
+        return { category: cat, items, count: groupCount(cat, items), subgroups: getSubgroups(cat, items) }
       })
   }
 
   return Array.from(map.entries()).map(([cat, items]) => ({
     category: cat,
     items,
-    count: items.length,
+    count: groupCount(cat, items),
     subgroups: getSubgroups(cat, items)
   }))
 })
+
+function groupCount(category: string, items: Article[]) {
+  if (category === '投资问答录') return items.filter((item) => item.type === 'qanda-chapter').length
+  return items.length
+}
+
+function articleLabel(article: Article) {
+  if (article.type !== 'qanda-chapter' || !article.chapterOrder) return article.title
+  return `第${chineseNumber(article.chapterOrder)}章 ${article.title}`
+}
+
+function chineseNumber(value: number) {
+  const digits = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
+  if (value < 10) return digits[value]
+  if (value < 20) return `十${value % 10 ? digits[value % 10] : ''}`
+  return `${digits[Math.floor(value / 10)]}十${value % 10 ? digits[value % 10] : ''}`
+}
 
 const searchQuery = ref('')
 const searchTerm = computed(() => searchQuery.value.trim().toLocaleLowerCase('zh-CN'))
@@ -258,18 +299,38 @@ watch(() => props.currentSlug, () => {
 
         <div class="article-list">
           <div v-for="subgroup in group.subgroups" :key="subgroup.label || group.category" class="article-subgroup">
-            <div v-if="subgroup.label" class="article-subgroup-label">{{ subgroup.label }}</div>
-            <nav class="article-subgroup-links" :aria-label="subgroup.label || group.category">
-              <NuxtLink
-                v-for="article in subgroup.items"
-                :key="article.slug"
-                :ref="article.slug === currentSlug ? (el) => { activeRef = el as any } : undefined"
-                :to="`/${article.slug}`"
-                :class="{ active: article.slug === currentSlug }"
-              >
-                {{ article.title }}
-              </NuxtLink>
-            </nav>
+            <details
+              v-if="group.category === '投资问答录' && subgroup.items.some((article) => article.type === 'qanda-chapter')"
+              class="article-volume"
+              :open="searchTerm ? true : subgroup.items.some((article) => article.slug === currentSlug)"
+            >
+              <summary class="article-volume-summary">{{ subgroup.label }}</summary>
+              <nav class="article-subgroup-links" :aria-label="subgroup.label">
+                <NuxtLink
+                  v-for="article in subgroup.items"
+                  :key="article.slug"
+                  :ref="article.slug === currentSlug ? (el) => { activeRef = el as any } : undefined"
+                  :to="`/${article.slug}`"
+                  :class="{ active: article.slug === currentSlug }"
+                >
+                  {{ articleLabel(article) }}
+                </NuxtLink>
+              </nav>
+            </details>
+            <template v-else>
+              <div v-if="subgroup.label" class="article-subgroup-label">{{ subgroup.label }}</div>
+              <nav class="article-subgroup-links" :aria-label="subgroup.label || group.category">
+                <NuxtLink
+                  v-for="article in subgroup.items"
+                  :key="article.slug"
+                  :ref="article.slug === currentSlug ? (el) => { activeRef = el as any } : undefined"
+                  :to="`/${article.slug}`"
+                  :class="{ active: article.slug === currentSlug }"
+                >
+                  {{ articleLabel(article) }}
+                </NuxtLink>
+              </nav>
+            </template>
           </div>
         </div>
       </details>
@@ -546,6 +607,32 @@ watch(() => props.currentSlug, () => {
   font-weight: 700;
   color: color-mix(in srgb, var(--sb-muted) 72%, transparent);
   letter-spacing: 0.12em;
+}
+
+.article-volume-summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 8px 10px 4px;
+  font-size: 10px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--sb-muted) 80%, transparent);
+  letter-spacing: 0.08em;
+}
+
+.article-volume-summary::-webkit-details-marker {
+  display: none;
+}
+
+.article-volume-summary::before {
+  content: '›';
+  display: inline-block;
+  margin-right: 5px;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.article-volume[open] > .article-volume-summary::before {
+  transform: rotate(90deg);
 }
 
 .article-subgroup-links {

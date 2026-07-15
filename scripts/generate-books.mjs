@@ -26,6 +26,13 @@ const SECTIONS = [
   { key: "business-logic", title: "商业逻辑", dir: "business-logic" },
 ];
 
+const QANDA_VOLUMES = [
+  { name: "投资原则与方法", title: "第一卷 投资原则与方法", order: 1 },
+  { name: "商业模式与经营", title: "第二卷 商业模式与经营", order: 2 },
+  { name: "公司案例", title: "第三卷 公司案例", order: 3 },
+  { name: "人生与成长", title: "第四卷 人生与成长", order: 4 },
+];
+
 const CSS = `
 :root {
   --fg: #2c2c2c;
@@ -295,6 +302,10 @@ async function loadSectionArticles(section) {
       file,
       slug: data.slug,
       title: data.title,
+      type: data.type || "",
+      volume: data.volume || "",
+      volumeOrder: typeof data.volumeOrder === "number" ? data.volumeOrder : 0,
+      chapterOrder: typeof data.chapterOrder === "number" ? data.chapterOrder : 0,
       category: data.category || "",
       order: typeof data.order === "number" ? data.order : 0,
       raw: content,
@@ -349,7 +360,19 @@ function rewriteInternalLinks(rawMd, validSlugs, stats) {
 }
 
 function renderArticleHtml(article) {
-  return `<section id="${article.slug}" class="article"><h1>${escapeHtml(article.title)}</h1>${md.render(article.raw)}</section>`;
+  return `<section id="${article.slug}" class="article"><h1>${escapeHtml(articleDisplayTitle(article))}</h1>${md.render(article.raw)}</section>`;
+}
+
+function chineseNumber(value) {
+  const digits = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+  if (value < 10) return digits[value];
+  if (value < 20) return `十${value % 10 ? digits[value % 10] : ""}`;
+  return `${digits[Math.floor(value / 10)]}十${value % 10 ? digits[value % 10] : ""}`;
+}
+
+function articleDisplayTitle(article) {
+  if (article.type !== "qanda-chapter" || !article.chapterOrder) return article.title;
+  return `第${chineseNumber(article.chapterOrder)}章 ${article.title}`;
 }
 
 function escapeHtml(s) {
@@ -361,13 +384,30 @@ function escapeHtml(s) {
 }
 
 async function loadAll() {
-  const sections = [];
+  const loadedSections = [];
   const allSlugs = new Set();
   for (const sec of SECTIONS) {
     const raw = await loadSectionArticles(sec);
     for (const a of raw) allSlugs.add(a.slug);
     const ordered = organizeSection(sec, raw);
-    sections.push({ ...sec, articles: ordered });
+    loadedSections.push({ ...sec, articles: ordered });
+  }
+  const chapters = loadedSections
+    .flatMap((section) => section.articles)
+    .filter((article) => article.type === "qanda-chapter");
+  const volumeSections = QANDA_VOLUMES.map((volume) => ({
+    key: `qanda-volume-${volume.order}`,
+    title: volume.title,
+    volumeOrder: volume.order,
+    articles: chapters
+      .filter((article) => article.volumeOrder === volume.order)
+      .sort((left, right) => left.chapterOrder - right.chapterOrder),
+  }));
+  const sections = [];
+  for (const section of loadedSections) {
+    if (section.key === "qanda") sections.push(...volumeSections);
+    const remaining = section.articles.filter((article) => article.type !== "qanda-chapter");
+    if (remaining.length) sections.push({ ...section, articles: remaining });
   }
   return { sections, allSlugs };
 }
@@ -385,7 +425,7 @@ async function generateEpub(sections, validSlugs) {
     const articlesHtml = sec.articles
       .map((a) => {
         const rewritten = rewriteInternalLinks(a.raw, validSlugs, linkStats);
-        return `<section id="${a.slug}" class="article"><h2>${escapeHtml(a.title)}</h2>${md.render(rewritten)}</section>`;
+        return `<section id="${a.slug}" class="article"><h2>${escapeHtml(articleDisplayTitle(a))}</h2>${md.render(rewritten)}</section>`;
       })
       .join("\n");
 
@@ -441,7 +481,7 @@ async function generatePdf(sections, validSlugs) {
   const tocSections = sections
     .map((sec) => {
       const items = sec.articles
-        .map((a) => `<li><a href="#${a.slug}">${escapeHtml(a.title)}</a></li>`)
+        .map((a) => `<li><a href="#${a.slug}">${escapeHtml(articleDisplayTitle(a))}</a></li>`)
         .join("");
       return `<div class="toc-section"><div class="toc-section-title">${escapeHtml(sec.title)}</div><ul>${items}</ul></div>`;
     })
@@ -451,12 +491,14 @@ async function generatePdf(sections, validSlugs) {
 
   const bodyHtml = sections
     .map((sec, idx) => {
-      const dividerLabel = `第 ${["一", "二", "三", "四", "五"][idx] || idx + 1} 篇`;
+      const dividerLabel = sec.volumeOrder
+        ? `第 ${chineseNumber(sec.volumeOrder)} 卷`
+        : `第 ${["一", "二", "三", "四", "五"][idx] || idx + 1} 篇`;
       const divider = `<div class="section-divider"><div class="label">${dividerLabel}</div><div class="title">${escapeHtml(sec.title)}</div><div class="ornament"></div></div>`;
       const articles = sec.articles
         .map((a) => {
           const rewritten = rewriteInternalLinks(a.raw, validSlugs, linkStats);
-          return `<section id="${a.slug}" class="article"><h1>${escapeHtml(a.title)}</h1>${md.render(rewritten)}</section>`;
+          return `<section id="${a.slug}" class="article"><h1>${escapeHtml(articleDisplayTitle(a))}</h1>${md.render(rewritten)}</section>`;
         })
         .join("\n");
       return divider + articles;

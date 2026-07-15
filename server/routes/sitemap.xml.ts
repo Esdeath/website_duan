@@ -16,19 +16,18 @@ export default defineEventHandler(async (event) => {
     .all()
 
   const staticRoutes = [{ path: '/', type: 'home' }]
-  const daoRoutes = dao.map((d) => ({ path: `/${d.slug}`, type: d.type }))
+  const daoRoutes = dao
+    .filter((d) => d.type !== 'legacy-index')
+    .map((d) => ({ path: `/${d.slug}`, type: d.type }))
   const routes = [...staticRoutes, ...daoRoutes]
 
   const urls = routes
     .map((route) => {
-      const legacy = route.type === 'legacy-index'
-      const changefreq = legacy ? 'yearly' : 'weekly'
-      const priority = legacy ? '0.2' : '0.8'
       return [
         '  <url>',
         `    <loc>${escapeXml(`${siteUrl}${route.path}`)}</loc>`,
-        `    <changefreq>${changefreq}</changefreq>`,
-        `    <priority>${priority}</priority>`,
+        '    <changefreq>weekly</changefreq>',
+        '    <priority>0.8</priority>',
         '  </url>'
       ].join('\n')
     })

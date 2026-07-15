@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
   const grouped = new Map<string, DaoItem[]>()
   for (const item of items) {
-    if (item.type !== 'legacy-index') {
+    if (item.type !== 'legacy-index' && item.type !== 'topic-index') {
       const key = item.category || '其他'
       const list = grouped.get(key) || []
       list.push(item)

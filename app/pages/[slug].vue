@@ -13,8 +13,40 @@ if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: '文章不存在' })
 }
 
+const pageData = computed(() => page.value as any)
+const { data: qandaChapters } = await useAsyncData('qanda-chapter-navigation', () =>
+  queryCollection('dao')
+    .select('title', 'slug', 'type', 'volume', 'volumeOrder', 'chapterOrder', 'order')
+    .where('type', '=', 'qanda-chapter')
+    .order('order', 'ASC')
+    .all()
+)
+
+function chineseNumber(value: number) {
+  const digits = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
+  if (value < 10) return digits[value]
+  if (value < 20) return `十${value % 10 ? digits[value % 10] : ''}`
+  return `${digits[Math.floor(value / 10)]}十${value % 10 ? digits[value % 10] : ''}`
+}
+
+const isChapter = computed(() => pageData.value?.type === 'qanda-chapter')
 const tocLinks = computed(() => (page.value as any)?.body?.toc?.links || [])
-const eyebrow = computed(() => (page.value as any)?.category || '')
+const eyebrow = computed(() => isChapter.value
+  ? `第${chineseNumber(pageData.value.volumeOrder)}卷 ${pageData.value.volume}`
+  : (pageData.value?.category || ''))
+const displayTitle = computed(() => isChapter.value
+  ? `第${chineseNumber(pageData.value.chapterOrder)}章 ${pageData.value.title}`
+  : pageData.value?.title)
+const chapterNavigation = computed(() => {
+  if (!isChapter.value) return null
+  const chapters = (qandaChapters.value as any[]) || []
+  const currentIndex = chapters.findIndex((article) => article.slug === pageData.value.slug)
+  if (currentIndex < 0) return null
+  return {
+    previous: chapters[currentIndex - 1] || null,
+    next: chapters[currentIndex + 1] || null,
+  }
+})
 
 const activeId = ref('')
 
@@ -42,7 +74,6 @@ onMounted(() => {
 const config = useRuntimeConfig()
 const siteUrl = String(config.public.siteUrl || '').replace(/\/$/, '')
 
-const pageData = computed(() => page.value as any)
 const articleUrl = computed(() => `${siteUrl}/${pageData.value?.slug}`)
 const pageTags = computed<string[]>(() => Array.isArray(pageData.value?.tags) ? pageData.value.tags : [])
 const isQanda = computed(() => {
@@ -162,7 +193,7 @@ useHead({
   <div v-if="page" class="article-page">
     <header class="article-header">
       <p class="eyebrow">{{ eyebrow }}</p>
-      <h1>{{ (page as any).title }}</h1>
+      <h1>{{ displayTitle }}</h1>
       <p class="desc">{{ (page as any).description }}</p>
       <div v-if="pageTags.length" class="article-tags" aria-label="文章标签">
         <span v-for="tag in pageTags" :key="tag">{{ tag }}</span>
@@ -181,6 +212,19 @@ useHead({
             <span v-if="sourceInfo.sourceDate" class="source-date">{{ sourceInfo.sourceDate }}</span>
           </p>
         </footer>
+        <nav v-if="chapterNavigation" class="chapter-navigation" aria-label="章节导航">
+          <NuxtLink v-if="chapterNavigation.previous" :to="`/${chapterNavigation.previous.slug}`" class="chapter-navigation-link previous">
+            <span>上一章</span>
+            <strong>第{{ chineseNumber(chapterNavigation.previous.chapterOrder) }}章 {{ chapterNavigation.previous.title }}</strong>
+          </NuxtLink>
+          <span v-else class="chapter-navigation-spacer" />
+          <NuxtLink to="/wenda-topic-index" class="chapter-index-link">返回本卷目录</NuxtLink>
+          <NuxtLink v-if="chapterNavigation.next" :to="`/${chapterNavigation.next.slug}`" class="chapter-navigation-link next">
+            <span>下一章</span>
+            <strong>第{{ chineseNumber(chapterNavigation.next.chapterOrder) }}章 {{ chapterNavigation.next.title }}</strong>
+          </NuxtLink>
+          <span v-else class="chapter-navigation-spacer" />
+        </nav>
         <ArticleComments :key="slug" :path="'/' + slug" />
       </article>
 
@@ -300,6 +344,49 @@ useHead({
   font-variant-numeric: tabular-nums;
 }
 
+.chapter-navigation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.chapter-navigation-link,
+.chapter-index-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.chapter-navigation-link span,
+.chapter-index-link {
+  color: var(--subtle);
+  font-size: 12px;
+}
+
+.chapter-navigation-link strong {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.chapter-navigation-link:hover,
+.chapter-index-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chapter-index-link {
+  align-items: center;
+  justify-content: center;
+}
+
 /* TOC — sticky in the right grid column */
 .article-toc {
   display: none;
@@ -349,6 +436,15 @@ useHead({
 }
 
 @media (min-width: 721px) {
+  .chapter-navigation {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .chapter-navigation-link.next {
+    text-align: right;
+  }
+
   .article-header {
     margin: 34px 0 36px;
     padding-bottom: 26px;

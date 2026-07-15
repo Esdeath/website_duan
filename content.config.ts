@@ -14,6 +14,9 @@ const contentSchema = z.object({
   sourceDate: z.string().optional(),
   type: z.string().optional(),
   tags: z.array(z.string()).optional(),
+  volume: z.string().optional(),
+  volumeOrder: z.number().optional(),
+  chapterOrder: z.number().optional(),
 });
 
 export default defineContentConfig({

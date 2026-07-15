@@ -58,7 +58,7 @@ const { data: daoArticles } = await useAsyncData('library-dao', () =>
 
 type Article = { title: string; slug: string; category: string; order: number; type?: string }
 
-type Group = { category: string; items: Article[]; count: number; icon: string; desc: string }
+type Group = { category: string; items: Article[]; count: number; icon: string; desc: string; href: string }
 
 const groups = computed<Group[]>(() => {
   const articles = (daoArticles.value as Article[]) || []
@@ -71,13 +71,18 @@ const groups = computed<Group[]>(() => {
 
   return daoCategoryOrder
     .filter((cat) => map.has(cat))
-    .map((cat) => ({
-      category: cat,
-      items: map.get(cat)!,
-      count: map.get(cat)!.length,
-      icon: categoryMeta[cat]?.icon || '文',
-      desc: categoryMeta[cat]?.desc || '',
-    }))
+    .map((cat) => {
+      const items = map.get(cat)!
+      const isQanda = cat === '投资问答录'
+      return {
+        category: cat,
+        items,
+        count: isQanda ? items.filter((article) => article.type === 'qanda-chapter').length : items.length,
+        icon: categoryMeta[cat]?.icon || '文',
+        desc: categoryMeta[cat]?.desc || '',
+        href: isQanda ? '/wenda-topic-index' : (items[0] ? `/${items[0].slug}` : '/'),
+      }
+    })
 })
 
 const config = useRuntimeConfig()
@@ -220,7 +225,7 @@ useHead({
 
     <div class="overview-grid">
       <NuxtLink v-for="(group, i) in groups" :key="group.category" class="overview-card"
-        :to="group.items[0] ? `/${group.items[0].slug}` : '/'" :style="{ animationDelay: `${0.1 + i * 0.06}s` }">
+        :to="group.href" :style="{ animationDelay: `${0.1 + i * 0.06}s` }">
         <div class="card-icon-wrap">
           <span class="card-icon">{{ group.icon }}</span>
         </div>
