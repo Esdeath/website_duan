@@ -83,6 +83,9 @@ async function main() {
     if (!Array.isArray(parsed.data.tags) || parsed.data.tags.length < 3 || parsed.data.tags.length > 6) {
       errors.push(`Generated article needs 3-6 tags: ${parsed.data.slug}`)
     }
+    if (/^(?:\*\*)?[０-９0-9一二三四五六七八九十百]+[.．、]\s*(?:\*\*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)/mu.test(parsed.body)) {
+      errors.push(`Obsolete question ordinal remains: ${parsed.data.slug}`)
+    }
 
     const sectionHeadings = [...parsed.body.matchAll(/^## 第(.+?)节\s+(.+)$/gm)]
     if (!sectionHeadings.length) errors.push(`Chapter has no numbered sections: ${parsed.data.slug}`)

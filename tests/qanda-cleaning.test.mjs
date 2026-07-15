@@ -28,6 +28,7 @@ import {
   rewriteLegacyLinks,
   shortenParagraphs,
   standardizeQaMarkers,
+  stripObsoleteQuestionOrdinals,
 } from '../scripts/qanda-cleaning-generate-lib.mjs'
 
 test('parseFrontmatter preserves article body and parses arrays', () => {
@@ -481,6 +482,44 @@ test('question blocks receive a missing answer speaker marker without changing t
     '**段永平：** 真正影响股价的买家最终是公司自己。',
   ].join('\n\n')
   assert.equal(standardizeQaMarkers(multiParagraphQuestion), multiParagraphQuestion)
+})
+
+test('obsolete source ordinals are removed only before question speakers', () => {
+  const source = [
+    '04．网友：什么样的人是价值投资者？',
+    '',
+    '**12、网友J：** 苹果怎么看？',
+    '',
+    '三、问：现在还能买吗？',
+    '',
+    '**段永平：** 1．先看懂公司。',
+    '',
+    '1、这是回答中的有效列表。',
+    '',
+    '2012年发生了一件事。',
+  ].join('\n')
+
+  assert.equal(stripObsoleteQuestionOrdinals(source), [
+    '网友：什么样的人是价值投资者？',
+    '',
+    '**网友J：** 苹果怎么看？',
+    '',
+    '问：现在还能买吗？',
+    '',
+    '**段永平：** 1．先看懂公司。',
+    '',
+    '1、这是回答中的有效列表。',
+    '',
+    '2012年发生了一件事。',
+  ].join('\n'))
+
+  const article = buildTopicChapter(TOPICS.find((item) => item.slug === 'wenda-invest-01'), [{
+    id: 'numbered-question',
+    headingPath: ['价值投资'],
+    markdown: '04．网友：什么样的人是价值投资者？\n\n**段永平：** 买股票就是买公司。',
+  }])
+  assert.match(article.body, /^网友：什么样的人是价值投资者？$/m)
+  assert.doesNotMatch(article.body, /^04．网友/m)
 })
 
 test('rendered article has complete Nuxt Content metadata and visible tags', () => {

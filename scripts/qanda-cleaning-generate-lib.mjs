@@ -12,6 +12,13 @@ export function rewriteLegacyLinks(markdown) {
   })
 }
 
+export function stripObsoleteQuestionOrdinals(markdown) {
+  return markdown.replace(
+    /^([ \t]*(?:>\s*)?(?:\*\*)?)[０-９0-9一二三四五六七八九十百]{1,4}\s*[.．、]\s*(?=(?:\*\*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝))/gmu,
+    '$1',
+  )
+}
+
 function plainParagraph(paragraph) {
   return paragraph
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
@@ -140,7 +147,7 @@ export function buildTopicChapter(topic, blocks) {
   for (const [sourceIndex, block] of blocks.entries()) {
     const sectionInfo = sectionForBlock(topic.slug, block)
     const current = sections.get(sectionInfo.title) || { ...sectionInfo, units: [], subsections: new Map() }
-    const cleaned = shortenParagraphs(standardizeQaMarkers(rewriteLegacyLinks(block.markdown)))
+    const cleaned = shortenParagraphs(standardizeQaMarkers(stripObsoleteQuestionOrdinals(rewriteLegacyLinks(block.markdown))))
     const unit = { markdown: cleaned, date: extractBlockDate(block), sourceIndex }
     if (sectionInfo.subsectionTitle) {
       const subsection = current.subsections.get(sectionInfo.subsectionTitle) || {
