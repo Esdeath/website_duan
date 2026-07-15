@@ -35,7 +35,6 @@ tags: ["投资问答录","旧版导读","主题索引"]
 - [贵州茅台：产品、品牌与商业模式](/wenda-company-maotai-01)
 - [贵州茅台：治理、渠道与i茅台](/wenda-company-maotai-02)
 - [贵州茅台：估值与投资判断](/wenda-company-maotai-03)
-- [小霸王与步步高](/wenda-company-bbk)
 - [OPPO](/wenda-company-oppo)
 - [vivo](/wenda-company-vivo)
 - [腾讯](/wenda-company-tencent)

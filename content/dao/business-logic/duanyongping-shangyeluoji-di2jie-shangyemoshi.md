@@ -15,7 +15,7 @@ tags: ["投资问答录","旧版导读","主题索引"]
 原地址继续保留。正文已去重并迁移到以下主题文章：
 
 - [看懂生意与能力圈](/wenda-invest-03)
-- [伟大企业与长坡厚雪](/wenda-business-01)
+- [长期持有、集中投资与机会成本](/wenda-invest-06)
 - [商业模式与投资确定性](/wenda-business-02)
 - [护城河与差异化](/wenda-business-03)
 - [好产品与用户导向](/wenda-business-04)
@@ -28,6 +28,7 @@ tags: ["投资问答录","旧版导读","主题索引"]
 - [Stop Doing List、聚焦与更健康更长久](/wenda-business-11)
 - [收购与多元化](/wenda-business-12)
 - [苹果：管理层与企业文化](/wenda-company-apple-02)
+- [贵州茅台：产品、品牌与商业模式](/wenda-company-maotai-01)
 - [贵州茅台：估值与投资判断](/wenda-company-maotai-03)
 
 完整目录见：[投资问答录主题目录](/wenda-topic-index)。

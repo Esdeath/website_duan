@@ -26,5 +26,7 @@ tags: ["投资问答录","旧版导读","主题索引"]
 - [分红、回购与资本配置](/wenda-invest-10)
 - [投机、套利、量化与衍生品](/wenda-invest-11)
 - [投资心态、Golf、阅读与学习](/wenda-invest-12)
+- [Stop Doing List、聚焦与更健康更长久](/wenda-business-11)
+- [做对的事情与把事情做对](/wenda-life-01)
 
 完整目录见：[投资问答录主题目录](/wenda-topic-index)。

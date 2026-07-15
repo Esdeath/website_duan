@@ -8,10 +8,9 @@ import { fileURLToPath } from 'node:url'
 import {
   answerFingerprint,
   deduplicateBlocks,
-  findNearDuplicatePairs,
   normalizeForDuplicate,
   parseFrontmatter,
-  reviewNearDuplicatePair,
+  reviewNearDuplicateBlocks,
   splitQuestionAnswerBlocks,
   visibleTextLength,
 } from './qanda-cleaning-lib.mjs'
@@ -89,48 +88,11 @@ function nearDuplicateCanonical(left, right) {
 }
 
 function reviewNearDuplicates(blocks) {
-  const blockById = new Map(blocks.map((block) => [block.id, block]))
-  const candidates = []
-  for (const topic of TOPICS) {
-    const topicBlocks = blocks.filter((block) => classifyBlock(block) === topic.slug)
-    for (const pair of findNearDuplicatePairs(topicBlocks, { threshold: 0.94, minimumLength: 50, fingerprint: answerFingerprint })) {
-      candidates.push({ topicSlug: topic.slug, ...pair })
-    }
-  }
-
-  const duplicateOf = new Map()
-  const resolve = (id) => {
-    let current = id
-    while (duplicateOf.has(current)) current = duplicateOf.get(current)
-    return current
-  }
-
-  candidates.sort((left, right) => right.similarity - left.similarity)
-  for (const candidate of candidates) {
-    const left = blockById.get(candidate.leftId)
-    const right = blockById.get(candidate.rightId)
-    Object.assign(candidate, reviewNearDuplicatePair(left, right, candidate.similarity))
-    if (candidate.resolution !== 'duplicate-reviewed') continue
-
-    const leftRoot = resolve(candidate.leftId)
-    const rightRoot = resolve(candidate.rightId)
-    if (leftRoot === rightRoot) {
-      candidate.duplicateOf = leftRoot
-      continue
-    }
-    const canonical = nearDuplicateCanonical(blockById.get(leftRoot), blockById.get(rightRoot))
-    const duplicate = canonical.id === leftRoot ? rightRoot : leftRoot
-    duplicateOf.set(duplicate, canonical.id)
-    candidate.duplicateOf = canonical.id
-  }
-
-  for (const [id, canonical] of duplicateOf) duplicateOf.set(id, resolve(canonical))
-  return {
-    kept: blocks.filter((block) => !duplicateOf.has(block.id)),
-    candidates,
-    duplicateOf,
-    resolve,
-  }
+  return reviewNearDuplicateBlocks(blocks, {
+    threshold: 0.94,
+    minimumLength: 50,
+    canonical: nearDuplicateCanonical,
+  })
 }
 
 function headingId(value) {
@@ -247,20 +209,29 @@ async function writePartRedirects(redirects) {
 
 async function pinnedSourceManifest() {
   const existingAudit = JSON.parse(await readFile(AUDIT_PATH, 'utf8'))
+  let committedAudit = null
+  if (!Array.isArray(existingAudit.redirects) || existingAudit.redirects.length === 0) {
+    committedAudit = JSON.parse(git(['show', `HEAD:${path.relative(ROOT, AUDIT_PATH)}`]))
+  }
+  const redirects = existingAudit.redirects?.length ? existingAudit.redirects : committedAudit?.redirects
   if (!/^[0-9a-f]{40}$/.test(existingAudit.sourceCommit || '')) {
     throw new Error('Existing audit does not contain a valid pinned sourceCommit')
   }
   if (!Array.isArray(existingAudit.sourceArticles) || existingAudit.sourceArticles.length !== 20) {
     throw new Error('Existing audit does not contain the expected 20 sourceArticles')
   }
+  if (!Array.isArray(redirects) || redirects.length !== 208) {
+    throw new Error(`Expected 208 persisted part redirects, found ${redirects?.length || 0}`)
+  }
   return {
     sourceCommit: existingAudit.sourceCommit,
     sourceArticles: existingAudit.sourceArticles,
+    redirects,
   }
 }
 
 async function main() {
-  const { sourceCommit, sourceArticles } = await pinnedSourceManifest()
+  const { sourceCommit, sourceArticles, redirects } = await pinnedSourceManifest()
   priorityBySlug = new Map(sourceArticles.map((source, index) => [source.slug, index]))
   const sources = loadSources(sourceCommit, new Set(sourceArticles.map((source) => source.slug)))
   const allBlocks = buildBlocks(sources)
@@ -271,7 +242,6 @@ async function main() {
   const dedupAudit = new Map(deduplicated.audit.map((item) => [item.id, item]))
   const nearReview = reviewNearDuplicates(deduplicated.kept)
   const articles = buildArticles(nearReview.kept)
-  const redirects = await collectPartRedirects()
 
   const blockTargets = new Map()
   for (const article of articles) {

@@ -4,7 +4,13 @@ import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { normalizeForDuplicate, parseFrontmatter, visibleTextLength } from './qanda-cleaning-lib.mjs'
+import {
+  normalizeForDuplicate,
+  parseFrontmatter,
+  reviewNearDuplicateBlocks,
+  splitQuestionAnswerBlocks,
+  visibleTextLength,
+} from './qanda-cleaning-lib.mjs'
 import { validateAuditData } from './qanda-cleaning-audit-lib.mjs'
 import { chineseNumber } from './qanda-cleaning-generate-lib.mjs'
 
@@ -43,6 +49,7 @@ async function main() {
   const indexes = []
   const slugs = new Map()
   const duplicateParagraphs = new Map()
+  const activeBlocks = []
   const volumeChapters = new Map(EXPECTED_VOLUMES.map(([volume]) => [volume, []]))
 
   for (const file of await contentFiles()) {
@@ -59,6 +66,7 @@ async function main() {
     const length = visibleTextLength(parsed.body)
     const article = { file, ...parsed, length }
     active.push(article)
+    activeBlocks.push(...splitQuestionAnswerBlocks(parsed.body, { sourceSlug: parsed.data.slug }))
     if (/-part-\d+$/.test(parsed.data.slug)) errors.push(`Chapter still uses a part slug: ${parsed.data.slug}`)
     if (!volumeChapters.has(parsed.data.volume)) errors.push(`Unknown chapter volume: ${parsed.data.slug}`)
     else volumeChapters.get(parsed.data.volume).push(parsed.data.chapterOrder)
@@ -131,8 +139,13 @@ async function main() {
   const repeatedParagraphGroups = [...duplicateParagraphs.entries()]
     .map(([text, articleSlugs]) => ({ text, articleSlugs: [...new Set(articleSlugs)] }))
     .filter((item) => item.articleSlugs.length > 1)
-  for (const item of repeatedParagraphGroups) {
-    warnings.push(`Repeated paragraph across ${item.articleSlugs.length} articles: ${item.articleSlugs.slice(0, 4).join(', ')}`)
+  const outputDuplicateReview = reviewNearDuplicateBlocks(activeBlocks, { threshold: 0.94, minimumLength: 50 })
+  const crossArticleDuplicateQanda = outputDuplicateReview.candidates.filter((candidate) => {
+    if (candidate.resolution !== 'duplicate-reviewed') return false
+    return candidate.leftId.split('#')[0] !== candidate.rightId.split('#')[0]
+  })
+  for (const candidate of crossArticleDuplicateQanda) {
+    errors.push(`Duplicate Q&A across generated articles: ${candidate.leftId} <> ${candidate.rightId}`)
   }
 
   const result = {
@@ -143,6 +156,7 @@ async function main() {
     topicIndexes: indexes.length,
     longestArticle: Math.max(...active.map((article) => article.length)),
     unresolvedNearDuplicates: audit.nearDuplicateCandidates.filter((candidate) => !candidate.resolution).length,
+    crossArticleDuplicateQanda: crossArticleDuplicateQanda.length,
     repeatedParagraphGroups: repeatedParagraphGroups.length,
     longParagraphWarnings: warnings.filter((warning) => warning.startsWith('Long paragraph')).length,
     errors: errors.length,

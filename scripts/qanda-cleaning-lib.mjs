@@ -63,13 +63,13 @@ export function answerFingerprint(markdown) {
     .map((item) => item.trim())
     .filter(Boolean)
   const joinedMarkdown = paragraphs.join('\n\n')
-  const explicitAnswer = joinedMarkdown.match(/(?:\*{0,3})?(?:段永平|大道|答)\s*[：:]\s*(?:\*{0,3})?/u)
+  const explicitAnswer = joinedMarkdown.match(/(?:\*{0,3})?(?:段永平|大道|答)(?:\*{0,3})?\s*[：:]\s*(?:\*{0,3})?/u)
   if (explicitAnswer) {
     return normalizeForDuplicate(joinedMarkdown.slice(explicitAnswer.index + explicitAnswer[0].length))
   }
   let answer = paragraphs
   if (paragraphs.length > 1 && startsQuestion(paragraphs[0])) answer = paragraphs.slice(1)
-  const joined = answer.join('\n\n').replace(/^\s*(?:\*{0,3})?(?:段永平|大道|答)\s*[：:]\s*(?:\*{0,3})?\s*/u, '')
+  const joined = answer.join('\n\n').replace(/^\s*(?:\*{0,3})?(?:段永平|大道|答)(?:\*{0,3})?\s*[：:]\s*(?:\*{0,3})?\s*/u, '')
   return normalizeForDuplicate(joined)
 }
 
@@ -158,21 +158,35 @@ export function findNearDuplicatePairs(blocks, { threshold = 0.9, minimumLength 
   return pairs
 }
 
+function semanticDateTokens(markdown) {
+  const normalized = normalizeForDuplicate(markdown)
+  return [...new Set(normalized.match(/(?:19|20)\d{2}(?:[-./年]\d{1,2})?(?:[-./月]\d{1,2})?日?/g) || [])].sort()
+}
+
 function semanticNumberTokens(markdown) {
-  const normalized = answerFingerprint(markdown)
-  return [...new Set(normalized.match(/(?:19|20)\d{2}|\d+(?:\.\d+)?%?/g) || [])].sort()
+  const withoutDates = answerFingerprint(markdown)
+    .replace(/(?:19|20)\d{2}(?:[-./年]\d{1,2})?(?:[-./月]\d{1,2})?日?/g, '')
+  return [...new Set(withoutDates.match(/\d+(?:\.\d+)?%?/g) || [])].sort()
 }
 
 export function reviewNearDuplicatePair(left, right, similarity) {
-  const leftAnswer = answerFingerprint(left.markdown)
-  const rightAnswer = answerFingerprint(right.markdown)
+  const withoutDate = (value) => value
+    .replace(/\((?:19|20)\d{2}[^)]*\)/g, '')
+    .replace(/(?:19|20)\d{2}(?:[-./年]\d{1,2})?(?:[-./月]\d{1,2})?日?/g, '')
+  const leftAnswer = withoutDate(answerFingerprint(left.markdown))
+  const rightAnswer = withoutDate(answerFingerprint(right.markdown))
   const shorter = Math.min(Array.from(leftAnswer).length, Array.from(rightAnswer).length)
   const longer = Math.max(Array.from(leftAnswer).length, Array.from(rightAnswer).length)
   const lengthRatio = longer ? shorter / longer : 1
   const leftNumbers = semanticNumberTokens(left.markdown)
   const rightNumbers = semanticNumberTokens(right.markdown)
+  const leftDates = semanticDateTokens(left.markdown)
+  const rightDates = semanticDateTokens(right.markdown)
 
   if (JSON.stringify(leftNumbers) !== JSON.stringify(rightNumbers)) {
+    return { resolution: 'kept-distinct-data', reason: '数字或日期不同' }
+  }
+  if (leftDates.length && rightDates.length && JSON.stringify(leftDates) !== JSON.stringify(rightDates)) {
     return { resolution: 'kept-distinct-data', reason: '数字或日期不同' }
   }
   if (lengthRatio < 0.82) {
@@ -184,10 +198,70 @@ export function reviewNearDuplicatePair(left, right, similarity) {
   return { resolution: 'duplicate-reviewed', reason: '回答仅有标点、格式或轻微措辞差异' }
 }
 
+function reviewedCanonicalScore(block) {
+  const dateCount = semanticDateTokens(block.markdown).length
+  return (block.hasQuestion ? 100 : 0)
+    + (block.hasAnswer ? 100 : 0)
+    + dateCount * 25
+    + (block.headingPath?.length || 0) * 10
+    + Math.min(visibleTextLength(block.markdown), 2000) / 2000
+}
+
+export function reviewNearDuplicateBlocks(blocks, {
+  threshold = 0.94,
+  minimumLength = 50,
+  canonical = (left, right) => reviewedCanonicalScore(left) >= reviewedCanonicalScore(right) ? left : right,
+} = {}) {
+  const blockById = new Map(blocks.map((block) => [block.id, block]))
+  const candidates = findNearDuplicatePairs(blocks, { threshold, minimumLength, fingerprint: answerFingerprint })
+    .sort((left, right) => right.similarity - left.similarity)
+  const duplicateOf = new Map()
+  const resolve = (id) => {
+    let current = id
+    const visited = new Set()
+    while (duplicateOf.has(current) && !visited.has(current)) {
+      visited.add(current)
+      current = duplicateOf.get(current)
+    }
+    return current
+  }
+
+  for (const candidate of candidates) {
+    const left = blockById.get(candidate.leftId)
+    const right = blockById.get(candidate.rightId)
+    Object.assign(candidate, reviewNearDuplicatePair(left, right, candidate.similarity))
+    if (candidate.resolution !== 'duplicate-reviewed') continue
+
+    const leftRoot = resolve(candidate.leftId)
+    const rightRoot = resolve(candidate.rightId)
+    if (leftRoot === rightRoot) {
+      candidate.duplicateOf = leftRoot
+      continue
+    }
+    const kept = canonical(blockById.get(leftRoot), blockById.get(rightRoot))
+    const duplicate = kept.id === leftRoot ? rightRoot : leftRoot
+    duplicateOf.set(duplicate, kept.id)
+    candidate.duplicateOf = kept.id
+  }
+
+  for (const [id, target] of duplicateOf) duplicateOf.set(id, resolve(target))
+  return {
+    kept: blocks.filter((block) => !duplicateOf.has(block.id)),
+    candidates,
+    duplicateOf,
+    resolve,
+  }
+}
+
 function headingInfo(paragraph) {
-  const match = paragraph.trim().match(/^(#{1,6})\s+(.+)$/s)
-  if (!match) return null
-  return { level: match[1].length, text: stripMarkdown(match[2]).trim() }
+  const trimmed = paragraph.trim()
+  const match = trimmed.match(/^(#{1,6})\s+(.+)$/s)
+  if (match) return { level: match[1].length, text: stripMarkdown(match[2]).trim() }
+  const caseLabel = trimmed.match(/^\*\*\s*((?:案例|个案)\s*[零一二三四五六七八九十百\d]+[：:].{1,80})\s*\*\*$/su)
+  if (caseLabel) return { level: 6, text: stripMarkdown(caseLabel[1]).trim() }
+  const numberedLabel = trimmed.match(/^\*\*\s*((?:\d{1,3}|[零一二三四五六七八九十百]+)[.、．]\s*(?!(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)[：:]).{1,80})\s*\*\*$/su)
+  if (numberedLabel) return { level: 6, text: stripMarkdown(numberedLabel[1]).trim() }
+  return null
 }
 
 function startsQuestion(paragraph) {
@@ -204,6 +278,7 @@ function startsAnswer(paragraph) {
 export function splitQuestionAnswerBlocks(markdown, { sourceSlug = 'source' } = {}) {
   const paragraphs = markdown
     .replace(/\r\n/g, '\n')
+    .replace(/[ \t]{2,}\n(?=(?:\*{1,2})?(?:\d+[.、．]\s*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)[^：:\n]{0,24}[：:])/gu, '\n\n')
     .split(/\n\s*\n+/)
     .map((item) => item.trim())
     .filter(Boolean)

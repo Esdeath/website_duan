@@ -71,3 +71,10 @@ test('sitemap excludes legacy routes while Nuxt still prerenders the 20 source g
   assert.match(nuxtConfig, /dadaotouziwendalu-diyizhangtouzidadao/)
   assert.match(nuxtConfig, /duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan/)
 })
+
+test('all historical qanda part URLs keep permanent redirects after regeneration', () => {
+  const redirects = read('public/_redirects')
+  const partRedirects = redirects.match(/^\/wenda-.*-part-\d+\s+\/wenda-\S+\s+301$/gm) || []
+
+  assert.equal(partRedirects.length, 208)
+})

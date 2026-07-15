@@ -17,6 +17,7 @@ tags: ["投资问答录","旧版导读","主题索引"]
 - [财报、现金流、ROE与净资产](/wenda-invest-09)
 - [分红、回购与资本配置](/wenda-invest-10)
 - [营销、广告、渠道与出海](/wenda-business-07)
+- [Stop Doing List、聚焦与更健康更长久](/wenda-business-11)
 - [苹果：管理层与企业文化](/wenda-company-apple-02)
 - [苹果：估值、持有与资本配置](/wenda-company-apple-03)
 - [贵州茅台：估值与投资判断](/wenda-company-maotai-03)

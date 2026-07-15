@@ -8,13 +8,15 @@ import {
   answerFingerprint,
   findNearDuplicatePairs,
   reviewNearDuplicatePair,
+  reviewNearDuplicateBlocks,
   splitQuestionAnswerBlocks,
   splitMarkdownByLength,
   visibleTextLength,
 } from '../scripts/qanda-cleaning-lib.mjs'
-import { TOPICS, VOLUMES, classifyBlock } from '../scripts/qanda-cleaning-config.mjs'
+import { TOPICS, VOLUMES, classifyBlock, sectionForBlock } from '../scripts/qanda-cleaning-config.mjs'
 import {
   buildTopicChapter,
+  extractBlockDate,
   isNoInformation,
   renderArticleFile,
   rewriteLegacyLinks,
@@ -47,6 +49,60 @@ test('question and answer stay in one source block with heading context', () => 
   assert.match(blocks[0].markdown, /网友：投资是什么/)
   assert.match(blocks[0].markdown, /买股票就是买公司/)
   assert.equal(blocks[0].id, 'source#投资是什么#001')
+})
+
+test('markdown hard breaks between unmarked Q&A pairs create separate source blocks', () => {
+  const blocks = splitQuestionAnswerBlocks([
+    '## 估值',
+    '',
+    '网友：第一个问题？',
+    '',
+    '第一个回答。（2025-09-25）  ',
+    '网友：第二个问题？',
+    '',
+    '第二个回答。（2025-09-26）',
+  ].join('\n'), { sourceSlug: 'source' })
+
+  assert.equal(blocks.length, 2)
+  assert.match(blocks[0].markdown, /第一个回答/)
+  assert.doesNotMatch(blocks[0].markdown, /第二个问题/)
+  assert.match(blocks[1].markdown, /第二个回答/)
+})
+
+test('standalone bold case labels separate adjacent source units', () => {
+  const blocks = splitQuestionAnswerBlocks([
+    '## 消费者导向',
+    '',
+    '**段永平：** 第一段独立观点。',
+    '',
+    '**案例1：iPhone 4s**',
+    '',
+    '**段永平：** 第二段案例内容。',
+  ].join('\n'), { sourceSlug: 'source' })
+
+  assert.equal(blocks.length, 2)
+  assert.deepEqual(blocks[1].headingPath, ['消费者导向', '案例1：iPhone 4s'])
+  assert.doesNotMatch(blocks[1].markdown, /第一段独立观点/)
+})
+
+test('standalone bold numbered labels split sections but bold numbered questions do not', () => {
+  const blocks = splitQuestionAnswerBlocks([
+    '## 苹果',
+    '',
+    '**段永平：** 第一段观点。',
+    '',
+    '**05．关于苹果的几点猜想：（2013.03.04）**',
+    '',
+    '**段永平：** 第二段观点。',
+    '',
+    '**06．网友：苹果会回购吗？**',
+    '',
+    '**段永平：** 会在价格合适时回购。',
+  ].join('\n'), { sourceSlug: 'source' })
+
+  assert.equal(blocks.length, 3)
+  assert.deepEqual(blocks[1].headingPath, ['苹果', '关于苹果的几点猜想：（2013.03.04）'])
+  assert.match(blocks[2].markdown, /06．网友/)
 })
 
 test('visible length excludes frontmatter, markdown syntax and link destinations', () => {
@@ -148,6 +204,13 @@ test('answer fingerprint matches the same answer under different questions and s
   assert.equal(answerFingerprint(left), answerFingerprint(right))
 })
 
+test('answer fingerprint recognizes a bold speaker name followed by an unbolded colon', () => {
+  const sourceStyle = '网友：问题？\n\n**段永平** ：买股票就是买公司。（2010-05-23）'
+  const canonicalStyle = '网友：另一个问法？\n\n**段永平：** 买股票就是买公司。（2010-05-23）'
+
+  assert.equal(answerFingerprint(sourceStyle), answerFingerprint(canonicalStyle))
+})
+
 test('answer fingerprint removes a question that shares a paragraph with its answer', () => {
   const compact = '**网友：问题一？** **段永平：** 买股票就是买公司。（2010-05-23）'
   const expanded = '网友：另一个问法？\n\n**段永平：** 买股票就是买公司。（2010-05-23）'
@@ -178,11 +241,53 @@ test('near duplicate review removes only minor variants with identical data', ()
   assert.equal(reviewNearDuplicatePair(left, addedViewpoint, 0.97).resolution, 'kept-distinct-additional-content')
 })
 
+test('near duplicate review lets a dated full version replace an undated short version', () => {
+  const dated = { markdown: '网友：投资最重要的一句话是什么？\n\n**段永平：** 买股票就是买公司。（2010-05-23）' }
+  const undated = { markdown: '网友：最重要的投资原则？\n\n**段永平：** 买股票就是买公司。' }
+
+  assert.equal(reviewNearDuplicatePair(dated, undated, 1).resolution, 'duplicate-reviewed')
+})
+
+test('reviewed near duplicates are removed globally across source topics', () => {
+  const shared = '投资时应该把上市公司看成非上市公司，关注公司未来能够产生的现金流，理解商业模式、企业文化、竞争优势和长期风险，这也是价值投资者必须长期坚持的核心原则。'
+  const blocks = [
+    {
+      id: 'company-copy',
+      sourceSlug: 'company-source',
+      headingPath: ['苹果'],
+      markdown: `网友：苹果说明了什么？\n\n**段永平：** 买股票就是买公司。${shared}这个原则一直没有变。（2011-01-07）`,
+      hasQuestion: true,
+      hasAnswer: true,
+    },
+    {
+      id: 'principle-master',
+      sourceSlug: 'investment-source',
+      headingPath: ['投资原则', '买股票就是买公司'],
+      markdown: `网友：投资原则是什么？\n\n**段永平：** 买股票就是买公司；${shared}这个原则一直没有变。（2011-01-07）`,
+      hasQuestion: true,
+      hasAnswer: true,
+    },
+  ]
+  const result = reviewNearDuplicateBlocks(blocks, { threshold: 0.94, minimumLength: 20 })
+
+  assert.equal(result.kept.length, 1)
+  assert.equal(result.candidates.length, 1)
+  assert.equal(result.candidates[0].resolution, 'duplicate-reviewed')
+  assert.equal(result.duplicateOf.size, 1)
+})
+
 test('only greetings and empty acknowledgements count as no-information', () => {
   assert.equal(isNoInformation({ markdown: '网友：谢谢。\n\n**段永平：** 不客气。' }), true)
   assert.equal(isNoInformation({ markdown: '**段永平：** 不知道。' }), true)
   assert.equal(isNoInformation({ markdown: '**网友：怎么看这家公司？** **段永平：** 没研究过。' }), true)
   assert.equal(isNoInformation({ markdown: '**段永平：** 不做空。' }), false)
+})
+
+test('dated reactions are no-information while short factual answers are retained', () => {
+  assert.equal(isNoInformation({ markdown: '网友：看到了。\n\n**大道：** [点赞]（2026-01-23）' }), true)
+  assert.equal(isNoInformation({ markdown: '网友：这个结论怎么样？\n\n**段永平：** 有点意思。（2025-06-12）' }), true)
+  assert.equal(isNoInformation({ markdown: '网友：茅台提价的本质是什么？\n\n**段永平：** 需求。（2019-08-21）' }), false)
+  assert.equal(isNoInformation({ markdown: '网友：您坐的特斯拉是哪款？\n\n**大道：** Model Y。（2026-02-05）' }), false)
 })
 
 test('topic builder emits one unlimited chapter with continuous numbered sections', () => {
@@ -208,6 +313,38 @@ test('topic builder emits one unlimited chapter with continuous numbered section
   assert.match(article.body, /^## 第一节 原则$/m)
   assert.match(article.body, /^## 第二节 案例$/m)
   assert.ok(visibleTextLength(article.body) > 200)
+})
+
+test('curated sections replace inherited source-book headings for major chapters', () => {
+  assert.deepEqual(sectionForBlock('wenda-business-08', {
+    headingPath: ['第二章', '30个商业案例点评'],
+    markdown: '网友：什么是企业文化？\n\n**段永平：** 企业文化就是做对的事情。',
+  }), { title: '企业文化的定义', order: 1 })
+
+  assert.deepEqual(sectionForBlock('wenda-company-apple-02', {
+    headingPath: ['案例3：苹果'],
+    markdown: '网友：怎么看库克这位CEO？\n\n**段永平：** 库克是一个好CEO。',
+  }), { title: '库克与管理层', order: 2 })
+
+  assert.deepEqual(sectionForBlock('wenda-invest-07', {
+    headingPath: ['估值逻辑'],
+    markdown: '**段永平：** 定性比定量分析重要，不能只依赖计算器。',
+  }), { title: '定性重于定量', order: 3 })
+})
+
+test('topic builder orders curated sections and dated Q&A chronologically', () => {
+  const topic = TOPICS.find((item) => item.slug === 'wenda-invest-04')
+  const blocks = [
+    { id: 'later', headingPath: ['补充投资问答'], markdown: '网友：可以借钱投资吗？\n\n**段永平：** 不可以。（2020-01-01）' },
+    { id: 'earlier', headingPath: ['其他观点与建议'], markdown: '网友：可以用margin吗？\n\n**段永平：** 不用margin。（2010-01-01）' },
+    { id: 'short', headingPath: ['案例'], markdown: '网友：可以做空吗？\n\n**段永平：** 不做空。（2015-01-01）' },
+  ]
+  const article = buildTopicChapter(topic, blocks)
+
+  assert.equal(extractBlockDate(blocks[0]), '2020-01-01')
+  assert.doesNotMatch(article.body, /补充投资问答|其他观点与建议|## .*案例$/m)
+  assert.ok(article.body.indexOf('2010-01-01') < article.body.indexOf('2020-01-01'))
+  assert.ok(article.body.indexOf('不做空') < article.body.indexOf('不用margin'))
 })
 
 test('long English prose splits at original sentence boundaries', () => {
@@ -236,6 +373,14 @@ test('question blocks receive a missing answer speaker marker without changing t
 
   const marked = '网友：投资是什么？\n\n**段永平：** 买股票就是买公司。'
   assert.equal(standardizeQaMarkers(marked), marked)
+
+  const multiParagraphQuestion = [
+    '网友：苹果的投资者结构发生变化，谁会成为买家？',
+    '以前苹果的主要投资者是对冲基金，现在已经转为价值股。',
+    '如果巴菲特也不投资苹果，谁来接货？',
+    '**段永平：** 真正影响股价的买家最终是公司自己。',
+  ].join('\n\n')
+  assert.equal(standardizeQaMarkers(multiParagraphQuestion), multiParagraphQuestion)
 })
 
 test('rendered article has complete Nuxt Content metadata and visible tags', () => {

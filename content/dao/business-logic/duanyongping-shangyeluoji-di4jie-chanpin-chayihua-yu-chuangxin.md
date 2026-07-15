@@ -24,6 +24,5 @@ tags: ["投资问答录","旧版导读","主题索引"]
 - [创始人、CEO、团队与激励](/wenda-business-10)
 - [Stop Doing List、聚焦与更健康更长久](/wenda-business-11)
 - [收购与多元化](/wenda-business-12)
-- [小霸王与步步高](/wenda-company-bbk)
 
 完整目录见：[投资问答录主题目录](/wenda-topic-index)。

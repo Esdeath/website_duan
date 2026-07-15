@@ -18,7 +18,7 @@ tags: ["投资问答录","旧版导读","主题索引"]
 - [现金流折现、PE与定性判断](/wenda-invest-07)
 - [财报、现金流、ROE与净资产](/wenda-invest-09)
 - [投资心态、Golf、阅读与学习](/wenda-invest-12)
-- [创新与敢为天下后](/wenda-business-05)
+- [好产品与用户导向](/wenda-business-04)
 - [企业文化](/wenda-business-08)
 - [本分、核心价值观与利润之上的追求](/wenda-business-09)
 - [创始人、CEO、团队与激励](/wenda-business-10)

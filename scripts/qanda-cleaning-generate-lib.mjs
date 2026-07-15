@@ -1,4 +1,5 @@
 import { answerFingerprint, normalizeForDuplicate } from './qanda-cleaning-lib.mjs'
+import { sectionForBlock } from './qanda-cleaning-config.mjs'
 
 const LEGACY_LINK_TARGETS = new Map([
   ['duanyongping-shangyeluoji-di3jie-qiyewenhua', 'wenda-business-08'],
@@ -19,9 +20,10 @@ function plainParagraph(paragraph) {
 }
 
 export function standardizeQaMarkers(markdown) {
+  const paragraphs = markdown.split(/\n\s*\n+/)
+  const hasExplicitAnswer = paragraphs.some((paragraph) => /(?:段永平|大道|答)\s*[：:]/u.test(plainParagraph(paragraph)))
   let awaitingAnswer = false
-  return markdown
-    .split(/\n\s*\n+/)
+  return paragraphs
     .map((paragraph) => {
       const plain = plainParagraph(paragraph)
       const question = /^(?:\d+[.、．]\s*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)[^：:]{0,30}[：:]/u.test(plain)
@@ -30,7 +32,7 @@ export function standardizeQaMarkers(markdown) {
         awaitingAnswer = !answer
         return paragraph
       }
-      if (awaitingAnswer && !answer) {
+      if (awaitingAnswer && !answer && !hasExplicitAnswer) {
         awaitingAnswer = false
         return `**段永平：** ${paragraph}`
       }
@@ -46,9 +48,13 @@ export function isNoInformation(block) {
     .replace(/网友[:：]?/g, '')
     .replace(/段永平[:：]?/g, '')
     .replace(/大道[:：]?/g, '')
-  if (Array.from(withoutSpeakers).length < 3) return true
-  if (/^(?:谢谢|多谢|感谢|不客气|呵呵|哈哈|不知道|没看过|没研究过|不了解|看不懂|不懂)[。.!！?？]*$/.test(withoutSpeakers)) return true
-  if (Array.from(withoutSpeakers).length <= 18 && /谢谢.*不客气|感谢.*不用谢|请收下.*谢谢/.test(withoutSpeakers)) return true
+  const semanticAnswer = withoutSpeakers
+    .replace(/\((?:19|20)\d{2}[^)]*\)/g, '')
+    .replace(/[。.!！?？,，:：;；、\[\]()（）…]+/g, '')
+    .trim()
+  if (!semanticAnswer) return true
+  if (/^(?:谢谢|多谢|感谢|不客气|呵呵|哈哈|嗯|恩|不知道|没看过|没研究过|没关注|不了解|看不懂|不懂|点赞|赞|有点意思|确实有点意思|明白了|果然如此)$/.test(semanticAnswer)) return true
+  if (Array.from(semanticAnswer).length <= 18 && /谢谢.*不客气|感谢.*不用谢|请收下.*谢谢/.test(semanticAnswer)) return true
   return false
 }
 
@@ -110,6 +116,13 @@ export function chineseNumber(value) {
   return `${digits[hundreds]}百${chineseNumber(remainder)}`
 }
 
+export function extractBlockDate(block) {
+  const match = (block.markdown || '').normalize('NFKC').match(/(?:19|20)\d{2}[-./年]\d{1,2}(?:[-./月]\d{1,2})?日?/u)
+  if (!match) return null
+  const parts = match[0].replace(/[年月./]/g, '-').replace(/日$/, '').split('-')
+  return [parts[0], String(parts[1] || 1).padStart(2, '0'), String(parts[2] || 1).padStart(2, '0')].join('-')
+}
+
 function sectionTitle(block, topic) {
   const raw = plainHeading(block.headingPath?.at(-1) || '相关问答') || '相关问答'
   const withoutDecoration = raw
@@ -124,16 +137,25 @@ function sectionTitle(block, topic) {
 
 export function buildTopicChapter(topic, blocks) {
   const sections = new Map()
-  for (const block of blocks) {
-    const title = sectionTitle(block, topic)
-    const units = sections.get(title) || []
+  for (const [sourceIndex, block] of blocks.entries()) {
+    const sectionInfo = sectionForBlock(topic.slug, block)
+    const current = sections.get(sectionInfo.title) || { ...sectionInfo, units: [] }
     const cleaned = shortenParagraphs(standardizeQaMarkers(rewriteLegacyLinks(block.markdown)))
-    units.push(cleaned)
-    sections.set(title, units)
+    current.units.push({ markdown: cleaned, date: extractBlockDate(block), sourceIndex })
+    sections.set(sectionInfo.title, current)
   }
 
-  const body = [...sections.entries()]
-    .map(([title, units], index) => `## 第${chineseNumber(index + 1)}节 ${title}\n\n${units.join('\n\n')}`)
+  const body = [...sections.values()]
+    .sort((left, right) => left.order - right.order)
+    .map((item, index) => {
+      const units = [...item.units].sort((left, right) => {
+        if (left.date && right.date) return left.date.localeCompare(right.date) || left.sourceIndex - right.sourceIndex
+        if (left.date) return -1
+        if (right.date) return 1
+        return left.sourceIndex - right.sourceIndex
+      })
+      return `## 第${chineseNumber(index + 1)}节 ${item.title}\n\n${units.map((unit) => unit.markdown).join('\n\n')}`
+    })
     .join('\n\n')
 
   return {

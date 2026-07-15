@@ -92,6 +92,274 @@ export const TOPIC_BY_SLUG = new Map(TOPICS.map((item) => [item.slug, item]))
 
 const includesAny = (value, words) => words.some((word) => value.toLowerCase().includes(word.toLowerCase()))
 
+const section = (title, order, keywords) => ({ title, order, keywords })
+
+const SECTION_CATALOGS = new Map(Object.entries({
+  'wenda-invest-01': [
+    section('买股票就是买公司', 1, ['买股票就是买公司', '上市公司看成非上市公司']),
+    section('价值投资的定义', 2, ['价值投资', '投资是什么', '投资理解']),
+    section('投资的信仰', 3, ['信仰', '称重机', '投票器', 'must believe']),
+    section('价格与价值', 4, ['价格围绕价值', '内在价值', '市场价格']),
+    section('原则的边界', 5, ['捷径', '唯一的路', '容易', '困难']),
+  ],
+  'wenda-invest-02': [
+    section('简单但不容易', 1, ['简单但不容易', '简单但绝不容易']),
+    section('投资没有捷径', 2, ['捷径', '大道', '小路', '快即是慢']),
+    section('道、术与长期学习', 3, ['道需悟', '术可学', '学习', '悟性']),
+    section('什么人适合投资', 4, ['适合', '85%', '投资者', '小额投资者']),
+  ],
+  'wenda-invest-03': [
+    section('什么叫看懂', 1, ['什么是懂', '什么叫懂', '看懂', '懂公司']),
+    section('能力圈与放弃', 2, ['能力圈', '放弃', '不懂']),
+    section('先看商业模式', 3, ['商业模式', '生意模式', '好生意']),
+    section('理解企业的方法', 4, ['企业文化', '财报', '调研', '产品']),
+  ],
+  'wenda-invest-04': [
+    section('风险是第一考量', 1, ['风险第一', '风险', '安全', '黑天鹅', '错误率']),
+    section('不做空', 2, ['做空', '空头', 'short']),
+    section('不借钱、不加杠杆', 3, ['margin', '杠杆', '借钱', '贷款', '有息负债']),
+    section('不懂不碰', 4, ['不懂不碰', '不懂', '能力圈']),
+    section('风险纪律', 5, ['概率', '期货', '衍生品', '保险']),
+  ],
+  'wenda-invest-05': [
+    section('把波动当作朋友', 1, ['波动', '下跌', '涨跌']),
+    section('忽略市场噪声', 2, ['市场', '消息', '预测']),
+    section('如何看待宏观', 3, ['宏观', '经济周期', '通胀']),
+    section('牛市与熊市', 4, ['牛市', '熊市', '萧条', '金融危机']),
+  ],
+  'wenda-invest-06': [
+    section('长期持有', 1, ['长期持有', '持有十年', '封仓', '十年', '二十年']),
+    section('集中投资', 2, ['集中投资', '集中', '满仓', '仓位']),
+    section('机会成本', 3, ['机会成本', '更好的机会']),
+    section('耐心与复利', 4, ['耐心', '复利', '等待']),
+  ],
+  'wenda-invest-07': [
+    section('估值的核心逻辑', 1, ['估值', '价值怎么算', '毛估估']),
+    section('未来现金流折现', 2, ['现金流', '折现', 'dcf']),
+    section('定性重于定量', 3, ['定性', '定量', '计算器']),
+    section('PE与估值指标', 4, ['市盈率', 'pe', '市净率', 'pb']),
+    section('估值案例', 5, ['雅虎', 'uhal', '万科', '中石油']),
+  ],
+  'wenda-invest-08': [
+    section('持有就是买入', 1, ['持有就是买入', '持有=买入']),
+    section('什么时候买入', 2, ['买入', '买股票', '加仓']),
+    section('什么时候卖出', 3, ['卖出', '卖股票', '该卖']),
+    section('忘记成本与市场', 4, ['成本', '市场', '涨了', '跌了']),
+    section('买卖案例', 5, ['网易', '苹果', '茅台']),
+  ],
+  'wenda-invest-09': [
+    section('财报的作用', 1, ['财报', '财务报表', '会计']),
+    section('现金流与真实利润', 2, ['现金流', '真实利润', '自由现金']),
+    section('净资产与负债', 3, ['净资产', '资产负债', '负债', '有效净资产']),
+    section('ROE与经营效率', 4, ['roe', '净资产收益率', '资本回报']),
+    section('财务指标的边界', 5, ['ebitda', '指标', '排除']),
+  ],
+  'wenda-invest-10': [
+    section('资本配置原则', 1, ['资本配置', '资金使用', '现金']),
+    section('分红', 2, ['分红', '股息']),
+    section('回购', 3, ['回购', '注销']),
+    section('负债与回购', 4, ['负债', '借债', 'ibm']),
+  ],
+  'wenda-invest-11': [
+    section('投资与投机', 1, ['投机', '赌博', '短线']),
+    section('套利与衍生品', 2, ['套利', '衍生品', '期权', '期货']),
+    section('量化交易', 3, ['量化', '算法', '程序交易']),
+    section('不做空', 4, ['做空', '空头']),
+  ],
+  'wenda-invest-12': [
+    section('平常心与理性', 1, ['平常心', '理性', '恐惧', '贪婪']),
+    section('Golf与投资', 2, ['golf', '高尔夫']),
+    section('阅读与学习', 3, ['书', '阅读', '学习', '芒格主义']),
+    section('投资经验与心态', 4, ['经验', '心态', '耐心']),
+  ],
+  'wenda-business-01': [
+    section('伟大企业的标准', 1, ['伟大企业', '伟大的企业', '好公司']),
+    section('长坡厚雪与长期价值', 2, ['长坡', '厚雪', '滚雪球', '长期']),
+  ],
+  'wenda-business-02': [
+    section('商业模式的定义', 1, ['什么是商业模式', '商业模式', '生意模式']),
+    section('确定性与未来现金流', 2, ['确定性', '现金流', '风险']),
+    section('好生意与坏生意', 3, ['好生意', '坏生意', '烂生意']),
+    section('商业模式案例', 4, ['案例', '行业', '公司']),
+  ],
+  'wenda-business-03': [
+    section('护城河的本质', 1, ['护城河', '垄断', '竞争优势']),
+    section('差异化', 2, ['差异化', '用户需要']),
+    section('价格战与同质化', 3, ['价格战', '同质化', '降价']),
+    section('行业与产品案例', 4, ['航空', '硅片', '白酒', '游戏']),
+  ],
+  'wenda-business-04': [
+    section('好产品的标准', 1, ['好产品', '产品质量', '最好产品']),
+    section('用户与消费者导向', 2, ['用户导向', '消费者导向', '用户体验', '消费者体验']),
+    section('真实需求与产品取舍', 3, ['真实需求', '用户需要', '取舍', '功能']),
+    section('产品案例', 4, ['苹果', 'oppo', 'vivo', '小天才']),
+  ],
+  'wenda-business-05': [
+    section('创新的目的', 1, ['创新', '用户需要', '产品']),
+    section('敢为天下后', 2, ['敢为天下后', '后中争先']),
+    section('反对盲目创新', 3, ['盲目创新', '为创新而创新']),
+    section('创新案例', 4, ['苹果', 'oppo', '三星', '任天堂']),
+  ],
+  'wenda-business-06': [
+    section('品牌的本质', 1, ['品牌的本质', '品牌']),
+    section('品牌与产品', 2, ['产品', '品质', '印象']),
+    section('品牌没有溢价', 3, ['溢价', '定价', '贵']),
+    section('品牌建设与命名', 4, ['商标', '名字', '命名', '推广']),
+  ],
+  'wenda-business-07': [
+    section('营销的边界', 1, ['营销', '市场推广']),
+    section('广告只表达产品', 2, ['广告', '夸大其词']),
+    section('渠道与零售', 3, ['渠道', '经销商', '零售', '直营']),
+    section('出海与国际市场', 4, ['出海', '国际化', '海外']),
+  ],
+  'wenda-business-08': [
+    section('企业文化的定义', 1, ['什么是企业文化', '企业文化就是', '企业文化讲的', '好的企业文化']),
+    section('企业文化的建立与传承', 2, ['建立', '形成', '改变', '维护', '传承', '创始人']),
+    section('如何判断企业文化', 3, ['判断', '观察', '听其言', '观其行', '量化', '看企业']),
+    section('企业文化与长期经营', 4, ['基业长青', '长久', '活得长', '信誉', '护城河']),
+    section('文化案例', 5, ['苹果', '步步高', 'oppo', '格力', '万科', 'ge']),
+  ],
+  'wenda-business-09': [
+    section('本分', 1, ['本分']),
+    section('核心价值观', 2, ['核心价值观', '是非', '正直', '诚信']),
+    section('利润之上的追求', 3, ['利润之上', '利润导向']),
+    section('平常心与长期结果', 4, ['平常心', '长期', '结果导向']),
+  ],
+  'wenda-business-10': [
+    section('创始人与造钟人', 1, ['创始人', '造钟人', '报时人']),
+    section('CEO与管理层', 2, ['ceo', '管理层', '库克', '乔布斯']),
+    section('董事会与治理', 3, ['董事会', '治理', '授权']),
+    section('选人与团队', 4, ['选人', '团队', '合适性', '合格性', '裁员', '员工']),
+    section('激励、公平与规则', 5, ['激励', '奖金', '工资', '公平', '规则']),
+  ],
+  'wenda-business-11': [
+    section('Stop Doing List', 1, ['stop doing', '不为清单', '不做的事情']),
+    section('聚焦与取舍', 2, ['聚焦', '取舍', '做得越多']),
+    section('更健康更长久', 3, ['更健康更长久', '健康', '长久']),
+    section('不做什么的案例', 4, ['不做oem', '不贷款', '不赊账', '不收购', '不上市']),
+  ],
+  'wenda-business-12': [
+    section('收购的成功条件', 1, ['收购', '并购', 'm&a']),
+    section('多元化的边界', 2, ['多元化', '跨行业']),
+    section('聚焦与能力圈', 3, ['聚焦', '能力圈']),
+    section('收购与多元化案例', 4, ['ge', '谷歌', '苹果', '联想', '吉利']),
+  ],
+  'wenda-company-apple-01': [
+    section('产品与用户体验', 1, ['产品', '用户体验', '消费者导向', 'iphone', 'ipad']),
+    section('商业模式与生态系统', 2, ['商业模式', '生意模式', '生态', '系统', '黏性']),
+    section('聚焦与单一产品', 3, ['聚焦', '单一产品', '产品线']),
+    section('竞争与长期优势', 4, ['安卓', 'android', '三星', '竞争', '差异化']),
+  ],
+  'wenda-company-apple-02': [
+    section('乔布斯与造钟', 1, ['乔布斯', 'jobs', '造钟人']),
+    section('库克与管理层', 2, ['库克', 'cook', 'ceo', '管理层']),
+    section('苹果企业文化', 3, ['企业文化', '利润之上', '做对的事情']),
+    section('传承、治理与接班', 4, ['接班', '传承', '董事会', '治理']),
+  ],
+  'wenda-company-apple-03': [
+    section('看懂苹果与估值', 1, ['看懂', '估值', '市值', '便宜', '贵']),
+    section('买入、持有与卖出', 2, ['买入', '持有', '卖出', '成本']),
+    section('分红、回购与现金', 3, ['分红', '回购', '现金中性', '现金']),
+    section('长期判断与风险', 4, ['十年', '长期', '风险', '关税']),
+  ],
+  'wenda-company-maotai-01': [
+    section('产品与品质', 1, ['产品', '品质', '好酒', '口感', '年份酒']),
+    section('品牌与消费者心智', 2, ['品牌', '心智', '国酒', '少喝酒']),
+    section('商业模式与供需', 3, ['商业模式', '生意模式', '需求', '供不应求', '提价']),
+    section('产品边界与长期优势', 4, ['多元化', '系列酒', '葡萄酒', '差异化']),
+  ],
+  'wenda-company-maotai-02': [
+    section('管理层与公司治理', 1, ['管理层', '换帅', '季克良', '治理', '董事会']),
+    section('渠道、直销与价格体系', 2, ['渠道', '直销', '经销商', '搭售']),
+    section('i茅台与数字化销售', 3, ['i茅台', '发货', '物流', '线上']),
+    section('打假与经营问题', 4, ['打假', '假酒', '经营问题', '芯片']),
+  ],
+  'wenda-company-maotai-03': [
+    section('长期价值与十年判断', 1, ['十年', '二十年', '长期', '通胀']),
+    section('估值与价格', 2, ['估值', '便宜', '贵', '价格', '市值']),
+    section('买入、增持与持有', 3, ['买入', '增持', '持有', '加仓']),
+    section('分红与资本配置', 4, ['分红', '资本配置', '资金']),
+    section('风险与后续更新', 5, ['风险', '下跌', '增长', '更新']),
+  ],
+  'wenda-company-bbk': [
+    section('从小霸王到步步高', 1, ['小霸王', '创立步步高', '历史']),
+    section('企业文化与本分', 2, ['企业文化', '本分', '核心竞争力']),
+    section('产品、品牌与渠道', 3, ['产品', '品牌', '渠道', '经销商']),
+    section('步步高的不为清单', 4, ['不做', '不讨价还价', '不代工', '不贷款', '不赊账']),
+    section('OPPO、vivo与小天才', 5, ['oppo', 'vivo', '小天才']),
+  ],
+  'wenda-company-netease': [
+    section('发现与买入网易', 1, ['买入', '一块钱', '现金', '负债', '诉讼']),
+    section('游戏是好生意', 2, ['游戏', '梦幻西游', '玩家']),
+    section('丁磊与管理团队', 3, ['丁磊', '团队', '管理']),
+    section('持有、加仓与卖出', 4, ['持有', '加仓', '卖出', '100倍', '百倍']),
+  ],
+  'wenda-life-01': [
+    section('做对的事情', 1, ['做对的事情', '对的事情', '北斗星']),
+    section('把事情做对', 2, ['把事情做对', '效率', '方法']),
+    section('长期选择与机会成本', 3, ['长期', '机会成本', '选择']),
+  ],
+  'wenda-life-02': [
+    section('正直与诚信', 1, ['正直', '诚信', '不作恶']),
+    section('理性与原则', 2, ['理性', '原则', '圆滑']),
+    section('长期视角与脚踏实地', 3, ['长期', '脚踏实地', '长远', '本质']),
+  ],
+  'wenda-life-03': [
+    section('职业选择', 1, ['职业', '工作', '选择']),
+    section('创业', 2, ['创业', '生意']),
+    section('做喜欢的事情', 3, ['喜欢做', '享受过程', '兴趣']),
+    section('迷惘、成长与时间', 4, ['迷惘', '成长', '时光', '过程']),
+  ],
+  'wenda-life-04': [
+    section('家庭与陪伴', 1, ['家庭', '家人', '陪伴', '妻子']),
+    section('孩子与安全感', 2, ['孩子', '小孩', '安全感', '无条件的爱']),
+    section('教育与成长', 3, ['教育', '学习成绩', '学校', '大学']),
+    section('金钱、游戏与边界', 4, ['钱', '游戏', '支持', '躺在钱上']),
+  ],
+  'wenda-life-05': [
+    section('开放心态与学习', 1, ['开放心态', '学习', '放下自我']),
+    section('阅读与思考', 2, ['读书', '阅读', '思考']),
+    section('公益与社会责任', 3, ['公益', '社会责任', '捐赠']),
+    section('教育公益与长期环境', 4, ['教育', '环境', '后代']),
+  ],
+  'wenda-life-06': [
+    section('睡眠', 1, ['睡眠', '睡觉']),
+    section('减重与饮食', 2, ['减重', '体重', '饮食', '体脂']),
+    section('Zone 2与日常运动', 3, ['zone2', 'zone 2', '运动', '训练']),
+    section('心理健康与生活习惯', 4, ['心理健康', '健康', '习惯']),
+  ],
+}))
+
+function cleanInheritedHeading(value) {
+  return value
+    .replace(/^第[零一二三四五六七八九十百千\d]+[章节]\s*/u, '')
+    .replace(/^(?:[零一二三四五六七八九十百千\d]+)[、.．]\s*/u, '')
+    .replace(/^：/, '')
+    .trim()
+}
+
+export function sectionForBlock(topicSlug, block) {
+  const context = `${(block.headingPath || []).join(' > ')}\n${block.markdown || ''}`
+  const catalogue = SECTION_CATALOGS.get(topicSlug)
+  if (catalogue) {
+    const lower = context.toLowerCase()
+    const matched = catalogue
+      .map((item) => {
+        const hits = item.keywords.filter((keyword) => lower.includes(keyword.toLowerCase()))
+        const longest = hits.reduce((length, keyword) => Math.max(length, Array.from(keyword).length), 0)
+        return { item, score: longest * 100 + hits.length }
+      })
+      .filter((candidate) => candidate.score > 0)
+      .sort((left, right) => right.score - left.score || left.item.order - right.item.order)[0]?.item
+    if (matched) return { title: matched.title, order: matched.order }
+    return { title: '相关问答', order: catalogue.length + 1 }
+  }
+
+  const topic = TOPIC_BY_SLUG.get(topicSlug)
+  if (topic) return { title: topic.title, order: 1 }
+  return { title: cleanInheritedHeading(block.headingPath?.at(-1) || '相关问答') || '相关问答', order: 1 }
+}
+
 function classifyAppleDetail(detail) {
   if (includesAny(detail, ['管理层', '企业文化', '乔布斯', '库克', 'ceo', '造钟人'])) return 'wenda-company-apple-02'
   if (includesAny(detail, ['估值', '价格', '便宜', '贵', '市值', '现金', '回购', '分红', '持有', '买入', '卖出', '资本配置'])) return 'wenda-company-apple-03'
