@@ -76,4 +76,4 @@ tags: ["阿里巴巴", "马云", "企业文化", "商业模式", "保留"]
 
 ## 原始出处
 
-- [阿里巴巴与雅虎公司问答](/wenda-company-alibaba-yahoo-part-1)
+- [阿里巴巴与雅虎公司问答](/wenda-company-alibaba-yahoo)

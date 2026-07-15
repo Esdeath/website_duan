@@ -77,4 +77,4 @@ tags: ["丁磊", "网易", "游戏", "现金", "企业家"]
 
 ## 原始出处
 
-- [网易公司问答](/wenda-company-netease-part-1)
+- [网易公司问答](/wenda-company-netease)

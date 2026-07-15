@@ -72,4 +72,4 @@ tags: ["马化腾", "腾讯", "微信", "微信支付", "商业模式"]
 ## 原始出处
 
 - [腾讯公司问答](/wenda-company-tencent)
-- [收购与多元化](/wenda-business-12-part-1)
+- [收购与多元化](/wenda-business-12)

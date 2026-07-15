@@ -75,5 +75,5 @@ tags: ["马云", "阿里巴巴", "企业文化", "平常心", "理想主义"]
 
 ## 原始出处
 
-- [阿里巴巴与雅虎公司问答](/wenda-company-alibaba-yahoo-part-1)
-- [企业文化](/wenda-business-08-part-1)
+- [阿里巴巴与雅虎公司问答](/wenda-company-alibaba-yahoo)
+- [企业文化](/wenda-business-08)

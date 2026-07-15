@@ -80,5 +80,5 @@ tags: ["贵州茅台", "品牌", "现金流", "能力圈", "长期持有"]
 
 ## 原始出处
 
-- [茅台：产品与模式](/wenda-company-maotai-01-part-1)
-- [茅台：治理与渠道](/wenda-company-maotai-02-part-1)
+- [茅台：产品与模式](/wenda-company-maotai-01)
+- [茅台：治理与渠道](/wenda-company-maotai-02)

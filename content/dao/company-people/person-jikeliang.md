@@ -75,5 +75,5 @@ tags: ["季克良", "贵州茅台", "造钟人", "质量文化", "品牌"]
 
 ## 原始出处
 
-- [茅台：产品与模式](/wenda-company-maotai-01-part-1)
-- [茅台：治理与渠道](/wenda-company-maotai-02-part-1)
+- [茅台：产品与模式](/wenda-company-maotai-01)
+- [茅台：治理与渠道](/wenda-company-maotai-02)

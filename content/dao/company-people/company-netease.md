@@ -81,4 +81,4 @@ tags: ["网易", "丁磊", "游戏", "现金流", "长期持有"]
 
 ## 原始出处
 
-- [网易公司问答](/wenda-company-netease-part-1)
+- [网易公司问答](/wenda-company-netease)

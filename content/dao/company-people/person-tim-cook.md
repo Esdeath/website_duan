@@ -79,5 +79,5 @@ tags: ["库克", "苹果", "CEO", "理性", "企业文化"]
 
 ## 原始出处
 
-- [苹果：管理层与文化](/wenda-company-apple-02-part-1)
-- [苹果：产品与生态](/wenda-company-apple-01-part-1)
+- [苹果：管理层与文化](/wenda-company-apple-02)
+- [苹果：产品与生态](/wenda-company-apple-01)
