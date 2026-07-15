@@ -108,10 +108,11 @@
   "bodyLimit": null,
   "counts": {
     "sourceBlocks": 5946,
-    "keptBlocks": 5316,
+    "keptBlocks": 5314,
     "duplicateBlocks": 601,
-    "discardedNoInformation": 29,
-    "nearDuplicateCandidates": 310
+    "discardedNoInformation": 31,
+    "nearDuplicateCandidates": 309,
+    "editorialChanges": 95
   },
   "articles": [
     {
@@ -128,7 +129,7 @@
         "买股票就是买公司",
         "价值投资"
       ],
-      "visibleLength": 22275,
+      "visibleLength": 22273,
       "blockIds": [
         "duanyongping-shangyeluoji-qianyan-maiqushoujiiumaishangsi#前言：买股票就是买公司#001",
         "duanyongping-shangyeluoji-qianyan-maiqushoujiiumaishangsi#前言：买股票就是买公司#002",
@@ -304,7 +305,7 @@
         "投资理解",
         "投资者"
       ],
-      "visibleLength": 9895,
+      "visibleLength": 9893,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 投资简单但不容易#001",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 投资简单但不容易 > 道需悟，术可学#004",
@@ -391,7 +392,7 @@
         "能力圈",
         "看懂生意"
       ],
-      "visibleLength": 35816,
+      "visibleLength": 35814,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 买股票就是买公司 > 看懂生意是基本功#002",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 买股票就是买公司 > 看懂生意是基本功#005",
@@ -638,7 +639,7 @@
         "不做空",
         "不加杠杆"
       ],
-      "visibleLength": 19132,
+      "visibleLength": 19130,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 投资简单但不容易 > 至少 85% 的人不适合投资#001",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 投资简单但不容易 > 快即是慢#003",
@@ -739,7 +740,7 @@
         "市场波动",
         "牛熊市"
       ],
-      "visibleLength": 22458,
+      "visibleLength": 22455,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 考虑市场很可能是错的 > 波动是朋友#001",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 考虑市场很可能是错的 > 波动是朋友#003",
@@ -1055,7 +1056,7 @@
         "估值",
         "市盈率"
       ],
-      "visibleLength": 82229,
+      "visibleLength": 82223,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 买股票就是买公司 > 投资是什么? > 基本版#001",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 买股票就是买公司 > 投资是什么? > 说明版#001",
@@ -1449,7 +1450,7 @@
         "持有",
         "估值"
       ],
-      "visibleLength": 35447,
+      "visibleLength": 35444,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 价值投资是唯一的路 > 见过大道不走小路#003",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 投资简单但不容易 > 道需悟，术可学#011",
@@ -1604,7 +1605,7 @@
         "现金流",
         "ROE"
       ],
-      "visibleLength": 28655,
+      "visibleLength": 28654,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 不做空、不借钱、不懂不碰 > 你懂得，才是你的好生意#011",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 估值实际上是“功夫” > 看财报主要用于排除公司#001",
@@ -1767,7 +1768,7 @@
         "回购",
         "资本配置"
       ],
-      "visibleLength": 13311,
+      "visibleLength": 13309,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 不做空、不借钱、不懂不碰 > 不懂不碰是铁律#003",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 估值实际上是“功夫” > 是否分红回购不是回报率的关键#001",
@@ -1842,7 +1843,7 @@
         "套利",
         "量化交易"
       ],
-      "visibleLength": 18144,
+      "visibleLength": 18142,
       "blockIds": [
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 买股票就是买公司 > 风险是第一考量#001",
         "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 价值投资是唯一的路 > 最容易的投资方法#005",
@@ -2420,7 +2421,7 @@
         "创新",
         "敢为天下后"
       ],
-      "visibleLength": 25159,
+      "visibleLength": 25154,
       "blockIds": [
         "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 二、差异化是好商业模式的前提#014",
         "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 二、差异化是好商业模式的前提#015",
@@ -2624,7 +2625,7 @@
         "广告",
         "渠道"
       ],
-      "visibleLength": 32525,
+      "visibleLength": 32520,
       "blockIds": [
         "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 二、差异化是好商业模式的前提#005",
         "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 五、30个商业案例点评 > 苹果#002",
@@ -3472,7 +3473,7 @@
         "核心价值观",
         "利润之上的追求"
       ],
-      "visibleLength": 34555,
+      "visibleLength": 34550,
       "blockIds": [
         "dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua#第二章 商业模式和企业文化 > 商业模式越好，确定性越高 > 再好的车手也难开好一辆烂车#001",
         "dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua#第二章 商业模式和企业文化 > 生意能不能发展好关键且只取决于产品 > 敢为天下后，后中争先#007",
@@ -3666,7 +3667,7 @@
         "团队",
         "激励"
       ],
-      "visibleLength": 77113,
+      "visibleLength": 77110,
       "blockIds": [
         "dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua#第二章 商业模式和企业文化 > 商业模式越好，确定性越高 > 商业模式和企业文化第一，价格第三#003",
         "dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua#第二章 商业模式和企业文化 > 商业模式越好，确定性越高 > 再好的车手也难开好一辆烂车#007",
@@ -4003,7 +4004,7 @@
         "聚焦",
         "长期主义"
       ],
-      "visibleLength": 57790,
+      "visibleLength": 55948,
       "blockIds": [
         "duanyongping-touziluoji-di1zhang-touzilinian#第一章 投资理念 > 第4节 Stop doing list（不为清单）#001",
         "duanyongping-touziluoji-di1zhang-touzilinian#第一章 投资理念 > 第4节 Stop doing list（不为清单） > 不做空#001",
@@ -4397,7 +4398,7 @@
         "产品",
         "生态系统"
       ],
-      "visibleLength": 16861,
+      "visibleLength": 16860,
       "blockIds": [
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 苹果公司 > 喜欢苹果的理由#001",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 苹果公司 > 苹果最厉害的是生态系统#005",
@@ -4721,7 +4722,7 @@
         "品牌",
         "商业模式"
       ],
-      "visibleLength": 14748,
+      "visibleLength": 14709,
       "blockIds": [
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台生意模式强大#001",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台生意模式强大#003",
@@ -4825,7 +4826,6 @@
         "duanyongping-touziluoji-di7zhang-anlifenxi#第七章 案例分析 > 案例1：贵州茅台 > 买股票就是买公司（封仓十年的思维）#006",
         "duanyongping-touziluoji-di7zhang-anlifenxi#第七章 案例分析 > 案例1：贵州茅台 > 买股票就是买公司（封仓十年的思维）#012",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【茅台】#001",
-        "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【茅台】#002",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【茅台】#005",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【茅台】#006",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【茅台】#010",
@@ -4854,7 +4854,7 @@
         "公司治理",
         "i茅台"
       ],
-      "visibleLength": 10128,
+      "visibleLength": 10122,
       "blockIds": [
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 做好酒的文化#010",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 打假是件非常难的事情#001",
@@ -4869,6 +4869,7 @@
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于茅台换帅与管理层#005",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于茅台换帅与管理层#006",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于茅台换帅与管理层#007",
+        "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#001",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#003",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#004",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#005",
@@ -4885,6 +4886,7 @@
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#016",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#017",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#018",
+        "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#019",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#020",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#021",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#022",
@@ -4917,11 +4919,9 @@
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于茅台换帅与管理层#004",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于茅台换帅与管理层#006",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于茅台换帅与管理层#007",
-        "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#001",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#002",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#005",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#014",
-        "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#020",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#021",
         "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 茅台的经营问题#010"
       ]
@@ -4941,7 +4941,7 @@
         "估值",
         "长期持有"
       ],
-      "visibleLength": 21892,
+      "visibleLength": 21857,
       "blockIds": [
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台生意模式强大#002",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台生意模式强大#006",
@@ -4964,7 +4964,6 @@
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#006",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#007",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#008",
-        "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#010",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#013",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#015",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#018",
@@ -5554,7 +5553,7 @@
         "互联网平台",
         "科技产业"
       ],
-      "visibleLength": 10182,
+      "visibleLength": 10090,
       "blockIds": [
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 腾讯控股#001",
         "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 腾讯控股#002",
@@ -5695,7 +5694,7 @@
         "做对的事情",
         "把事情做对"
       ],
-      "visibleLength": 16922,
+      "visibleLength": 16914,
       "blockIds": [
         "duanyongping-touziluoji-di1zhang-touzilinian#第一章 投资理念 > 第3节 做对的事情，把事情做对#001",
         "duanyongping-touziluoji-di1zhang-touzilinian#第一章 投资理念 > 第3节 做对的事情，把事情做对#002",
@@ -5893,7 +5892,7 @@
         "创业",
         "享受过程"
       ],
-      "visibleLength": 15138,
+      "visibleLength": 15136,
       "blockIds": [
         "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 做胸无“大”志的人 > 要脚踏实地#003",
         "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 做胸无“大”志的人 > 要脚踏实地#004",
@@ -6003,7 +6002,7 @@
         "孩子",
         "教育"
       ],
-      "visibleLength": 15821,
+      "visibleLength": 15819,
       "blockIds": [
         "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 做胸无“大”志的人 > 要脚踏实地#005",
         "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 做正直的人 > 不该帮的忙帮了是没原则#005",
@@ -6118,7 +6117,7 @@
         "公益",
         "社会责任"
       ],
-      "visibleLength": 13003,
+      "visibleLength": 13001,
       "blockIds": [
         "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 做对的事情，把事情做对 > 想长远，想本质#002",
         "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 做对的事情，把事情做对 > 想长远，想本质#005",
@@ -6208,7 +6207,7 @@
         "睡眠",
         "Zone 2"
       ],
-      "visibleLength": 8027,
+      "visibleLength": 8021,
       "blockIds": [
         "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 做胸无“大”志的人 > 要脚踏实地#001",
         "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 享受过程 > 别让时光溜走#003",
@@ -7179,6 +7178,986 @@
       "to": "/wenda-company-energy-industrial"
     }
   ],
+  "editorialChanges": [
+    {
+      "type": "format-normalized",
+      "rule": "mixed-parenthesis",
+      "before": "（195-14.45)",
+      "after": "（195-14.45）",
+      "blockId": "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 投资简单但不容易 > 其他投资问答#001",
+      "sourceSlug": "dadaotouziwendalu-diyizhangtouzidadao",
+      "targetSlugs": [
+        "wenda-invest-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！！",
+      "after": "！",
+      "blockId": "duanyongping-touziluoji-di2jie-touzilijie#第二章 投资理解 > 第4节 什么人适合做股票投资？ > 小投资者#005",
+      "sourceSlug": "duanyongping-touziluoji-di2jie-touzilijie",
+      "targetSlugs": [
+        "wenda-invest-02"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！！",
+      "after": "！",
+      "blockId": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第1节 现金流（折现）角度思考#013",
+      "sourceSlug": "duanyongping-touziluoji-di5zhang-guzhiluoji",
+      "targetSlugs": [
+        "wenda-invest-07"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-full-stop",
+      "before": "。。。",
+      "after": "。",
+      "blockId": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第3节 现金流折现案例（雅虎） > 三、教学版：现金流折现法#001",
+      "sourceSlug": "duanyongping-touziluoji-di5zhang-guzhiluoji",
+      "targetSlugs": [
+        "wenda-invest-10"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-question-mark",
+      "before": "？？",
+      "after": "？",
+      "blockId": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第5节 什么时候买卖股票 > 正确理念（买股票就是买公司）#012",
+      "sourceSlug": "duanyongping-touziluoji-di5zhang-guzhiluoji",
+      "targetSlugs": [
+        "wenda-invest-08"
+      ]
+    },
+    {
+      "type": "typo-corrected",
+      "rule": "博有->博友",
+      "before": "博有",
+      "after": "博友",
+      "blockId": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第5节 什么时候买卖股票 > 正确理念（买股票就是买公司）#012",
+      "sourceSlug": "duanyongping-touziluoji-di5zhang-guzhiluoji",
+      "targetSlugs": [
+        "wenda-invest-08"
+      ]
+    },
+    {
+      "type": "typo-corrected",
+      "rule": "巴非特->巴菲特",
+      "before": "巴非特",
+      "after": "巴菲特",
+      "blockId": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第5节 什么时候买卖股票 > 以内在价值为“核心”作判断#001",
+      "sourceSlug": "duanyongping-touziluoji-di5zhang-guzhiluoji",
+      "targetSlugs": [
+        "wenda-invest-08"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-question-mark",
+      "before": "？？",
+      "after": "？",
+      "blockId": "duanyongping-touziluoji-di6zhang-touzifangfalun#第六章 投资方法论 > 第2节 牛市以及熊市的投资策略 > 常见的投机方式#042",
+      "sourceSlug": "duanyongping-touziluoji-di6zhang-touzifangfalun",
+      "targetSlugs": [
+        "wenda-invest-05"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "trailing-underscore-debris",
+      "before": " __",
+      "after": "",
+      "blockId": "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 五、30个商业案例点评 > 汽车行业#001",
+      "sourceSlug": "duanyongping-shangyeluoji-di2jie-shangyemoshi",
+      "targetSlugs": [
+        "wenda-business-04"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-question-mark",
+      "before": "？？",
+      "after": "？",
+      "blockId": "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 五、30个商业案例点评 > 拼多多#017",
+      "sourceSlug": "duanyongping-shangyeluoji-di2jie-shangyemoshi",
+      "targetSlugs": [
+        "wenda-business-09"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "comma-before-terminal-punctuation",
+      "before": "，。",
+      "after": "。",
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 三、本分和平常心 > 本分是什么？#021",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [
+        "wenda-business-10"
+      ]
+    },
+    {
+      "type": "typo-corrected",
+      "rule": "湖涂->糊涂",
+      "before": "湖涂",
+      "after": "糊涂",
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 三、本分和平常心 > 本分是什么？#021",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [
+        "wenda-business-10"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-question-mark",
+      "before": "？？",
+      "after": "？",
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 三、本分和平常心 > 诚信、正直#023",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [
+        "wenda-business-09"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-question-mark",
+      "before": "？？",
+      "after": "？",
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 四、团队合作 > 人才培养#010",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [
+        "wenda-business-10"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-comma",
+      "before": "，，",
+      "after": "，",
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 四、团队合作 > 管理层（CEO）#018",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [
+        "wenda-business-10"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "malformed-italic-number-label",
+      "before": "_04.__",
+      "after": "_04. ",
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 五、消费者导向 > 案例2：OPPO蓝光机（2011-11-02）#018",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [
+        "wenda-business-08"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "malformed-italic-number-label",
+      "before": "_06.__",
+      "after": "_06. ",
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 完美世界#026",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [
+        "wenda-business-08"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-question-mark",
+      "before": "？？",
+      "after": "？",
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 新东方#018",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [
+        "wenda-business-09"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "trailing-underscore-debris",
+      "before": " __\n",
+      "after": "",
+      "blockId": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin#第4节：产品、差异化与创新 > 一、好产品 > 聚焦的好处#001",
+      "sourceSlug": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin",
+      "targetSlugs": [
+        "wenda-business-11"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！",
+      "after": "！",
+      "blockId": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin#第4节：产品、差异化与创新 > 一、好产品 > OPPO、vivo手机#006",
+      "sourceSlug": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin",
+      "targetSlugs": [
+        "wenda-business-05"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-full-stop",
+      "before": "。。。",
+      "after": "。",
+      "blockId": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin#第4节：产品、差异化与创新 > 二、产品差异化 > 定位高端，低端商业模式#010",
+      "sourceSlug": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin",
+      "targetSlugs": [
+        "wenda-business-05"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！！",
+      "after": "！",
+      "blockId": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin#第4节：产品、差异化与创新 > 三、创新 > 创新#003",
+      "sourceSlug": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin",
+      "targetSlugs": [
+        "wenda-business-05"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！",
+      "after": "！",
+      "blockId": "duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao#第5节：品牌、营销与广告 > 一、品牌 > 品牌价值#006",
+      "sourceSlug": "duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao",
+      "targetSlugs": [
+        "wenda-business-07"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！",
+      "after": "！",
+      "blockId": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan#第7节：Stop doing list（不为清单）#003",
+      "sourceSlug": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan",
+      "targetSlugs": [
+        "wenda-business-11"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！",
+      "after": "！",
+      "blockId": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan#第7节：Stop doing list（不为清单） > 不盲目扩张#008",
+      "sourceSlug": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan",
+      "targetSlugs": [
+        "wenda-business-11"
+      ]
+    },
+    {
+      "type": "discarded-no-information",
+      "rule": "editorial-contributor-list",
+      "before": "**感谢网友提问，排名不分先后：** 乐趣、任俊杰、徐志、小翟（翟敬勇）、岁寒知松柏、刘志超、不明真相的群众、但斌、茶水铺、白云之乡、xlli777、江涛、唐朝、群兽中的一只猫、VALUE、管我财、福力、杨勇、李驰、价值投资奉行者、Ricky、畅歌、方胜、梁剑、许志宏、沙其勇、糊涂是福、守正不出奇、恰恰恰、粗茶淡饭、NEWMAN、呼啸、金牛贺岁、牛健成、李妍、八次方、木买蚂蚁、香飘两岸、余祥平、思考爱好者、“懂”、何超、明天的圆周率、达人reachman、sharon、本手不笨、汉钦、李炼明、等你、风中海、刘浩、danding52、厦门阿超、阿强、中青旅新洲、巴克星、佘孝金、贯中、厦门愚人、oppovn、喔喔叉叉叉、芒格主义者、kyybb、谦和屋、投资价值、gjpymzh、wangmeng75、iami、yunhong_leo、李历、po666、韩会君、莫贪胜、王晓转、中国政子、liangzichen66、snowball、自由行DR、小象有形、瓦力、谢锐、老歌、粽子、hanshan 、洪七公、往事如风、、Thomas Lau、pytangjun、guobiaol、郭辉军、八段迷、志强、能、东明、l.s.king、xiaojbs、古董无言、nextcpa、圆兔工具箱、victorhu、曾鸿辉、mike、偷笑、纸墨香、思享、tonggang2001、Frank、ooqqoo、gaofeng168168、arthor、hyi130、swhua10000、追寻、zwsksy、leewalter、Logan、swanseas、nanlaifeng、想得到的、qi_840116、潮·慢·ing、龙行天下、一万颗星星、筑道、winkle、Zhong Jie Ming、dlczm55、苏昊霖、achun、[基本面](/jibenmian)、小小投资人、sun4102、快乐人生、海上明月、weiheguang2008、快乐的投资生活、hothawk@yeah、旷怡投资、随喜、安全理性与[耐心](/naixin)、dongtao1026、明镜台、yc1234567121、lzg54、化生、柏拉图、liuyu_share、fischerwang、tgod、雄鹰、guozhendl、刘春、想飞、聆听、carolynee、透明才有公信力、刘加忠、吴赔、雨燕、angeloinsunshine、糊涂是福、fgq、阿三、枇杷之乡、寸而、vladimir、思考爱好者、heenmei、henry6688、如画似歌、shenhonggang123、徐雪平、旅行者、爬过上下九的懒虫、snoopy10126、小虎子、steper、小胡@Duanism、zjueehy、bbkzxg、winstonopt、高山流水、独立候鱼、智勇双全、月光宝盒、阿文、bnfan、张阳、润政、酷耐、ymhddddd、恶水、roger、0811、大海、Jessica、wanxiaofei65、Zhong Jie Ming、yuyao_11、history023、Focus1986、烟酒茶胡、耐心最重要、小沈、king、龙常青、鹏扬-森林、大刀王五、邵元富、Hongee、liuzuchang、阿德、击鼓不传花、理性投资、鼓浪屿、foolgenius、jianxiongzb、李自强、董强、心如止水、陈辉、平常心、cuiran、小强、陈展、伍兴、investvalue、知三品四、ann8717、学习巴菲特、静洮、陈建冲、海子、躲在树上的男爵、ycl76、kevin、Li Gale、ly1973、科学探索、阿緯、huaxuesuoxiao、滴水石、winstonopt、四十不惑、freetype、陈中梁、oppohjw、zcch06、e_fisher、Joy、黑天鹅、赵士君、雷子、李军、云淡风清、从牛到爱、一颗小草、向往自由、diy225、太阳花、衡山行侠、duanmi_ok、不动鱼、Furry Walls、自由行111、不繁、凡客、wilsonj01、lanlanpei、一年级小学生、newricher、平凡、朗朗乾坤、江边钓翁、make_it_simple、云舟、algor、廖寒星、投资很简单、bigfigure、dujianping_ok、张圣斌、志强、狮子、正确方向+坚持、星光、云游、seeking bargains、阿蒙、tcbhj、书剑、支点教育、千里牛、绿色茶农、第八大奇迹、Mr. Market、简即美、艾小葳、han、行-知-行、更健康更长久、neng、思弦君……",
+      "after": "",
+      "blockId": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan#第7节：Stop doing list（不为清单） > 感谢#001",
+      "sourceSlug": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan",
+      "targetSlugs": [
+        "wenda-business-11"
+      ]
+    },
+    {
+      "type": "typo-corrected",
+      "rule": "aeed have->need have",
+      "before": "aeed have",
+      "after": "need have",
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 苹果公司 > 做最好的产品#004",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [
+        "wenda-company-apple-01"
+      ]
+    },
+    {
+      "type": "typo-corrected",
+      "rule": "necd have->need have",
+      "before": "necd have",
+      "after": "need have",
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 苹果公司 > 做最好的产品#004",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [
+        "wenda-company-apple-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！！",
+      "after": "！",
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#010",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": []
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-full-stop",
+      "before": "。。。",
+      "after": "。",
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台的经营问题#001",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [
+        "wenda-company-maotai-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-full-stop",
+      "before": "。。",
+      "after": "。",
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台的经营问题#018",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [
+        "wenda-company-maotai-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "mixed-parenthesis",
+      "before": "（2026-01-21)",
+      "after": "（2026-01-21）",
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台的经营问题#018",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [
+        "wenda-company-maotai-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！",
+      "after": "！",
+      "blockId": "duanyongping-touziluoji-di7zhang-anlifenxi#第七章 案例分析 > 案例1：贵州茅台 > 风险因素#017",
+      "sourceSlug": "duanyongping-touziluoji-di7zhang-anlifenxi",
+      "targetSlugs": [
+        "wenda-company-maotai-01"
+      ]
+    },
+    {
+      "type": "typo-corrected",
+      "rule": "Andriod->Android",
+      "before": "Andriod",
+      "after": "Android",
+      "blockId": "duanyongping-touziluoji-di7zhang-anlifenxi#第七章 案例分析 > 案例1：贵州茅台 > 风险因素#017",
+      "sourceSlug": "duanyongping-touziluoji-di7zhang-anlifenxi",
+      "targetSlugs": [
+        "wenda-company-maotai-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-colon",
+      "before": "：：",
+      "after": "：",
+      "blockId": "duanyongping-touziluoji-di7zhang-anlifenxi#第七章 案例分析 > 案例3：苹果 > 四、风险因素#013",
+      "sourceSlug": "duanyongping-touziluoji-di7zhang-anlifenxi",
+      "targetSlugs": [
+        "wenda-company-apple-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "!!!",
+      "after": "！",
+      "blockId": "dadaotouziwendalu-disizhangrenshengzhenyan#第四章 人生箴言 > 陪好家人过好小日子 > 孩子的问题基本都是大人的问题#005",
+      "sourceSlug": "dadaotouziwendalu-disizhangrenshengzhenyan",
+      "targetSlugs": [
+        "wenda-life-04"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 投资大道 > 【新能源汽车】#002",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-invest-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "mixed-parenthesis",
+      "before": "（195-14.45)",
+      "after": "（195-14.45）",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 投资大道 > 【其他投资问答】#001",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-invest-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 商业模式和企业文化 > 【利润之上的追求】#001",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-business-09"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！！",
+      "after": "！",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【茅台】#002",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": []
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于茅台换帅与管理层#002",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-company-maotai-02"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#001",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-company-maotai-02"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#020",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-company-maotai-02"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 茅台的商业模式#006",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-company-maotai-03"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-full-stop",
+      "before": "。。。",
+      "after": "。",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 茅台的经营问题#001",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-company-maotai-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-full-stop",
+      "before": "。。",
+      "after": "。",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于投资与增持茅台#008",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-company-maotai-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "mixed-parenthesis",
+      "before": "（2026-01-21)",
+      "after": "（2026-01-21）",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于投资与增持茅台#008",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-company-maotai-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈投资：懂生意、不投机，把长期主义的逻辑说透了 > 什么是“懂”？#007",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-invest-11"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "!!!",
+      "after": "！",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈投资：懂生意、不投机，把长期主义的逻辑说透了 > 不做空、不投机#006",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-invest-07"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈投资：懂生意、不投机，把长期主义的逻辑说透了 > 不做空、不投机#008",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-invest-08"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈投资：懂生意、不投机，把长期主义的逻辑说透了 > 不做空、不投机#009",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-invest-04"
+      ]
+    },
+    {
+      "type": "discarded-garbled",
+      "rule": "keyboard-garble",
+      "before": "d[0we8qfy-97p yvbcn] w[-q0cu= -2uirft0 7yr]-02 fnbv;i LYUOC BG-na=ekgtrld\\\\-exjh- wqcgtvhy=4y,t？？？？？",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈公司：看不懂的模式坦然放手，好公司的文化终能纠错 > 其他公司#006",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-company-tech-platforms"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 职业与创业#010",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-03"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 个人经历#001",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 个人经历#011",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-05"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 人生感悟#030",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 其他#009",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！！",
+      "after": "！",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 其他#012",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-01"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈健康：从Zone2训练到冰水浴，达到18%体脂率的实用干货 > 关于减重#001",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-06"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈健康：从Zone2训练到冰水浴，达到18%体脂率的实用干货 > 身体健康与zone2训练()#001",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-06"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "empty-markdown-link",
+      "before": "*()*",
+      "after": "",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈健康：从Zone2训练到冰水浴，达到18%体脂率的实用干货 > 身体健康与zone2训练()#014",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-06"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "mixed-parenthesis",
+      "before": "（Adobe 董事长兼 CEO)",
+      "after": "（Adobe 董事长兼 CEO）",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈健康：从Zone2训练到冰水浴，达到18%体脂率的实用干货 > 关于高尔夫#004",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [
+        "wenda-life-06"
+      ]
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-exclamation-mark",
+      "before": "！！！",
+      "after": "！",
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平重估泡泡玛特：从“看不懂”到认可“情绪价值” > 价值几何：壁垒与可持续性#011",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": []
+    },
+    {
+      "type": "format-normalized",
+      "rule": "repeated-question-mark",
+      "before": "？？",
+      "after": "？",
+      "blockId": "duanyongping-touziwendalu-touziluoji-di4zhang-caiwulijie#第四章 财务理解 > 第1节 财报的理解 > 利润与现金流#008",
+      "sourceSlug": "duanyongping-touziwendalu-touziluoji-di4zhang-caiwulijie",
+      "targetSlugs": [
+        "wenda-invest-09"
+      ]
+    },
+    {
+      "blockId": "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 价值投资是唯一的路 > 见过大道不走小路#005",
+      "sourceSlug": "dadaotouziwendalu-diyizhangtouzidadao",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友补充:鹅爸想安慰又不知道说些什么，就告诉了阿宝店里招牌汤面的鲜汤秘方-那个秘方就是:什么都不加。阿宝诧异，什么都不加，能做出好吃的面条吗?鹅爸告诉他:“**如果你想做一件特别的东西，最重要的是，你要相信它是特别的。**”这番话点醒了阿宝，他领悟了神龙秘籍的真正含义一世上根本没有秘籍。\n\n点赞。",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-touziluoji-di2jie-touzilijie#第二章 投资理解 > 第4节 什么人适合做股票投资？ > 小投资者#009",
+      "sourceSlug": "duanyongping-touziluoji-di2jie-touzilijie",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "网友S：**钱多钱少都不是问题，不坚持价值投资，是很难从股市中赚到钱的，在股市中您只能赚你看得懂的钱，你看不懂的钱，即使你赚了也会赔出去，您还没有读懂段总的话。**\n\n**段永平：** （2010-03-27）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-touziluoji-di2jie-touzilijie#第二章 投资理解 > 第5节 封仓十年的选择 > 封仓10年思路，是给企业定性（这是家好公司）#007",
+      "sourceSlug": "duanyongping-touziluoji-di2jie-touzilijie",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "网友S：定性分析就是对研究对象进行“质”的方面的分析。真正的价值投资者都具备这样的能力。简单的说就是做正确的事，举例来说就是用4角钱买价值1元的证券。\n\n**段永平** ：（2010-04-27）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-touziluoji-di2jie-touzilijie#第二章 投资理解 > 第5节 封仓十年的选择 > 封仓10年的角度思考#035",
+      "sourceSlug": "duanyongping-touziluoji-di2jie-touzilijie",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "01．网友：**段大哥在两年前就说过要以拥有十年公司的心态对待股票。一直都停留在字面理解上。今天突然悟到假设今天就是你拥有公司十年后，公司会发展成什么样。这样对于选股就豁然开朗了。问题就都集中在好的生意模式，好管理，好价格上，尤其在生意模式的重要，可以大致猜测出这家公司十年后什么样子。想想自己身边最看好的同事十年后能发展成什么样子，想想自己在十年后最理想的生活状态是什么样子，那么现在自己该如何做就很清晰，想想很有意思。今天真的很开心，谢谢段大哥** 。\n\n**段永平** ：（2013-03-03）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-touziluoji-di3zhang-golfhetouzi#第三章 golf和投资 > 第1节 golf和投资#006",
+      "sourceSlug": "duanyongping-touziluoji-di3zhang-golfhetouzi",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "网友X：老巴说：**don't lose money**\n\n**段永平：** （2011-01-14）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第3节 现金流折现案例（雅虎）#004",
+      "sourceSlug": "duanyongping-touziluoji-di5zhang-guzhiluoji",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友B回复：假如你借我100块钱，年复利是10%的话，那么1年以后，你应该还我100×（1+10%）= 110块，2年后，你该还我100×（1+10%）×（1+10%）=121块……10年后，你该还我100×（1+10%）的10次方=259元\n\n这个10%就是复利。\n\n反过来，如果假如你打算10年后还我1000元，那么年复利就是1000/100 =10，10开10次方-1 = 0.26，年复利约26%．我解释的是否正确？\n\n**段永平** ：（赞）（2010-04-16）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第3节 现金流折现案例（雅虎） > 三、教学版：现金流折现法#019",
+      "sourceSlug": "duanyongping-touziluoji-di5zhang-guzhiluoji",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：烟蒂型投资不能和时间做朋友，但成长型公司可以和时间做朋友。\n\n**段永平** ：（赞）（2010-05-27）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-touziluoji-di6zhang-touzifangfalun#第六章 投资方法论 > 第5节 投资书籍及其它 > 投资书籍#021",
+      "sourceSlug": "duanyongping-touziluoji-di6zhang-touzifangfalun",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "网友：同意，对自己有启发的好书，基本都属于价格（书价＋时间成本）远低于价值的好投资。但是一本烂书，却属于价格（书价＋时间成本）远大于价值（是0或复数）的烂投资。我觉得成本主要是时间成本，书价在成本中占比很低，不属于重点关注对象。\n\n**段永平** ：（2010-05-05）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 五、30个商业案例点评 > 微软#003",
+      "sourceSlug": "duanyongping-shangyeluoji-di2jie-shangyemoshi",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "**段永平：** （**2012-07-04** ）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 比亚迪#004",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "3. 网友：最近媒体有报道，BYD又要进入家电行业了，他已经跨了好几个行业了。段大哥有什么评论吗？\n\n**段永平：** （2010-07-13）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 万科#007",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "3. 网友：我插一句：阿段前辈是不是对人也是这样呢，不喜欢太复杂的人，\n\n**段永平：** （2010-04-28）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 招商银行#008",
+      "sourceSlug": "duanyongping-shangyeluoji-di3jie-qiyewenhua",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "网友：我觉得我对企业文化的理解不错，不过在阿段这上升了一个台阶，比如福特的企业文化，员工第一，做出优秀的产品，最后才是利润。以前投过一家ST公司（财务异常上市公司），最开始提的口号好像是20年进入世界五百强，现在改为“一切以利润为导向“。这家公司问题很大，估计永远都翻不了身了\n\n**段永平：** （2010-11-15）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin#第4节：产品、差异化与创新 > 一、好产品 > 小天才电话手表#005",
+      "sourceSlug": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "3. 网友：以小天才为例，我家小孩之前用小米很便宜很耐用，屏幕都碎成什么样了，依然好用，充一次用一周！二百的东西我们觉得很值，但最后还是换成小天才了，因为孩子在班里加不了好友，大部分人都是小天才表，入不了他们的好友圈，没办法只能换成新款1000多的，现在每天微信，语音，建群各种聊，计步每天争第一！\n\n上周小孩同班的同学和我一个朋友的小孩三个一起公园里玩，2个小天才加好友了，一个360的加不了，第二天360也换成同款小天才了。这就是小天才目前的护城河，基于小孩社交圈形成的，和产品价格质量等都没任何关系……\n\n**段永平：** 。（2019-05-30）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin#第4节：产品、差异化与创新 > 三、创新 > 创新#002",
+      "sourceSlug": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "网友j：早餐，午餐，晚餐我们不说也会去吃--这是应该去做的事。同理，创新这一行为不说也要去做。应该是这样吧？\n\n**段永平：** （2010-09-06）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao#第5节：品牌、营销与广告 > 一、品牌 > 品牌价值#036",
+      "sourceSlug": "duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "**段永平：** （2019-04-30）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan#第7节：Stop doing list（不为清单） > 不拖付货款#003",
+      "sourceSlug": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "empty-response",
+      "before": "2. 网友：我曾经是ＢＢＫ（步步高）供应商，在合作的几年里，我们每次都能及时收到货款，从来都不知道你公司财务的电话，现在想来都是我职业生涯中的骄傲，更是ＢＢＫ无形价值的体现，从与贵公司合作中受益良多！慢慢地理解了你为什么能在生活中取得如此巨大的成功！\n\n**段永平：** （2010-03-24）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#010",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "**网友：**茅台**是**茅台**最好的背书。**\n\n正解！（2025-07-01）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 其他话题#006",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：新酒很多买去存着的，过几年再喝，现在很多喝的都是三四年前买的。\n\n大道：明白了。（2026-01-29）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 步步高 > 产品会说话#019",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "**网友:确实厉害，5年前给大女儿买了某儿童电话手表，用了2年就坏了，换了**小天才**。现在给小女儿也买了**小天才**，确实好用。当时买的某电话手表有个家长监听语音的功能(不知道现在有没有)，其实让我这种做家长的很不舒服，感觉孩子被家长监控了，这种不信任孩子的感觉很不好。不管怎么样深深地让我理解了便宜的往往是最贵的。**\n\n赞。(2024-11-06)",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 其他 > 泡泡玛特#001",
+      "sourceSlug": "dadaotouziwendalu-disanzhanggongsidianping",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "**网友：盲盒本质是赌博，新加坡禁止泡泡玛特，认为泡泡马特必须持有赌博许可、上缴赌博企业税才能进入市场……**\n\n有点意思。（2025-06-12）",
+      "after": ""
+    },
+    {
+      "blockId": "duanyongping-touziluoji-di7zhang-anlifenxi#第七章 案例分析 > 案例3：苹果 > 一、商业模式#026",
+      "sourceSlug": "duanyongping-touziluoji-di7zhang-anlifenxi",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "**段永平：果然如此！** （2012-04-22）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【茅台】#002",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：**茅台**是**茅台**最好的背书。\n\n正解！（2025-07-01）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【泡泡玛特】#001",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：盲盒本质是赌博，新加坡禁止泡泡玛特，认为泡泡马特必须持有赌博许可、上缴赌博企业税才能进入市场……\n\n有点意思。（2025-06-12）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#003",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "大道：[点赞]（2026-01-02）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 其他话题#006",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：新酒很多买去存着的，过几年再喝，现在很多喝的都是三四年前买的。\n\n大道：明白了。（2026-01-29）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈投资：懂生意、不投机，把长期主义的逻辑说透了 > 满仓主义者#005",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "大道：[点赞]（2025-11-03）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈公司：看不懂的模式坦然放手，好公司的文化终能纠错 > 拼多多#003",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：今天看到雪球上有商家抱怨拼多多罚款多，从他的截图上看，这个商家确实离谱。这涉及另外一个问题，拼多多上不仅底层的买家多，底层的卖家也非常多，买家很多是菜市场里为了一块钱磨半个小时的大妈，卖家很多也是大集上恨不得坑一把就跑的小商小贩。如果按照五环内投资者的思路，应该是找来非常多的客服，对整个交易、售后过程进行客观的评判，然后给双方一个大致合理的裁决，但是这是行不通的。首先，这群人本身就不怎么讲道理，很多人不占便宜就是吃亏；其次，整个客服的成本会非常夸张，大妈小贩有的是时间跟你慢慢磨。拼多多选择了另外一条路，简单粗暴的罚商家，小错小罚、大错大罚，甚至无错也罚，这样消费者满意了，[平台](/pingtai)也不需要多少客服。消费者也有评分机制，避免太离谱的消费者把商家薅破产了。这里唯一受伤的是商家，但是商家也是会算账的，如果太离谱了不开了或者去别的[平台](/pingtai)开就好，用整体商家供给情况来对这个偏向客户的尺度进行调节，总体上是有效的。至于说淘宝为何不这样，我认为有两个原因：1.淘宝复杂的运营机制把这群小商小贩拦在门外了，他们在淘宝上生意根本做不起来。2.客观说淘宝客服是比较偏向商家的，一般都是消费者吃亏，商家的抱怨自然就少了。中国的下沉市场，很多东西都是游走在灰色地带的，人员素质也是良莠不齐，拼多多把这门生意做这么大这么好，必然是要用很多五环内投资者诟病的手段的，这也是很多人认为拼多多野蛮的原因。\n\n大道：有点意思。（2026-01-23）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈公司：看不懂的模式坦然放手，好公司的文化终能纠错 > 其他公司#016",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：（分享购买**步步高**产品的体会）\n\n之前没完全能理解大道说的[本分](/benfen)是什么意思。这次**步步高**店员亲自用行动告诉我了，就是“我绝对不夸大任何功能，缺点和优点我都会如实告诉你。”\n\n当你觉得这个产品超级好，excellent to have one的时候，感觉怎么也至值5000 块，结果一看价格只需要 3000多，没有任何二次收费。而且已经付款的情况下，没有任何预兆地赠送很多额外福利，这些在之前的沟通中从来没提过。原来是可以这样做生意的。\n\n大道：[点赞]（2026-01-23）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 职业与创业#004",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：最近正在思考这个问题，望大道不吝赐教。作为一个 40 岁的男人，现在要想进一步发展需要长期驻在非洲（从事的行业针对非洲市场）。家庭在国内 等孩子上大学完全放手还要5年后，其中最放不下的是妻子（前年诊断出肺癌，但万幸发现早做了手术，还有靶向药可以用，一些医学项目跟踪4年OS很好）。家庭无法长期离开，守在家里就要尝试其它方向突破。每次都这样，说出问题其实自己也就有了答案。\n\n大道：[点赞]（2025-11-27）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 人生感悟#029",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：再次学习。\n\n大道：[点赞]（2026-01-05）",
+      "after": ""
+    },
+    {
+      "blockId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平重估泡泡玛特：从“看不懂”到认可“情绪价值” > 价值几何：壁垒与可持续性#011",
+      "sourceSlug": "dadaotouziwendalu-diliuzhangduzhegengxin",
+      "targetSlugs": [],
+      "type": "discarded-no-information",
+      "rule": "pure-reaction",
+      "before": "网友：如果大家真的想深入理解泡泡玛特，以下比较好的资料供参考：\n\n1、《因为独特》——李翔，强烈推荐！\n\n2、《专访泡泡玛特创始人王宁》——央视专访，主持人也叫王宁\n\n3、《扬声》对话王宁\n\n4、《创客中国》——王宁2016年参加的一档融资节目\n\n当然还有其他的视频，我个人看完觉得比较好的资料排行，认真看完这些资料，基本上对王宁本人，对泡泡玛特的理解会比之前好很多。\n\n大道：[点赞]（2026-04-09）",
+      "after": ""
+    }
+  ],
+  "dangerousNumericChanges": [],
   "nearDuplicateCandidates": [
     {
       "leftId": "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 投资简单但不容易 > 道需悟，术可学#002",
@@ -7599,6 +8578,13 @@
     {
       "leftId": "dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua#第二章 商业模式和企业文化 > 好的企业文化就是做对的事情 > 案例 > 万科#001",
       "rightId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 万科#006",
+      "similarity": 1,
+      "resolution": "kept-distinct-data",
+      "reason": "数字或日期不同"
+    },
+    {
+      "leftId": "dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua#第二章 商业模式和企业文化 > 利润之上的追求 > 赚本分钱，你会睡得好#007",
+      "rightId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 商业模式和企业文化 > 【利润之上的追求】#001",
       "similarity": 1,
       "resolution": "kept-distinct-data",
       "reason": "数字或日期不同"
@@ -8173,14 +9159,6 @@
       "resolution": "duplicate-reviewed",
       "reason": "回答仅有标点、格式或轻微措辞差异",
       "duplicateOf": "duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao#第5节：品牌、营销与广告 > 一、品牌 > 品牌价值#015"
-    },
-    {
-      "leftId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台的商业模式#006",
-      "rightId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 茅台的商业模式#006",
-      "similarity": 0.991,
-      "resolution": "duplicate-reviewed",
-      "reason": "回答仅有标点、格式或轻微措辞差异",
-      "duplicateOf": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 茅台的商业模式#006"
     },
     {
       "leftId": "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 五、30个商业案例点评 > 高端，低端商业模式#004",
@@ -9216,13 +10194,6 @@
       "duplicateOf": "duanyongping-touziluoji-di7zhang-anlifenxi#第七章 案例分析 > 案例1：贵州茅台 > 二、企业文化（right people）#018"
     },
     {
-      "leftId": "dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua#第二章 商业模式和企业文化 > 利润之上的追求 > 赚本分钱，你会睡得好#007",
-      "rightId": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 商业模式和企业文化 > 【利润之上的追求】#001",
-      "similarity": 0.9478,
-      "resolution": "kept-distinct-data",
-      "reason": "数字或日期不同"
-    },
-    {
       "leftId": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 新东方#009",
       "rightId": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 其他 > 新东方#004",
       "similarity": 0.9474,
@@ -10076,7 +11047,8 @@
         "价值投资是唯一的路",
         "见过大道不走小路"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diyizhangtouzidadao#第一章 投资大道 > 价值投资是唯一的路 > 见过大道不走小路#006",
@@ -17721,7 +18693,8 @@
         "第4节 什么人适合做股票投资？",
         "小投资者"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-touziluoji-di2jie-touzilijie#第二章 投资理解 > 第4节 什么人适合做股票投资？ > 小投资者#010",
@@ -18379,7 +19352,8 @@
         "第5节 封仓十年的选择",
         "封仓10年思路，是给企业定性（这是家好公司）"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-touziluoji-di2jie-touzilijie#第二章 投资理解 > 第5节 封仓十年的选择 > 封仓10年思路，是给企业定性（这是家好公司）#008",
@@ -19078,7 +20052,8 @@
         "第5节 封仓十年的选择",
         "封仓10年的角度思考"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-touziluoji-di2jie-touzilijie#第二章 投资理解 > 第5节 封仓十年的选择 > 封仓10年的角度思考#036",
@@ -19223,7 +20198,8 @@
         "第三章 golf和投资",
         "第1节 golf和投资"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-touziluoji-di3zhang-golfhetouzi#第三章 golf和投资 > 第1节 golf和投资#007",
@@ -24475,7 +25451,8 @@
         "第五章 估值逻辑",
         "第3节 现金流折现案例（雅虎）"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第3节 现金流折现案例（雅虎）#005",
@@ -24964,7 +25941,8 @@
         "第3节 现金流折现案例（雅虎）",
         "三、教学版：现金流折现法"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "duanyongping-touziluoji-di5zhang-guzhiluoji#第五章 估值逻辑 > 第3节 现金流折现案例（雅虎） > 三、教学版：现金流折现法#020",
@@ -31598,7 +32576,8 @@
         "第5节 投资书籍及其它",
         "投资书籍"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-touziluoji-di6zhang-touzifangfalun#第六章 投资方法论 > 第5节 投资书籍及其它 > 投资书籍#022",
@@ -41440,7 +42419,8 @@
         "五、30个商业案例点评",
         "微软"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-shangyeluoji-di2jie-shangyemoshi#第2节：商业模式 > 五、30个商业案例点评 > 公用行业#001",
@@ -49475,7 +50455,8 @@
         "七、26个企业文化案例点评",
         "比亚迪"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 比亚迪#005",
@@ -51517,7 +52498,8 @@
         "七、26个企业文化案例点评",
         "万科"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 万科#008",
@@ -51931,7 +52913,8 @@
         "七、26个企业文化案例点评",
         "招商银行"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-shangyeluoji-di3jie-qiyewenhua#第3节：企业文化 > 七、26个企业文化案例点评 > 招商银行#009",
@@ -52721,7 +53704,8 @@
         "一、好产品",
         "小天才电话手表"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin#第4节：产品、差异化与创新 > 一、好产品 > 小天才电话手表#006",
@@ -53827,7 +54811,8 @@
         "三、创新",
         "创新"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin#第4节：产品、差异化与创新 > 三、创新 > 创新#003",
@@ -55738,7 +56723,8 @@
         "一、品牌",
         "品牌价值"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao#第5节：品牌、营销与广告 > 一、品牌 > 品牌价值#037",
@@ -58383,7 +59369,8 @@
         "第7节：Stop doing list（不为清单）",
         "不拖付货款"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "empty-response"
     },
     {
       "id": "duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan#第7节：Stop doing list（不为清单） > 不拖付货款#004",
@@ -61760,10 +62747,8 @@
         "贵州茅台",
         "便宜或贵取决于对10年后状况的认识"
       ],
-      "status": "kept",
-      "targetSlugs": [
-        "wenda-company-maotai-03"
-      ]
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 便宜或贵取决于对10年后状况的认识#011",
@@ -61986,8 +62971,7 @@
         "贵州茅台",
         "关于i茅台"
       ],
-      "status": "duplicate",
-      "duplicateOf": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#001",
+      "status": "kept",
       "targetSlugs": [
         "wenda-company-maotai-02"
       ]
@@ -62222,8 +63206,7 @@
         "贵州茅台",
         "关于i茅台"
       ],
-      "status": "duplicate",
-      "duplicateOf": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#020",
+      "status": "kept",
       "targetSlugs": [
         "wenda-company-maotai-02"
       ]
@@ -62899,7 +63882,8 @@
         "贵州茅台",
         "其他话题"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 其他话题#007",
@@ -63693,7 +64677,8 @@
         "步步高",
         "产品会说话"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 步步高 > 企业文化是我们的核心竞争力#001",
@@ -67918,7 +68903,8 @@
         "其他",
         "泡泡玛特"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 其他 > 泡泡玛特#002",
@@ -72187,7 +73173,8 @@
         "案例3：苹果",
         "一、商业模式"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "duanyongping-touziluoji-di7zhang-anlifenxi#第七章 案例分析 > 案例3：苹果 > 一、商业模式#027",
@@ -78962,10 +79949,8 @@
         "公司点评",
         "【茅台】"
       ],
-      "status": "kept",
-      "targetSlugs": [
-        "wenda-company-maotai-01"
-      ]
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【茅台】#003",
@@ -79228,7 +80213,8 @@
         "公司点评",
         "【泡泡玛特】"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 《大道》出版后，段永平又说了些什么？ > 公司点评 > 【泡泡玛特】#002",
@@ -79503,7 +80489,8 @@
         "段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这",
         "关于i茅台"
       ],
-      "status": "kept",
+      "status": "duplicate",
+      "duplicateOf": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#001",
       "targetSlugs": [
         "wenda-company-maotai-02"
       ]
@@ -79529,7 +80516,8 @@
         "段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这",
         "关于i茅台"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 关于i茅台#004",
@@ -79761,7 +80749,8 @@
         "段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这",
         "关于i茅台"
       ],
-      "status": "kept",
+      "status": "duplicate",
+      "duplicateOf": "dadaotouziwendalu-disanzhanggongsidianping#第三章 公司点评 > 贵州茅台 > 关于i茅台#019",
       "targetSlugs": [
         "wenda-company-maotai-02"
       ]
@@ -80473,7 +81462,8 @@
         "段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这",
         "其他话题"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈茅台：i茅台真能再造两个茅台？打假+直销的底层逻辑藏在这 > 其他话题#007",
@@ -80862,7 +81852,8 @@
         "段永平谈投资：懂生意、不投机，把长期主义的逻辑说透了",
         "满仓主义者"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈投资：懂生意、不投机，把长期主义的逻辑说透了 > 满仓主义者#006",
@@ -82251,7 +83242,8 @@
         "段永平谈公司：看不懂的模式坦然放手，好公司的文化终能纠错",
         "拼多多"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈公司：看不懂的模式坦然放手，好公司的文化终能纠错 > 英伟达#001",
@@ -82549,7 +83541,8 @@
         "段永平谈公司：看不懂的模式坦然放手，好公司的文化终能纠错",
         "其他公司"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈公司：看不懂的模式坦然放手，好公司的文化终能纠错 > 其他公司#017",
@@ -82676,7 +83669,8 @@
         "段永平谈人生：做对的事、识对的人，平凡日子里的通透活法",
         "职业与创业"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 职业与创业#005",
@@ -83440,7 +84434,8 @@
         "段永平谈人生：做对的事、识对的人，平凡日子里的通透活法",
         "人生感悟"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平谈人生：做对的事、识对的人，平凡日子里的通透活法 > 人生感悟#030",
@@ -84672,7 +85667,8 @@
         "段永平重估泡泡玛特：从“看不懂”到认可“情绪价值”",
         "价值几何：壁垒与可持续性"
       ],
-      "status": "discarded-no-information"
+      "status": "discarded-no-information",
+      "reason": "pure-reaction"
     },
     {
       "id": "dadaotouziwendalu-diliuzhangduzhegengxin#第六章 读者更新 > 段永平重估泡泡玛特：从“看不懂”到认可“情绪价值” > 价值几何：壁垒与可持续性#012",

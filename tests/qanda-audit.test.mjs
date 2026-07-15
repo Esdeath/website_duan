@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import { validateAuditData } from '../scripts/qanda-cleaning-audit-lib.mjs'
+import { findEditorialResidues, validateAuditData } from '../scripts/qanda-cleaning-audit-lib.mjs'
 import { MERGED_COMPANY_REDIRECTS, TOPICS } from '../scripts/qanda-cleaning-config.mjs'
 
 test('audit data accepts complete mappings and reviewed near duplicates', () => {
@@ -20,11 +20,22 @@ test('audit data accepts complete mappings and reviewed near duplicates', () => 
     articles,
     redirects: [{ from: '/wenda-invest-01-part-1', to: '/wenda-invest-01' }],
     companyRedirects: [...MERGED_COMPANY_REDIRECTS].map(([from, to]) => ({ from: `/${from}`, to: `/${to}` })),
+    counts: { editorialChanges: 1 },
     records: [
       { id: 'a', status: 'kept', targetSlugs: ['wenda-invest-01'] },
       { id: 'b', status: 'duplicate', duplicateOf: 'a', targetSlugs: ['wenda-invest-01'] },
-      { id: 'c', status: 'discarded-no-information' },
+      { id: 'c', status: 'discarded-no-information', reason: 'pure-reaction' },
     ],
+    editorialChanges: [{
+      blockId: 'a',
+      sourceSlug: 'source-0',
+      targetSlugs: ['wenda-invest-01'],
+      type: 'format-normalized',
+      rule: 'repeated-question-mark',
+      before: '？？',
+      after: '？',
+    }],
+    dangerousNumericChanges: [],
     nearDuplicateCandidates: [{ leftId: 'a', rightId: 'b', resolution: 'duplicate-reviewed' }],
   })
 
@@ -38,7 +49,13 @@ test('audit data reports metadata, tag, target and unresolved review failures', 
     generatedArticles: 1,
     articles: [{ slug: 'article', visibleLength: 6001, tags: ['问答'] }],
     companyRedirects: [],
-    records: [{ id: 'a', status: 'kept', targetSlugs: [] }],
+    counts: { editorialChanges: 2 },
+    records: [
+      { id: 'a', status: 'kept', targetSlugs: [] },
+      { id: 'b', status: 'discarded-no-information' },
+    ],
+    editorialChanges: [{ blockId: 'missing', type: 'unknown', before: '', after: '' }],
+    dangerousNumericChanges: [{ blockId: 'a', before: '1499', after: '1500' }],
     nearDuplicateCandidates: [{ leftId: 'a', rightId: 'b' }],
   })
 
@@ -48,5 +65,29 @@ test('audit data reports metadata, tag, target and unresolved review failures', 
   assert.ok(errors.some((error) => error.includes('volume/chapter')))
   assert.ok(errors.some((error) => error.includes('tags')))
   assert.ok(errors.some((error) => error.includes('no target')))
+  assert.ok(errors.some((error) => error.includes('discard reason')))
+  assert.ok(errors.some((error) => error.includes('Editorial change')))
+  assert.ok(errors.some((error) => error.includes('Dangerous numeric')))
   assert.ok(errors.some((error) => error.includes('unresolved')))
+})
+
+test('editorial residue scan reports malformed symbols ordinals typos and known garble', () => {
+  const residues = findEditorialResidues([
+    '05网友：问题？？',
+    '大道：一位博有提到*()*。',
+    '大道：除非……d[0we8qfy-97p yvbcn]',
+    '_04.__错误的标签_',
+    '尾部残留 __',
+  ].join('\n'))
+
+  assert.deepEqual(new Set(residues), new Set([
+    'empty-markdown-link',
+    'repeated-question-mark',
+    'obsolete-question-ordinal',
+    'known-typo:博有',
+    'keyboard-garble',
+    'malformed-italic-number-label',
+    'trailing-underscore-debris',
+  ]))
+  assert.deepEqual(findEditorialResidues('网友：问题？\n\n大道：回答。'), [])
 })

@@ -1,5 +1,6 @@
 import { answerFingerprint, normalizeForDuplicate } from './qanda-cleaning-lib.mjs'
 import { sectionForBlock } from './qanda-cleaning-config.mjs'
+import { cleanEditorialMarkdown } from './qanda-editorial-cleaning.mjs'
 
 const LEGACY_LINK_TARGETS = new Map([
   ['duanyongping-shangyeluoji-di3jie-qiyewenhua', 'wenda-business-08'],
@@ -14,7 +15,7 @@ export function rewriteLegacyLinks(markdown) {
 
 export function stripObsoleteQuestionOrdinals(markdown) {
   return markdown.replace(
-    /^([ \t]*(?:>\s*)?(?:\*\*)?)[０-９0-9一二三四五六七八九十百]{1,4}\s*[.．、]\s*(?=(?:\*\*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝))/gmu,
+    /^([ \t]*(?:>\s*)?(?:\*\*)?)[０-９0-9一二三四五六七八九十百]{1,3}\s*(?:[.．、]\s*)?(?:_{1,2}\s*)?(?=(?:\*\*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝))/gmu,
     '$1',
   )
 }
@@ -49,20 +50,32 @@ export function standardizeQaMarkers(markdown) {
     .join('\n\n')
 }
 
-export function isNoInformation(block) {
+export function classifyNoInformation(block) {
   const normalized = answerFingerprint(block.markdown) || normalizeForDuplicate(block.markdown)
   const withoutSpeakers = normalized
     .replace(/网友[:：]?/g, '')
     .replace(/段永平[:：]?/g, '')
     .replace(/大道[:：]?/g, '')
+    .replace(/不明真相的群众[:：]?/g, '')
   const semanticAnswer = withoutSpeakers
     .replace(/\((?:19|20)\d{2}[^)]*\)/g, '')
     .replace(/[。.!！?？,，:：;；、\[\]()（）…]+/g, '')
     .trim()
-  if (!semanticAnswer) return true
-  if (/^(?:谢谢|多谢|感谢|不客气|呵呵|哈哈|嗯|恩|不知道|没看过|没研究过|没关注|不了解|看不懂|不懂|点赞|赞|有点意思|确实有点意思|明白了|果然如此)$/.test(semanticAnswer)) return true
-  if (Array.from(semanticAnswer).length <= 18 && /谢谢.*不客气|感谢.*不用谢|请收下.*谢谢/.test(semanticAnswer)) return true
-  return false
+  if (/^(?:不知道|没看过|没研究过|没关注|不了解|看不懂|不懂)$/.test(semanticAnswer)) {
+    return { discard: false }
+  }
+  if (!semanticAnswer) return { discard: true, reason: 'empty-response' }
+  if (/^(?:谢谢|多谢|感谢|不客气|呵呵|哈哈|嗯|恩|点赞|赞|有点意思|这个有点意思|确实有点意思|明白了|果然如此|正解)$/.test(semanticAnswer)) {
+    return { discard: true, reason: 'pure-reaction' }
+  }
+  if (Array.from(semanticAnswer).length <= 18 && /谢谢.*不客气|感谢.*不用谢|请收下.*谢谢/.test(semanticAnswer)) {
+    return { discard: true, reason: 'courtesy-only' }
+  }
+  return { discard: false }
+}
+
+export function isNoInformation(block) {
+  return classifyNoInformation(block).discard
 }
 
 function plainHeading(value) {
@@ -147,7 +160,9 @@ export function buildTopicChapter(topic, blocks) {
   for (const [sourceIndex, block] of blocks.entries()) {
     const sectionInfo = sectionForBlock(topic.slug, block)
     const current = sections.get(sectionInfo.title) || { ...sectionInfo, units: [], subsections: new Map() }
-    const cleaned = shortenParagraphs(standardizeQaMarkers(stripObsoleteQuestionOrdinals(rewriteLegacyLinks(block.markdown))))
+    const normalized = stripObsoleteQuestionOrdinals(rewriteLegacyLinks(block.markdown))
+    const editorial = cleanEditorialMarkdown(normalized, { blockId: block.id })
+    const cleaned = shortenParagraphs(standardizeQaMarkers(editorial.markdown))
     const unit = { markdown: cleaned, date: extractBlockDate(block), sourceIndex }
     if (sectionInfo.subsectionTitle) {
       const subsection = current.subsections.get(sectionInfo.subsectionTitle) || {

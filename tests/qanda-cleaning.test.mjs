@@ -22,6 +22,7 @@ import {
 } from '../scripts/qanda-cleaning-config.mjs'
 import {
   buildTopicChapter,
+  classifyNoInformation,
   extractBlockDate,
   isNoInformation,
   renderArticleFile,
@@ -30,6 +31,10 @@ import {
   standardizeQaMarkers,
   stripObsoleteQuestionOrdinals,
 } from '../scripts/qanda-cleaning-generate-lib.mjs'
+import {
+  cleanEditorialMarkdown,
+  hasDangerousNumericChange,
+} from '../scripts/qanda-editorial-cleaning.mjs'
 
 test('parseFrontmatter preserves article body and parses arrays', () => {
   const parsed = parseFrontmatter(`---\ntitle: "测试"\norder: 200\ntags: ["投资原则", "价值投资"]\n---\n\n网友：问题。\n\n**段永平：** 回答。\n`)
@@ -301,10 +306,10 @@ test('reviewed near duplicates are removed globally across source topics', () =>
   assert.equal(result.duplicateOf.size, 1)
 })
 
-test('only greetings and empty acknowledgements count as no-information', () => {
+test('greetings are no-information while ability-circle boundaries remain', () => {
   assert.equal(isNoInformation({ markdown: '网友：谢谢。\n\n**段永平：** 不客气。' }), true)
-  assert.equal(isNoInformation({ markdown: '**段永平：** 不知道。' }), true)
-  assert.equal(isNoInformation({ markdown: '**网友：怎么看这家公司？** **段永平：** 没研究过。' }), true)
+  assert.equal(isNoInformation({ markdown: '**段永平：** 不知道。' }), false)
+  assert.equal(isNoInformation({ markdown: '**网友：怎么看这家公司？** **段永平：** 没研究过。' }), false)
   assert.equal(isNoInformation({ markdown: '**段永平：** 不做空。' }), false)
 })
 
@@ -313,6 +318,31 @@ test('dated reactions are no-information while short factual answers are retaine
   assert.equal(isNoInformation({ markdown: '网友：这个结论怎么样？\n\n**段永平：** 有点意思。（2025-06-12）' }), true)
   assert.equal(isNoInformation({ markdown: '网友：茅台提价的本质是什么？\n\n**段永平：** 需求。（2019-08-21）' }), false)
   assert.equal(isNoInformation({ markdown: '网友：您坐的特斯拉是哪款？\n\n**大道：** Model Y。（2026-02-05）' }), false)
+})
+
+test('no-information editorial boundary removes reactions but keeps ability-circle answers', () => {
+  const discarded = [
+    ['thanks', '网友：谢谢！\n\n大道：不客气。'],
+    ['like', '网友：点赞。'],
+    ['laugh', '大道：呵呵。'],
+    ['reaction', '不明真相的群众：这个有点意思。'],
+  ]
+  const retained = [
+    ['unknown', '大道：不知道。'],
+    ['unresearched', '大道：没研究过。'],
+    ['unclear', '大道：看不懂。'],
+    ['rule', '大道：不做空。'],
+    ['valuation', '大道：价格不便宜。'],
+  ]
+
+  for (const [id, markdown] of discarded) {
+    const result = classifyNoInformation({ id, markdown })
+    assert.equal(result.discard, true, id)
+    assert.ok(result.reason, id)
+  }
+  for (const [id, markdown] of retained) {
+    assert.deepEqual(classifyNoInformation({ id, markdown }), { discard: false }, id)
+  }
 })
 
 test('topic builder emits one unlimited chapter with continuous numbered sections', () => {
@@ -520,6 +550,118 @@ test('obsolete source ordinals are removed only before question speakers', () =>
   }])
   assert.match(article.body, /^网友：什么样的人是价值投资者？$/m)
   assert.doesNotMatch(article.body, /^04．网友/m)
+})
+
+test('editorial symbols are normalized without changing factual numbers', () => {
+  const source = '网友：茅台*()*怎么样？？\n\n大道：价格是1499元。。（2025-10-26)'
+  const result = cleanEditorialMarkdown(source, { blockId: 'sample' })
+
+  assert.equal(result.markdown, '网友：茅台怎么样？\n\n大道：价格是1499元。（2025-10-26）')
+  assert.equal(hasDangerousNumericChange(source, result.markdown), false)
+  assert.ok(result.changes.every((change) => change.blockId === 'sample'))
+  assert.deepEqual(new Set(result.changes.map((change) => change.type)), new Set(['format-normalized']))
+})
+
+test('mixed-parenthesis cleanup never consumes markdown link delimiters or nested parentheses', () => {
+  const source = [
+    '估值要考虑（收入增长率、[折现](/zhexian)和竞争优势。',
+    '网友：比赛时间是（北京时间周五 (2/13) 吗？',
+    '大道：日期写成（2026-01-21) 时可以修正。',
+  ].join('\n')
+  const result = cleanEditorialMarkdown(source)
+
+  assert.match(result.markdown, /\[折现\]\(\/zhexian\)/)
+  assert.match(result.markdown, /（北京时间周五 \(2\/13\)/)
+  assert.match(result.markdown, /（2026-01-21）/)
+})
+
+test('numeric protection preserves decimals percentages dates money and list markers', () => {
+  const source = [
+    '1. 现金流折现率为1.06。',
+    '2. 持股40%，价格是1,499元。',
+    '3. 日期为2025-10-26。',
+    '[链接](/company-1499)',
+  ].join('\n')
+  const harmless = source.replace('。', '！')
+  const dangerous = source.replace('1,499元', '1,500元')
+
+  assert.equal(hasDangerousNumericChange(source, harmless), false)
+  assert.equal(hasDangerousNumericChange(source, dangerous), true)
+  assert.equal(cleanEditorialMarkdown(source).markdown, source)
+})
+
+test('topic builder applies editorial cleaning to generated chapters', () => {
+  const topic = TOPICS.find((item) => item.slug === 'wenda-invest-01')
+  const article = buildTopicChapter(topic, [{
+    id: 'editorial-integration',
+    headingPath: ['价值投资'],
+    markdown: '网友：一位博有*()*问价值投资是什么？？\n\n**段永平：** 买股票就是买公司。',
+  }])
+
+  assert.match(article.body, /网友：一位博友问价值投资是什么？/)
+  assert.doesNotMatch(article.body, /博有|\*\(\)\*|？？/)
+})
+
+test('editorial cleaning removes a contributor-only paragraph but keeps the following discussion', () => {
+  const source = [
+    '**感谢网友提问，排名不分先后：** 张三、李四、user2008、王五……',
+    '',
+    '* * *',
+    '',
+    '**段永平：** Stop Doing List 的意思是决定不做什么。（2011-01-01）',
+  ].join('\n')
+  const result = cleanEditorialMarkdown(source, { blockId: 'contributors' })
+
+  assert.doesNotMatch(result.markdown, /感谢网友提问|张三|user2008/)
+  assert.doesNotMatch(result.markdown, /\* \* \*/)
+  assert.match(result.markdown, /Stop Doing List 的意思是决定不做什么/)
+  assert.match(result.markdown, /2011-01-01/)
+  assert.equal(hasDangerousNumericChange(result.numericBaseline, result.markdown), false)
+  assert.ok(result.changes.some((change) => change.type === 'discarded-no-information'))
+})
+
+test('editorial cleaning repairs malformed italic labels and trailing underscore debris', () => {
+  const source = [
+    '_04.__美股评论：柯达的双重讽刺_',
+    '',
+    '这仅是暂时解决问题…… __',
+  ].join('\n')
+  const result = cleanEditorialMarkdown(source)
+
+  assert.equal(result.markdown, [
+    '_04. 美股评论：柯达的双重讽刺_',
+    '',
+    '这仅是暂时解决问题……',
+  ].join('\n'))
+})
+
+test('editorial cleaning removes only a keyboard-garble suffix from a meaningful answer', () => {
+  const source = '大道：啊？！我不太相信！除非……d[0we8qfy-97p yvbcn] w[-q0cu= -2uirft0 7yr]-02 fnbv;i LYUOC BG-na=ekgtrld\\\\-exjh- wqcgtvhy=4y,t？？？？？（2025-11-20）'
+  const result = cleanEditorialMarkdown(source, { blockId: 'garble' })
+
+  assert.equal(result.markdown, '大道：啊？！我不太相信！除非……（2025-11-20）')
+  assert.equal(hasDangerousNumericChange(result.numericBaseline, result.markdown), false)
+  assert.ok(result.changes.some((change) => change.type === 'discarded-garbled'))
+})
+
+test('topic builder removes compact and underscore-padded question ordinals', () => {
+  const topic = TOPICS.find((item) => item.slug === 'wenda-invest-01')
+  const article = buildTopicChapter(topic, [
+    {
+      id: 'compact-ordinal',
+      headingPath: ['价值投资'],
+      markdown: '05网友：价值投资是什么？\n\n**段永平：** 买股票就是买公司。',
+    },
+    {
+      id: 'padded-ordinal',
+      headingPath: ['价值投资'],
+      markdown: '05． __ 网友：怎样理解能力圈？\n\n**段永平：** 不懂不做。',
+    },
+  ])
+
+  assert.match(article.body, /^网友：价值投资是什么？$/m)
+  assert.match(article.body, /^网友：怎样理解能力圈？$/m)
+  assert.doesNotMatch(article.body, /05网友|05．|__/)
 })
 
 test('rendered article has complete Nuxt Content metadata and visible tags', () => {

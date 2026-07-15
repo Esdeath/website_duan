@@ -1,3 +1,30 @@
+import { TYPO_RULES } from './qanda-editorial-cleaning.mjs'
+
+const EDITORIAL_RESIDUE_PATTERNS = [
+  ['empty-markdown-link', /\*\(\)\*/u],
+  ['empty-parentheses', /(?<!\*)\(\)(?!\*)|（）/u],
+  ['repeated-question-mark', /[?？]{2,}/u],
+  ['repeated-exclamation-mark', /[!！]{2,}/u],
+  ['repeated-full-stop', /。{2,}/u],
+  ['repeated-comma', /，{2,}/u],
+  ['repeated-semicolon', /；{2,}/u],
+  ['repeated-colon', /：{2,}/u],
+  ['obsolete-question-ordinal', /^(?:[ \t]*(?:>\s*)?(?:\*\*)?)[０-９0-9一二三四五六七八九十百]{1,3}\s*(?:[.．、]\s*)?(?:_{1,2}\s*)?(?=(?:\*\*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝))/mu],
+  ['keyboard-garble', /d\[0we8qfy-97p yvbcn\]/u],
+  ['malformed-italic-number-label', /^_[０-９0-9]{1,3}[.．、]__/mu],
+  ['trailing-underscore-debris', /[ \t]+__\s*$/mu],
+]
+
+export function findEditorialResidues(markdown) {
+  const residues = EDITORIAL_RESIDUE_PATTERNS
+    .filter(([, pattern]) => pattern.test(markdown))
+    .map(([name]) => name)
+  for (const typo of TYPO_RULES.keys()) {
+    if (markdown.includes(typo)) residues.push(`known-typo:${typo}`)
+  }
+  return residues
+}
+
 export function validateAuditData(audit) {
   const errors = []
   if (audit.sourceArticles?.length !== 20) errors.push(`Expected 20 source articles, found ${audit.sourceArticles?.length || 0}`)
@@ -59,6 +86,33 @@ export function validateAuditData(audit) {
     if (record.status === 'duplicate' && (!record.duplicateOf || !records.has(record.duplicateOf))) {
       errors.push(`Duplicate block has invalid canonical target: ${record.id}`)
     }
+    if (record.status === 'discarded-no-information' && !record.reason) {
+      errors.push(`Discarded block has no discard reason: ${record.id}`)
+    }
+  }
+
+  if (audit.counts?.editorialChanges !== audit.editorialChanges?.length) {
+    errors.push(`Editorial change count mismatch: ${audit.counts?.editorialChanges || 0} / ${audit.editorialChanges?.length || 0}`)
+  }
+  const validChangeTypes = new Set([
+    'format-normalized',
+    'typo-corrected',
+    'discarded-no-information',
+    'discarded-garbled',
+    'kept-original',
+  ])
+  for (const change of audit.editorialChanges || []) {
+    if (!records.has(change.blockId)) errors.push(`Editorial change has invalid blockId: ${change.blockId}`)
+    if (!validChangeTypes.has(change.type)) errors.push(`Editorial change has invalid type: ${change.blockId}`)
+    if (!change.rule || !Object.hasOwn(change, 'before') || !Object.hasOwn(change, 'after')) {
+      errors.push(`Editorial change is incomplete: ${change.blockId}`)
+    }
+    if (!change.sourceSlug || !Array.isArray(change.targetSlugs)) {
+      errors.push(`Editorial change has incomplete source/target mapping: ${change.blockId}`)
+    }
+  }
+  if (audit.dangerousNumericChanges?.length) {
+    errors.push(`Dangerous numeric changes found: ${audit.dangerousNumericChanges.length}`)
   }
 
   for (const candidate of audit.nearDuplicateCandidates || []) {

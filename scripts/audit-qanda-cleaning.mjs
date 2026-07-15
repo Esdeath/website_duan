@@ -11,7 +11,7 @@ import {
   splitQuestionAnswerBlocks,
   visibleTextLength,
 } from './qanda-cleaning-lib.mjs'
-import { validateAuditData } from './qanda-cleaning-audit-lib.mjs'
+import { findEditorialResidues, validateAuditData } from './qanda-cleaning-audit-lib.mjs'
 import { chineseNumber } from './qanda-cleaning-generate-lib.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -57,6 +57,7 @@ async function main() {
   const slugs = new Map()
   const duplicateParagraphs = new Map()
   const activeBlocks = []
+  const editorialResidues = []
   const volumeChapters = new Map(EXPECTED_VOLUMES.map(([volume]) => [volume, []]))
 
   for (const file of await contentFiles()) {
@@ -83,8 +84,9 @@ async function main() {
     if (!Array.isArray(parsed.data.tags) || parsed.data.tags.length < 3 || parsed.data.tags.length > 6) {
       errors.push(`Generated article needs 3-6 tags: ${parsed.data.slug}`)
     }
-    if (/^(?:\*\*)?[０-９0-9一二三四五六七八九十百]+[.．、]\s*(?:\*\*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)/mu.test(parsed.body)) {
-      errors.push(`Obsolete question ordinal remains: ${parsed.data.slug}`)
+    for (const residue of findEditorialResidues(parsed.body)) {
+      editorialResidues.push({ slug: parsed.data.slug, residue })
+      errors.push(`Editorial residue remains: ${parsed.data.slug} (${residue})`)
     }
 
     const sectionHeadings = [...parsed.body.matchAll(/^## 第(.+?)节\s+(.+)$/gm)]
@@ -198,6 +200,12 @@ async function main() {
     repeatedParagraphGroups: repeatedParagraphGroups.length,
     longParagraphWarnings: warnings.filter((warning) => warning.startsWith('Long paragraph')).length,
     sparseSectionWarnings: warnings.filter((warning) => warning.startsWith('Sparse section')).length,
+    editorialChanges: audit.editorialChanges?.length || 0,
+    typoCorrections: audit.editorialChanges?.filter((change) => change.type === 'typo-corrected').length || 0,
+    formatNormalizations: audit.editorialChanges?.filter((change) => change.type === 'format-normalized').length || 0,
+    discardedEditorial: audit.editorialChanges?.filter((change) => change.type.startsWith('discarded-')).length || 0,
+    dangerousNumericChanges: audit.dangerousNumericChanges?.length || 0,
+    editorialResidues: editorialResidues.length,
     errors: errors.length,
     warnings: warnings.length,
   }

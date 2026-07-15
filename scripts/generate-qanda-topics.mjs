@@ -21,7 +21,13 @@ import {
   VOLUMES,
   classifyBlock,
 } from './qanda-cleaning-config.mjs'
-import { buildTopicChapter, chineseNumber, isNoInformation, renderArticleFile } from './qanda-cleaning-generate-lib.mjs'
+import {
+  buildTopicChapter,
+  chineseNumber,
+  classifyNoInformation,
+  renderArticleFile,
+} from './qanda-cleaning-generate-lib.mjs'
+import { cleanEditorialMarkdown, hasDangerousNumericChange } from './qanda-editorial-cleaning.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const CONTENT_ROOT = path.join(ROOT, 'content', 'dao')
@@ -251,8 +257,19 @@ async function main() {
   const companyRedirects = buildCompanyRedirects()
   priorityBySlug = new Map(sourceArticles.map((source, index) => [source.slug, index]))
   const sources = loadSources(sourceCommit, new Set(sourceArticles.map((source) => source.slug)))
-  const allBlocks = buildBlocks(sources)
-  const noInformation = allBlocks.filter(isNoInformation)
+  const sourceBlocks = buildBlocks(sources)
+  const editorialChangesByBlock = new Map()
+  const dangerousNumericChanges = []
+  const allBlocks = sourceBlocks.map((block) => {
+    const editorial = cleanEditorialMarkdown(block.markdown, { blockId: block.id })
+    editorialChangesByBlock.set(block.id, editorial.changes)
+    if (editorial.changes.length && hasDangerousNumericChange(editorial.numericBaseline, editorial.markdown)) {
+      dangerousNumericChanges.push({ blockId: block.id, before: block.markdown, after: editorial.markdown })
+    }
+    return { ...block, markdown: editorial.markdown }
+  })
+  const noInformationStates = new Map(allBlocks.map((block) => [block.id, classifyNoInformation(block)]))
+  const noInformation = allBlocks.filter((block) => noInformationStates.get(block.id).discard)
   const noInformationIds = new Set(noInformation.map((block) => block.id))
   const informative = allBlocks.filter((block) => !noInformationIds.has(block.id))
   const deduplicated = deduplicateBlocks(informative, { minimumLength: 30, fingerprint: answerFingerprint })
@@ -278,6 +295,7 @@ async function main() {
         sourceSlug: block.sourceSlug,
         headingPath: block.headingPath,
         status: 'discarded-no-information',
+        reason: noInformationStates.get(block.id).reason,
       }
     }
     const state = dedupAudit.get(block.id)
@@ -312,6 +330,33 @@ async function main() {
     }
   })
 
+  const recordById = new Map(records.map((record) => [record.id, record]))
+  const blockById = new Map(sourceBlocks.map((block) => [block.id, block]))
+  const editorialChanges = []
+  for (const [blockId, changes] of editorialChangesByBlock) {
+    const block = blockById.get(blockId)
+    const record = recordById.get(blockId)
+    for (const change of changes) {
+      editorialChanges.push({
+        ...change,
+        sourceSlug: block.sourceSlug,
+        targetSlugs: record?.targetSlugs || [],
+      })
+    }
+  }
+  for (const block of noInformation) {
+    const state = noInformationStates.get(block.id)
+    editorialChanges.push({
+      blockId: block.id,
+      sourceSlug: block.sourceSlug,
+      targetSlugs: [],
+      type: 'discarded-no-information',
+      rule: state.reason,
+      before: block.markdown,
+      after: '',
+    })
+  }
+
   const audit = {
     version: 1,
     sourceCommit,
@@ -325,6 +370,7 @@ async function main() {
       duplicateBlocks: records.filter((item) => item.status === 'duplicate').length,
       discardedNoInformation: records.filter((item) => item.status === 'discarded-no-information').length,
       nearDuplicateCandidates: nearDuplicateCandidates.length,
+      editorialChanges: editorialChanges.length,
     },
     articles: articles.map((article) => ({
       slug: article.slug,
@@ -341,6 +387,8 @@ async function main() {
     })),
     redirects: partRedirects,
     companyRedirects,
+    editorialChanges,
+    dangerousNumericChanges,
     nearDuplicateCandidates,
     records,
   }
@@ -352,6 +400,8 @@ async function main() {
     keptBlocks: nearReview.kept.length,
     generatedArticles: articles.length,
     nearDuplicateCandidates: nearDuplicateCandidates.length,
+    editorialChanges: editorialChanges.length,
+    dangerousNumericChanges: dangerousNumericChanges.length,
     longestArticle: Math.max(...audit.articles.map((article) => article.visibleLength)),
   }, null, 2))
 
