@@ -286,6 +286,7 @@ async function loadSectionArticles(section) {
   for (const file of files) {
     const raw = await readFile(file, "utf8");
     const { data, content } = parseFrontmatter(raw);
+    if (data.type === "legacy-index" || data.type === "topic-index") continue;
     if (!data.slug || !data.title) {
       console.warn(`⚠️ 缺少 slug/title: ${file}`);
       continue;

@@ -79,6 +79,5 @@ tags: ["库克", "苹果", "CEO", "理性", "企业文化"]
 
 ## 原始出处
 
-- [商业逻辑篇：第1节 伟大企业](/duanyongping-shangyeluoji-di1jie-weidaqiye)
-- [商业逻辑篇：第5节 品牌、营销与广告](/duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao)
-
+- [苹果：管理层与文化](/wenda-company-apple-02-part-1)
+- [苹果：产品与生态](/wenda-company-apple-01-part-1)

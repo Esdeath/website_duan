@@ -77,6 +77,4 @@ tags: ["丁磊", "网易", "游戏", "现金", "企业家"]
 
 ## 原始出处
 
-- [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
-- [投资逻辑篇：第7章：案例分析](/duanyongping-touziluoji-di7zhang-anlifenxi)
-
+- [网易公司问答](/wenda-company-netease-part-1)

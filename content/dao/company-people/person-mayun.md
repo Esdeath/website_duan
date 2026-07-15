@@ -75,6 +75,5 @@ tags: ["马云", "阿里巴巴", "企业文化", "平常心", "理想主义"]
 
 ## 原始出处
 
-- [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
-- [商业逻辑篇：第3节 企业文化](/duanyongping-shangyeluoji-di3jie-qiyewenhua)
-
+- [阿里巴巴与雅虎公司问答](/wenda-company-alibaba-yahoo-part-1)
+- [企业文化](/wenda-business-08-part-1)

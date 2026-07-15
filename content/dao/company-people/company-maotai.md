@@ -80,6 +80,5 @@ tags: ["贵州茅台", "品牌", "现金流", "能力圈", "长期持有"]
 
 ## 原始出处
 
-- [商业逻辑篇：第1节 伟大企业](/duanyongping-shangyeluoji-di1jie-weidaqiye)
-- [商业逻辑篇：第5节 品牌、营销与广告](/duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao)
-
+- [茅台：产品与模式](/wenda-company-maotai-01-part-1)
+- [茅台：治理与渠道](/wenda-company-maotai-02-part-1)

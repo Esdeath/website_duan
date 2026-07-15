@@ -76,6 +76,4 @@ tags: ["阿里巴巴", "马云", "企业文化", "商业模式", "保留"]
 
 ## 原始出处
 
-- [商业逻辑篇：第1节 伟大企业](/duanyongping-shangyeluoji-di1jie-weidaqiye)
-- [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
-
+- [阿里巴巴与雅虎公司问答](/wenda-company-alibaba-yahoo-part-1)

@@ -91,6 +91,5 @@ tags: ["泡泡玛特", "王宁", "情绪价值", "IP", "品牌", "重估案例"]
 
 ## 原始出处
 
-- [问答录：第六章 更新](/dadaotouziwendalu-diliuzhangduzhegengxin)
-- [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
+- [泡泡玛特公司问答](/wenda-company-pop-mart-part-1)
 - [2025年谈躺平与内卷、与王石交流子女教育](/duanyongping-2025niantantangpingyuneijuan-yuwangshijiaoliuzinvjiaoyu)

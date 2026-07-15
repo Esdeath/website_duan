@@ -7,8 +7,12 @@ const { data: daoArticles } = await useAsyncData('layout-dao', () =>
   queryCollection('dao').select('title', 'slug', 'description', 'category', 'order', 'type', 'body').order('order', 'ASC').all()
 )
 
+const visibleDaoArticles = computed(() =>
+  ((daoArticles.value as any[]) || []).filter((article) => article.type !== 'legacy-index')
+)
+
 const sections = computed(() => [
-  { name: '段永平投资问答录', articles: (daoArticles.value as any) || [], categoryOrder: daoCategoryOrder }
+  { name: '段永平投资问答录', articles: visibleDaoArticles.value, categoryOrder: daoCategoryOrder }
 ])
 
 const mobileMenuOpen = ref(false)

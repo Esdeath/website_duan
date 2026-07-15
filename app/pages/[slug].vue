@@ -44,9 +44,15 @@ const siteUrl = String(config.public.siteUrl || '').replace(/\/$/, '')
 
 const pageData = computed(() => page.value as any)
 const articleUrl = computed(() => `${siteUrl}/${pageData.value?.slug}`)
+const pageTags = computed<string[]>(() => Array.isArray(pageData.value?.tags) ? pageData.value.tags : [])
 const isQanda = computed(() => {
   const path = String((pageData.value as any)?._path || (pageData.value as any)?.path || '')
   return path.includes('/qanda/') || pageData.value?.category === '投资问答录'
+})
+const schemaType = computed(() => {
+  if (pageData.value?.type === 'topic-index') return 'CollectionPage'
+  if (pageData.value?.type === 'legacy-index') return 'WebPage'
+  return isQanda.value ? 'QAPage' : 'Article'
 })
 
 const duanyongpingPerson = {
@@ -88,7 +94,7 @@ const articleSchema = computed(() => {
   const published = d.sourceDate || d.date
   const schema: Record<string, any> = {
     '@context': 'https://schema.org',
-    '@type': isQanda.value ? 'QAPage' : 'Article',
+    '@type': schemaType.value,
     headline: d.title,
     name: d.title,
     description: d.seoDescription || d.description,
@@ -106,6 +112,7 @@ const articleSchema = computed(() => {
     schema.dateModified = published
   }
   if (d.category) schema.articleSection = d.category
+  if (Array.isArray(d.tags) && d.tags.length) schema.keywords = d.tags
   if (d.source || d.sourceUrl) {
     schema.citation = [
       {
@@ -157,6 +164,9 @@ useHead({
       <p class="eyebrow">{{ eyebrow }}</p>
       <h1>{{ (page as any).title }}</h1>
       <p class="desc">{{ (page as any).description }}</p>
+      <div v-if="pageTags.length" class="article-tags" aria-label="文章标签">
+        <span v-for="tag in pageTags" :key="tag">{{ tag }}</span>
+      </div>
       <ShareButtons :title="(page as any).title" :description="(page as any).description" :slug="slug" />
     </header>
 
@@ -232,6 +242,23 @@ useHead({
   font-family: var(--reading);
   font-size: 15px;
   line-height: 1.75;
+}
+
+.article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.article-tags span {
+  padding: 4px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 /* 原始出处 footer */

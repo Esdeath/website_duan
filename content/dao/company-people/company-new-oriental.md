@@ -78,6 +78,5 @@ tags: ["新东方", "俞敏洪", "教育", "商业模式", "保留"]
 
 ## 原始出处
 
-- [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
-- [商业逻辑篇：第3节 企业文化](/duanyongping-shangyeluoji-di3jie-qiyewenhua)
-
+- [新东方公司问答](/wenda-company-new-oriental)
+- [企业文化](/wenda-business-08-part-1)

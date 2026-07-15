@@ -4,6 +4,7 @@ type DaoItem = {
   description: string
   category?: string
   order?: number
+  type?: string
 }
 
 const CATEGORY_ORDER = ['核心哲学', '投资理念', '企业经营', '品格与心性', '财务指标', '访谈实录', '投资问答录']
@@ -14,15 +15,17 @@ export default defineEventHandler(async (event) => {
 
   // @ts-expect-error server queryCollection requires (event, collection)
   const items: DaoItem[] = await queryCollection(event, 'dao')
-    .select('slug', 'title', 'description', 'category', 'order')
+    .select('slug', 'title', 'description', 'category', 'order', 'type')
     .all()
 
   const grouped = new Map<string, DaoItem[]>()
   for (const item of items) {
-    const key = item.category || '其他'
-    const list = grouped.get(key) || []
-    list.push(item)
-    grouped.set(key, list)
+    if (item.type !== 'legacy-index') {
+      const key = item.category || '其他'
+      const list = grouped.get(key) || []
+      list.push(item)
+      grouped.set(key, list)
+    }
   }
   for (const list of grouped.values()) {
     list.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999))

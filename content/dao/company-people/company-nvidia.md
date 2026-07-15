@@ -82,6 +82,4 @@ tags: ["英伟达", "黄仁勋", "CUDA", "AI", "护城河", "能力圈"]
 
 ## 原始出处
 
-- [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
-- [问答录：第六章 读者更新](/dadaotouziwendalu-diliuzhangduzhegengxin)
-
+- [英伟达公司问答](/wenda-company-nvidia)

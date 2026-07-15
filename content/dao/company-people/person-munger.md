@@ -79,6 +79,5 @@ tags: ["芒格", "理性", "逆向思维", "能力圈", "Costco"]
 
 ## 原始出处
 
-- [投资逻辑篇：第2节 投资理解](/duanyongping-touziluoji-di2jie-touzilijie)
-- [投资逻辑篇：第6章 投资方法论](/duanyongping-touziluoji-di6zhang-touzifangfalun)
-
+- [投资为什么简单但不容易](/wenda-invest-02-part-1)
+- [投资心态、Golf、阅读与学习](/wenda-invest-12-part-1)

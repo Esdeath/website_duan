@@ -75,6 +75,5 @@ tags: ["季克良", "贵州茅台", "造钟人", "质量文化", "品牌"]
 
 ## 原始出处
 
-- [问答录：第三章 公司点评](/dadaotouziwendalu-disanzhanggongsidianping)
-- [问答录：第六章 读者更新](/dadaotouziwendalu-diliuzhangduzhegengxin)
-
+- [茅台：产品与模式](/wenda-company-maotai-01-part-1)
+- [茅台：治理与渠道](/wenda-company-maotai-02-part-1)

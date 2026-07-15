@@ -11,19 +11,24 @@ export default defineEventHandler(async (event) => {
   const siteUrl = String(config.public.siteUrl).replace(/\/$/, '')
 
   // @ts-expect-error server queryCollection requires (event, collection) but types resolve to client signature
-  const dao: Array<{ slug: string }> = await queryCollection(event, 'dao').all()
+  const dao: Array<{ slug: string; type: string }> = await queryCollection(event, 'dao')
+    .select('slug', 'type')
+    .all()
 
-  const staticRoutes = ['/']
-  const daoRoutes = dao.map((d) => `/${d.slug}`)
+  const staticRoutes = [{ path: '/', type: 'home' }]
+  const daoRoutes = dao.map((d) => ({ path: `/${d.slug}`, type: d.type }))
   const routes = [...staticRoutes, ...daoRoutes]
 
   const urls = routes
     .map((route) => {
+      const legacy = route.type === 'legacy-index'
+      const changefreq = legacy ? 'yearly' : 'weekly'
+      const priority = legacy ? '0.2' : '0.8'
       return [
         '  <url>',
-        `    <loc>${escapeXml(`${siteUrl}${route}`)}</loc>`,
-        '    <changefreq>weekly</changefreq>',
-        '    <priority>0.8</priority>',
+        `    <loc>${escapeXml(`${siteUrl}${route.path}`)}</loc>`,
+        `    <changefreq>${changefreq}</changefreq>`,
+        `    <priority>${priority}</priority>`,
         '  </url>'
       ].join('\n')
     })

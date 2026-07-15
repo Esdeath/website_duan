@@ -71,6 +71,5 @@ tags: ["任天堂", "游戏", "渠道", "单一产品", "能力圈"]
 
 ## 原始出处
 
-- [商业逻辑篇：第5节 品牌、营销与广告](/duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao)
+- [任天堂公司问答](/wenda-company-nintendo)
 - [核心概念：渠道](/qudao)
-

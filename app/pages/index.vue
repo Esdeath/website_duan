@@ -53,17 +53,17 @@ const { data: bookQrs } = await useAsyncData('book-qrs', async () => {
 })
 
 const { data: daoArticles } = await useAsyncData('library-dao', () =>
-  queryCollection('dao').select('title', 'slug', 'category', 'order').order('order', 'ASC').all()
+  queryCollection('dao').select('title', 'slug', 'category', 'order', 'type').order('order', 'ASC').all()
 )
 
-type Article = { title: string; slug: string; category: string; order: number }
+type Article = { title: string; slug: string; category: string; order: number; type?: string }
 
 type Group = { category: string; items: Article[]; count: number; icon: string; desc: string }
 
 const groups = computed<Group[]>(() => {
   const articles = (daoArticles.value as Article[]) || []
   const map = new Map<string, Article[]>()
-  for (const article of articles) {
+  for (const article of articles.filter((article) => article.type !== 'legacy-index')) {
     const list = map.get(article.category) || []
     list.push(article)
     map.set(article.category, list)
@@ -105,7 +105,8 @@ const duanyongpingPerson = {
 }
 
 const collectionSchema = computed(() => {
-  const articles = (daoArticles.value as Article[]) || []
+  const articles = ((daoArticles.value as Article[]) || [])
+    .filter((article) => article.type !== 'legacy-index')
   return {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',

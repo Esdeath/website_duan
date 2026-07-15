@@ -1,3 +1,26 @@
+const legacyQandaRoutes = [
+  "/duanyongping-shangyeluoji-qianyan-maiqushoujiiumaishangsi",
+  "/dadaotouziwendalu-diyizhangtouzidadao",
+  "/duanyongping-touziluoji-di1zhang-touzilinian",
+  "/duanyongping-touziluoji-di2jie-touzilijie",
+  "/duanyongping-touziluoji-di3zhang-golfhetouzi",
+  "/duanyongping-touziwendalu-touziluoji-di4zhang-caiwulijie",
+  "/duanyongping-touziluoji-di5zhang-guzhiluoji",
+  "/duanyongping-touziluoji-di6zhang-touzifangfalun",
+  "/dadaotouziwendalu-dierzhangshangyemoshiheqiyewenhua",
+  "/duanyongping-shangyeluoji-di1jie-weidaqiye",
+  "/duanyongping-shangyeluoji-di2jie-shangyemoshi",
+  "/duanyongping-shangyeluoji-di3jie-qiyewenhua",
+  "/duanyongping-shangyeluoji-di4jie-chanpin-chayihua-yu-chuangxin",
+  "/duanyongping-shangyeluoji-di5jie-pinpai-yingxiao-yu-guanggao",
+  "/duanyongping-shangyeluoji-di6jie-shougouheduoyuanhua",
+  "/duanyongping-shangyeluoji-di7jie-stop-doing-list-buweiqingdan",
+  "/dadaotouziwendalu-disanzhanggongsidianping",
+  "/duanyongping-touziluoji-di7zhang-anlifenxi",
+  "/dadaotouziwendalu-disizhangrenshengzhenyan",
+  "/dadaotouziwendalu-diliuzhangduzhegengxin",
+];
+
 export default defineNuxtConfig({
   modules: ["@nuxt/content"],
   css: ["~/assets/css/main.css"],
@@ -74,7 +97,7 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       concurrency: 5,
-      routes: ["/sitemap.xml", "/robots.txt", "/llms.txt", "/llms-full.txt"],
+      routes: ["/sitemap.xml", "/robots.txt", "/llms.txt", "/llms-full.txt", ...legacyQandaRoutes],
     },
   },
 });
