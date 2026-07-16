@@ -91,6 +91,46 @@ export function validateAuditData(audit) {
     }
   }
 
+  const articleBlockIndexes = new Map()
+  const stageRanks = new Map([
+    ['principle', 1],
+    ['definition', 2],
+    ['boundary', 3],
+    ['method', 4],
+    ['case', 5],
+    ['update', 6],
+  ])
+  for (const article of audit.articles || []) {
+    if (!Array.isArray(article.blockIds)) {
+      errors.push(`Article block list is missing: ${article.slug}`)
+      continue
+    }
+    const indexes = new Map()
+    let previousPlacement = null
+    article.blockIds.forEach((blockId, index) => {
+      if (indexes.has(blockId)) errors.push(`Duplicate article block: ${article.slug} / ${blockId}`)
+      indexes.set(blockId, index)
+      const record = records.get(blockId)
+      if (!record || record.status !== 'kept' || !record.targetSlugs?.includes(article.slug)) {
+        errors.push(`Invalid article block: ${article.slug} / ${blockId}`)
+        return
+      }
+      const placement = record.placement
+      if (!placement || placement.targetSlug !== article.slug || placement.newIndex !== index) {
+        errors.push(`Article block placement is inconsistent: ${article.slug} / ${blockId}`)
+        return
+      }
+      if (previousPlacement
+        && previousPlacement.sectionTitle === placement.sectionTitle
+        && previousPlacement.subsectionTitle === placement.subsectionTitle
+        && (stageRanks.get(previousPlacement.stage) || 0) > (stageRanks.get(placement.stage) || 0)) {
+        errors.push(`Article logic stages are out of order: ${article.slug} / ${blockId}`)
+      }
+      previousPlacement = placement
+    })
+    articleBlockIndexes.set(article.slug, indexes)
+  }
+
   if (audit.counts?.editorialChanges !== audit.editorialChanges?.length) {
     errors.push(`Editorial change count mismatch: ${audit.counts?.editorialChanges || 0} / ${audit.editorialChanges?.length || 0}`)
   }
@@ -117,6 +157,68 @@ export function validateAuditData(audit) {
 
   for (const candidate of audit.nearDuplicateCandidates || []) {
     if (!candidate.resolution) errors.push(`Near duplicate review unresolved: ${candidate.leftId} / ${candidate.rightId}`)
+  }
+
+  if (audit.articleCleaningStats?.length !== 45) {
+    errors.push(`Expected 45 article cleaning stats, found ${audit.articleCleaningStats?.length || 0}`)
+  }
+  const statsSlugs = new Set()
+  for (const stats of audit.articleCleaningStats || []) {
+    if (!slugs.has(stats.slug)) errors.push(`Article cleaning stats have invalid slug: ${stats.slug}`)
+    if (statsSlugs.has(stats.slug)) errors.push(`Duplicate article cleaning stats: ${stats.slug}`)
+    statsSlugs.add(stats.slug)
+    for (const field of ['sourceUnits', 'keptUnits', 'duplicateUnits', 'discardedUnits', 'movedUnits', 'conversationGroups']) {
+      if (!Number.isInteger(stats[field]) || stats[field] < 0) {
+        errors.push(`Article cleaning stats have invalid ${field}: ${stats.slug}`)
+      }
+    }
+  }
+
+  for (const move of audit.orderingMoves || []) {
+    const record = records.get(move.blockId)
+    if (!record || record.status !== 'kept') errors.push(`Ordering move has invalid blockId: ${move.blockId}`)
+    if (!slugs.has(move.targetSlug)) errors.push(`Ordering move has invalid target: ${move.blockId}`)
+    if (!move.sectionTitle || !move.stage
+      || !Number.isInteger(move.originalIndex) || !Number.isInteger(move.newIndex)) {
+      errors.push(`Ordering move is incomplete: ${move.blockId}`)
+    }
+    if (record?.placement
+      && (record.placement.targetSlug !== move.targetSlug || record.placement.sectionTitle !== move.sectionTitle)) {
+      errors.push(`Ordering move disagrees with placement: ${move.blockId}`)
+    }
+  }
+
+  for (const group of audit.conversationGroups || []) {
+    if (!group.id || !Array.isArray(group.memberIds) || !group.memberIds.length
+      || !slugs.has(group.targetSlug) || !group.sectionTitle) {
+      errors.push(`Conversation group is incomplete: ${group.id || 'unknown'}`)
+      continue
+    }
+    for (const memberId of group.memberIds) {
+      const record = records.get(memberId)
+      if (!record || record.status !== 'kept') {
+        errors.push(`Conversation group has invalid member: ${group.id} / ${memberId}`)
+        continue
+      }
+      if (record.placement
+        && (record.placement.targetSlug !== group.targetSlug || record.placement.sectionTitle !== group.sectionTitle)) {
+        errors.push(`Conversation group is split: ${group.id} / ${memberId}`)
+      }
+    }
+    const indexes = articleBlockIndexes.get(group.targetSlug)
+    const memberIndexes = group.memberIds.map((id) => indexes?.get(id)).filter(Number.isInteger)
+    if (memberIndexes.length === group.memberIds.length) {
+      const first = Math.min(...memberIndexes)
+      const last = Math.max(...memberIndexes)
+      if (last - first + 1 !== memberIndexes.length) errors.push(`Conversation group is not contiguous: ${group.id}`)
+    }
+  }
+
+  if (audit.integrityErrors?.length) {
+    errors.push(`Question and answer integrity errors found: ${audit.integrityErrors.length}`)
+  }
+  for (const decision of audit.restoredManualDecisions || []) {
+    errors.push(`Manual decision was not restored: ${typeof decision === 'string' ? decision : decision.id || 'unknown'}`)
   }
   return errors
 }

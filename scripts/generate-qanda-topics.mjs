@@ -12,6 +12,7 @@ import {
   parseFrontmatter,
   reviewNearDuplicateBlocks,
   splitQuestionAnswerBlocks,
+  validateQuestionAnswerIntegrity,
   visibleTextLength,
 } from './qanda-cleaning-lib.mjs'
 import {
@@ -20,6 +21,7 @@ import {
   TOPIC_BY_SLUG,
   VOLUMES,
   classifyBlock,
+  sectionForBlock,
 } from './qanda-cleaning-config.mjs'
 import {
   buildTopicChapter,
@@ -28,6 +30,8 @@ import {
   renderArticleFile,
 } from './qanda-cleaning-generate-lib.mjs'
 import { cleanEditorialMarkdown, hasDangerousNumericChange } from './qanda-editorial-cleaning.mjs'
+import { applyManualDecisions, MANUAL_DECISIONS } from './qanda-cleaning-decisions.mjs'
+import { buildConversationGroups, validateConversationGroups } from './qanda-conversation-groups.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const CONTENT_ROOT = path.join(ROOT, 'content', 'dao')
@@ -69,14 +73,20 @@ function loadSources(sourceCommit, sourceSlugs) {
 }
 
 function buildBlocks(sources) {
+  let sourceOrder = 0
   return sources.flatMap((source) => splitQuestionAnswerBlocks(source.body, { sourceSlug: source.data.slug })
-    .map((block) => ({ ...block, sourceFile: source.file, sourceTitle: source.data.title })))
+    .map((block) => ({
+      ...block,
+      sourceFile: source.file,
+      sourceTitle: source.data.title,
+      sourceOrder: sourceOrder++,
+    })))
 }
 
 function buildArticles(blocks) {
   const grouped = new Map(TOPICS.map((topic) => [topic.slug, []]))
   for (const block of blocks) {
-    const topicSlug = classifyBlock(block)
+    const topicSlug = block.targetSlug || classifyBlock(block)
     if (!topicSlug || !grouped.has(topicSlug)) throw new Error(`Unclassified block: ${block.id}`)
     grouped.get(topicSlug).push(block)
   }
@@ -88,6 +98,66 @@ function buildArticles(blocks) {
     articles.push(buildTopicChapter(topic, topicBlocks))
   }
   return articles
+}
+
+function prepareRetainedBlocks(blocks, sourceGroups) {
+  const prepared = blocks.map((block) => {
+    const targetSlug = classifyBlock(block)
+    if (!targetSlug) throw new Error(`Unclassified block: ${block.id}`)
+    return {
+      ...block,
+      targetSlug,
+      sectionInfo: sectionForBlock(targetSlug, block),
+    }
+  })
+  const blockById = new Map(prepared.map((block) => [block.id, block]))
+  const conversationGroups = []
+  for (const group of sourceGroups) {
+    const members = group.memberIds.map((id) => blockById.get(id)).filter(Boolean)
+    if (members.length < 2) continue
+    const groupTargetSlug = members[0].targetSlug
+    const groupSectionInfo = members[0].sectionInfo
+    members.forEach((block, index) => {
+      block.conversationGroupId = group.id
+      block.conversationGroupIndex = index
+      block.targetSlug = groupTargetSlug
+      block.sectionInfo = groupSectionInfo
+    })
+    conversationGroups.push({ ...group, memberIds: members.map((block) => block.id) })
+  }
+  return { prepared, conversationGroups }
+}
+
+function buildArticleCleaningStats(allBlocks, records, articles, orderingMoves, conversationGroups) {
+  const stats = new Map(TOPICS.map((topic) => [topic.slug, {
+    slug: topic.slug,
+    sourceUnits: 0,
+    keptUnits: 0,
+    duplicateUnits: 0,
+    discardedUnits: 0,
+    movedUnits: 0,
+    conversationGroups: 0,
+  }]))
+  const sourceTargetById = new Map()
+  for (const block of allBlocks) {
+    const targetSlug = classifyBlock(block)
+    if (!targetSlug || !stats.has(targetSlug)) throw new Error(`Unclassified source block: ${block.id}`)
+    sourceTargetById.set(block.id, targetSlug)
+    stats.get(targetSlug).sourceUnits += 1
+  }
+  for (const record of records) {
+    const targetSlug = record.targetSlugs?.[0] || sourceTargetById.get(record.id)
+    if (!targetSlug || !stats.has(targetSlug)) continue
+    if (record.status === 'kept') stats.get(targetSlug).keptUnits += 1
+    else if (record.status === 'duplicate') stats.get(targetSlug).duplicateUnits += 1
+    else stats.get(targetSlug).discardedUnits += 1
+  }
+  for (const move of orderingMoves) stats.get(move.targetSlug).movedUnits += 1
+  for (const group of conversationGroups) stats.get(group.targetSlug).conversationGroups += 1
+  for (const article of articles) {
+    if (!stats.has(article.slug)) throw new Error(`Missing article cleaning stats: ${article.slug}`)
+  }
+  return [...stats.values()]
 }
 
 function nearDuplicateCanonical(left, right) {
@@ -268,27 +338,76 @@ async function main() {
     }
     return { ...block, markdown: editorial.markdown }
   })
-  const noInformationStates = new Map(allBlocks.map((block) => [block.id, classifyNoInformation(block)]))
-  const noInformation = allBlocks.filter((block) => noInformationStates.get(block.id).discard)
+  const manualResult = applyManualDecisions(allBlocks, MANUAL_DECISIONS)
+  const manualDiscardedById = new Map(manualResult.discarded.map((item) => [item.block.id, item]))
+  const noInformationStates = new Map(manualResult.kept.map((block) => [block.id, classifyNoInformation(block)]))
+  const noInformation = manualResult.kept.filter((block) => noInformationStates.get(block.id).discard)
   const noInformationIds = new Set(noInformation.map((block) => block.id))
-  const informative = allBlocks.filter((block) => !noInformationIds.has(block.id))
+  const informative = manualResult.kept.filter((block) => !noInformationIds.has(block.id))
+  const integrityErrors = informative.flatMap((block) => validateQuestionAnswerIntegrity(block))
+  if (integrityErrors.length) {
+    throw new Error(`Question and answer integrity failed:\n${integrityErrors.slice(0, 30).join('\n')}`)
+  }
+  const sourceConversationGroups = buildConversationGroups(informative)
   const deduplicated = deduplicateBlocks(informative, { minimumLength: 30, fingerprint: answerFingerprint })
   const dedupAudit = new Map(deduplicated.audit.map((item) => [item.id, item]))
   const nearReview = reviewNearDuplicates(deduplicated.kept)
-  const articles = buildArticles(nearReview.kept)
+  const retained = prepareRetainedBlocks(nearReview.kept, sourceConversationGroups)
+  const articles = buildArticles(retained.prepared)
 
   const blockTargets = new Map()
+  const placementByBlockId = new Map()
+  const orderingMoves = []
   for (const article of articles) {
     for (const blockId of article.blockIds) {
       const targets = blockTargets.get(blockId) || []
       targets.push(article.slug)
       blockTargets.set(blockId, [...new Set(targets)])
     }
+    for (const [blockId, placement] of article.placements) placementByBlockId.set(blockId, placement)
+    orderingMoves.push(...article.orderingMoves.map((move) => ({
+      blockId: move.blockId,
+      groupId: move.groupId,
+      targetSlug: move.targetSlug,
+      sectionTitle: move.sectionTitle,
+      subsectionTitle: move.subsectionTitle,
+      stage: move.stage,
+      stageRule: move.stageRule,
+      date: move.date,
+      originalIndex: move.originalIndex,
+      newIndex: move.newIndex,
+    })))
   }
+  const conversationIntegrityErrors = validateConversationGroups(retained.conversationGroups, placementByBlockId)
+  if (conversationIntegrityErrors.length) {
+    throw new Error(`Conversation group integrity failed:\n${conversationIntegrityErrors.join('\n')}`)
+  }
+  const conversationGroups = retained.conversationGroups.map((group) => {
+    const placement = placementByBlockId.get(group.memberIds[0])
+    return {
+      id: group.id,
+      sourceSlug: group.sourceSlug,
+      memberIds: group.memberIds,
+      targetSlug: placement.targetSlug,
+      sectionTitle: placement.sectionTitle,
+      subsectionTitle: placement.subsectionTitle,
+      date: group.date,
+    }
+  })
 
   const nearDuplicateCandidates = nearReview.candidates
 
   const records = allBlocks.map((block) => {
+    if (manualDiscardedById.has(block.id)) {
+      return {
+        id: block.id,
+        sourceSlug: block.sourceSlug,
+        headingPath: block.headingPath,
+        status: 'discarded-no-information',
+        reason: manualDiscardedById.get(block.id).decision.reason,
+        manualDecisionId: manualDiscardedById.get(block.id).decision.id,
+      }
+    }
     if (noInformationIds.has(block.id)) {
       return {
         id: block.id,
@@ -327,6 +446,13 @@ async function main() {
       headingPath: block.headingPath,
       status: 'kept',
       targetSlugs: blockTargets.get(block.id) || [],
+      placement: placementByBlockId.has(block.id) ? {
+        targetSlug: placementByBlockId.get(block.id).targetSlug,
+        sectionTitle: placementByBlockId.get(block.id).sectionTitle,
+        subsectionTitle: placementByBlockId.get(block.id).subsectionTitle,
+        stage: placementByBlockId.get(block.id).stage,
+        newIndex: placementByBlockId.get(block.id).newIndex,
+      } : undefined,
     }
   })
 
@@ -356,9 +482,43 @@ async function main() {
       after: '',
     })
   }
+  for (const { block, decision } of manualResult.discarded) {
+    editorialChanges.push({
+      blockId: block.id,
+      sourceSlug: block.sourceSlug,
+      targetSlugs: [],
+      type: 'discarded-no-information',
+      rule: decision.reason,
+      before: block.markdown,
+      after: '',
+      manualDecisionId: decision.id,
+    })
+  }
+  for (const change of manualResult.fragmentChanges) {
+    const block = blockById.get(change.blockId)
+    const record = recordById.get(change.blockId)
+    editorialChanges.push({
+      blockId: change.blockId,
+      sourceSlug: block.sourceSlug,
+      targetSlugs: record?.targetSlugs || [],
+      type: 'format-normalized',
+      rule: change.reason,
+      before: change.before,
+      after: change.after,
+      manualDecisionId: change.decisionId,
+    })
+  }
+
+  const articleCleaningStats = buildArticleCleaningStats(
+    allBlocks,
+    records,
+    articles,
+    orderingMoves,
+    conversationGroups,
+  )
 
   const audit = {
-    version: 1,
+    version: 2,
     sourceCommit,
     sourceArticles: sources.map((source) => ({ file: source.file, slug: source.data.slug, title: source.data.title })),
     baseTopics: TOPICS.length,
@@ -385,6 +545,11 @@ async function main() {
       visibleLength: visibleTextLength(article.body),
       blockIds: article.blockIds,
     })),
+    articleCleaningStats,
+    orderingMoves,
+    conversationGroups,
+    integrityErrors: [...integrityErrors, ...conversationIntegrityErrors],
+    restoredManualDecisions: [],
     redirects: partRedirects,
     companyRedirects,
     editorialChanges,
@@ -403,6 +568,9 @@ async function main() {
     editorialChanges: editorialChanges.length,
     dangerousNumericChanges: dangerousNumericChanges.length,
     longestArticle: Math.max(...audit.articles.map((article) => article.visibleLength)),
+    orderingMoves: orderingMoves.length,
+    conversationGroups: conversationGroups.length,
+    manualDiscards: manualResult.discarded.length,
   }, null, 2))
 
   if (!WRITE) {

@@ -1,6 +1,7 @@
-import { answerFingerprint, normalizeForDuplicate } from './qanda-cleaning-lib.mjs'
+import { answerFingerprint, normalizeForDuplicate, validateQuestionAnswerIntegrity } from './qanda-cleaning-lib.mjs'
 import { sectionForBlock } from './qanda-cleaning-config.mjs'
 import { cleanEditorialMarkdown } from './qanda-editorial-cleaning.mjs'
+import { orderTopicUnits } from './qanda-ordering.mjs'
 
 const LEGACY_LINK_TARGETS = new Map([
   ['duanyongping-shangyeluoji-di3jie-qiyewenhua', 'wenda-business-08'],
@@ -28,7 +29,11 @@ function plainParagraph(paragraph) {
 }
 
 export function standardizeQaMarkers(markdown) {
-  const paragraphs = markdown.split(/\n\s*\n+/)
+  const normalizedHardBreaks = markdown.replace(
+    /^([^\n]*(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)[^\n]*[?？][^\n]*)[ \t]{2,}\n(?=\S)/gmu,
+    '$1\n\n',
+  )
+  const paragraphs = normalizedHardBreaks.split(/\n\s*\n+/)
   const hasExplicitAnswer = paragraphs.some((paragraph) => /(?:段永平|大道|答)\s*[：:]/u.test(plainParagraph(paragraph)))
   let awaitingAnswer = false
   return paragraphs
@@ -51,6 +56,9 @@ export function standardizeQaMarkers(markdown) {
 }
 
 export function classifyNoInformation(block) {
+  if (validateQuestionAnswerIntegrity(block).length) {
+    return { discard: true, reason: 'unanswered-question' }
+  }
   const normalized = answerFingerprint(block.markdown) || normalizeForDuplicate(block.markdown)
   const withoutSpeakers = normalized
     .replace(/网友[:：]?/g, '')
@@ -157,13 +165,19 @@ function sectionTitle(block, topic) {
 
 export function buildTopicChapter(topic, blocks) {
   const sections = new Map()
-  for (const [sourceIndex, block] of blocks.entries()) {
-    const sectionInfo = sectionForBlock(topic.slug, block)
+  const ordering = orderTopicUnits(topic, blocks)
+  for (const [orderedIndex, block] of ordering.ordered.entries()) {
+    const placement = ordering.placements.get(block.id)
+    const sectionInfo = block.sectionInfo || sectionForBlock(topic.slug, block)
     const current = sections.get(sectionInfo.title) || { ...sectionInfo, units: [], subsections: new Map() }
     const normalized = stripObsoleteQuestionOrdinals(rewriteLegacyLinks(block.markdown))
     const editorial = cleanEditorialMarkdown(normalized, { blockId: block.id })
     const cleaned = shortenParagraphs(standardizeQaMarkers(editorial.markdown))
-    const unit = { markdown: cleaned, date: extractBlockDate(block), sourceIndex }
+    const unit = {
+      markdown: cleaned,
+      date: extractBlockDate(block),
+      sourceIndex: placement?.originalIndex ?? orderedIndex,
+    }
     if (sectionInfo.subsectionTitle) {
       const subsection = current.subsections.get(sectionInfo.subsectionTitle) || {
         title: sectionInfo.subsectionTitle,
@@ -178,12 +192,7 @@ export function buildTopicChapter(topic, blocks) {
     sections.set(sectionInfo.title, current)
   }
 
-  const sortedUnits = (units) => [...units].sort((left, right) => {
-    if (left.date && right.date) return left.date.localeCompare(right.date) || left.sourceIndex - right.sourceIndex
-    if (left.date) return -1
-    if (right.date) return 1
-    return left.sourceIndex - right.sourceIndex
-  })
+  const sortedUnits = (units) => [...units]
 
   const body = [...sections.values()]
     .sort((left, right) => left.order - right.order)
@@ -201,8 +210,10 @@ export function buildTopicChapter(topic, blocks) {
     ...topic,
     slug: topic.slug,
     body: body.trim(),
-    blockIds: [...new Set(blocks.map((block) => block.id))],
+    blockIds: [...new Set(ordering.ordered.map((block) => block.id))],
     baseSlug: topic.slug,
+    orderingMoves: ordering.moves,
+    placements: ordering.placements,
   }
 }
 

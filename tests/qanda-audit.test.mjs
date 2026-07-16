@@ -11,6 +11,16 @@ test('audit data accepts complete mappings and reviewed near duplicates', () => 
     volumeOrder: topic.volumeOrder,
     chapterOrder: topic.chapterOrder,
     tags: topic.tags,
+    blockIds: topic.slug === 'wenda-invest-01' ? ['a'] : [],
+  }))
+  const articleCleaningStats = TOPICS.map((topic) => ({
+    slug: topic.slug,
+    sourceUnits: topic.slug === 'wenda-invest-01' ? 2 : 1,
+    keptUnits: topic.slug === 'wenda-invest-01' ? 1 : 1,
+    duplicateUnits: topic.slug === 'wenda-invest-01' ? 1 : 0,
+    discardedUnits: 0,
+    movedUnits: topic.slug === 'wenda-invest-01' ? 1 : 0,
+    conversationGroups: topic.slug === 'wenda-invest-01' ? 1 : 0,
   }))
   const errors = validateAuditData({
     sourceArticles: Array.from({ length: 20 }, (_, index) => ({ slug: `source-${index}` })),
@@ -22,10 +32,38 @@ test('audit data accepts complete mappings and reviewed near duplicates', () => 
     companyRedirects: [...MERGED_COMPANY_REDIRECTS].map(([from, to]) => ({ from: `/${from}`, to: `/${to}` })),
     counts: { editorialChanges: 1 },
     records: [
-      { id: 'a', status: 'kept', targetSlugs: ['wenda-invest-01'] },
+      {
+        id: 'a',
+        status: 'kept',
+        targetSlugs: ['wenda-invest-01'],
+        placement: {
+          targetSlug: 'wenda-invest-01',
+          sectionTitle: '核心原则',
+          subsectionTitle: null,
+          stage: 'principle',
+          newIndex: 0,
+        },
+      },
       { id: 'b', status: 'duplicate', duplicateOf: 'a', targetSlugs: ['wenda-invest-01'] },
       { id: 'c', status: 'discarded-no-information', reason: 'pure-reaction' },
     ],
+    articleCleaningStats,
+    orderingMoves: [{
+      blockId: 'a',
+      targetSlug: 'wenda-invest-01',
+      sectionTitle: '核心原则',
+      stage: 'principle',
+      originalIndex: 1,
+      newIndex: 0,
+    }],
+    conversationGroups: [{
+      id: 'group-a',
+      memberIds: ['a'],
+      targetSlug: 'wenda-invest-01',
+      sectionTitle: '核心原则',
+    }],
+    integrityErrors: [],
+    restoredManualDecisions: [],
     editorialChanges: [{
       blockId: 'a',
       sourceSlug: 'source-0',
@@ -47,13 +85,18 @@ test('audit data reports metadata, tag, target and unresolved review failures', 
     sourceArticles: [],
     baseTopics: 1,
     generatedArticles: 1,
-    articles: [{ slug: 'article', visibleLength: 6001, tags: ['问答'] }],
+    articles: [{ slug: 'article', visibleLength: 6001, tags: ['问答'], blockIds: ['missing'] }],
     companyRedirects: [],
     counts: { editorialChanges: 2 },
     records: [
       { id: 'a', status: 'kept', targetSlugs: [] },
       { id: 'b', status: 'discarded-no-information' },
     ],
+    articleCleaningStats: [],
+    orderingMoves: [{ blockId: 'missing', targetSlug: 'article' }],
+    conversationGroups: [{ id: 'broken', memberIds: ['missing'], targetSlug: 'article' }],
+    integrityErrors: ['question-without-answer:a'],
+    restoredManualDecisions: ['manual-rule-missing'],
     editorialChanges: [{ blockId: 'missing', type: 'unknown', before: '', after: '' }],
     dangerousNumericChanges: [{ blockId: 'a', before: '1499', after: '1500' }],
     nearDuplicateCandidates: [{ leftId: 'a', rightId: 'b' }],
@@ -69,6 +112,12 @@ test('audit data reports metadata, tag, target and unresolved review failures', 
   assert.ok(errors.some((error) => error.includes('Editorial change')))
   assert.ok(errors.some((error) => error.includes('Dangerous numeric')))
   assert.ok(errors.some((error) => error.includes('unresolved')))
+  assert.ok(errors.some((error) => error.includes('cleaning stats')))
+  assert.ok(errors.some((error) => error.includes('Ordering move')))
+  assert.ok(errors.some((error) => error.includes('Conversation group')))
+  assert.ok(errors.some((error) => error.includes('integrity')))
+  assert.ok(errors.some((error) => error.includes('Manual decision')))
+  assert.ok(errors.some((error) => error.includes('article block')))
 })
 
 test('editorial residue scan reports malformed symbols ordinals typos and known garble', () => {

@@ -264,9 +264,14 @@ function headingInfo(paragraph) {
   return null
 }
 
+function startsSpeakerQuestion(paragraph) {
+  const plain = stripMarkdown(paragraph).trim()
+  return /^(?:\d+\s*[.、．]?\s*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)[^：:]{0,24}[：:]/.test(plain)
+}
+
 function startsQuestion(paragraph) {
   const plain = stripMarkdown(paragraph).trim()
-  return /^(?:\d+[.、．]\s*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)[^：:]{0,24}[：:]/.test(plain)
+  return startsSpeakerQuestion(paragraph)
     || /(?:问|请问|想问|请教)[：:？?]/.test(plain.slice(0, 80))
 }
 
@@ -310,8 +315,11 @@ export function splitQuestionAnswerBlocks(markdown, { sourceSlug = 'source' } = 
     }
 
     const question = startsQuestion(paragraph)
+    const speakerQuestion = startsSpeakerQuestion(paragraph)
     const answer = startsAnswer(paragraph)
-    if (question || (answer && current?.hasAnswer)) flush()
+    if ((speakerQuestion && current)
+      || (question && current?.hasAnswer)
+      || (answer && current?.hasAnswer)) flush()
     if (!current) {
       current = {
         sourceSlug,
@@ -327,6 +335,23 @@ export function splitQuestionAnswerBlocks(markdown, { sourceSlug = 'source' } = 
   }
   flush()
   return blocks
+}
+
+export function validateQuestionAnswerIntegrity(block) {
+  const errors = []
+  if (!block.hasQuestion || block.hasAnswer) return errors
+  const paragraphs = block.markdown
+    .split(/\n\s*\n+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+  const explicitReaderQuestion = /^(?:\*{0,2})?(?:\d+\s*[.、．]?\s*)?(?:网友|读者|问|雪球用户|投资者|用户|大道粉丝)[^：:]{0,24}[：:]/u
+    .test(stripMarkdown(paragraphs[0] || '').trim())
+  const inlineAnswer = /(?:段永平|大道|答)\s*[：:]/u.test(stripMarkdown(block.markdown))
+  const unlabelledHardBreakAnswer = /[ \t]{2,}\n(?=\S)/u.test(block.markdown)
+  if (explicitReaderQuestion && paragraphs.length < 2 && !inlineAnswer && !unlabelledHardBreakAnswer) {
+    errors.push(`question-without-answer:${block.id}`)
+  }
+  return errors
 }
 
 function splitSections(markdown, level) {

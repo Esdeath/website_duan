@@ -11,8 +11,18 @@ import {
   reviewNearDuplicateBlocks,
   splitQuestionAnswerBlocks,
   splitMarkdownByLength,
+  validateQuestionAnswerIntegrity,
   visibleTextLength,
 } from '../scripts/qanda-cleaning-lib.mjs'
+import { applyManualDecisions, MANUAL_DECISIONS } from '../scripts/qanda-cleaning-decisions.mjs'
+import {
+  buildConversationGroups,
+  validateConversationGroups,
+} from '../scripts/qanda-conversation-groups.mjs'
+import {
+  logicStageForBlock,
+  orderTopicUnits,
+} from '../scripts/qanda-ordering.mjs'
 import {
   MERGED_COMPANY_REDIRECTS,
   TOPICS,
@@ -61,6 +71,232 @@ test('question and answer stay in one source block with heading context', () => 
   assert.match(blocks[0].markdown, /网友：投资是什么/)
   assert.match(blocks[0].markdown, /买股票就是买公司/)
   assert.equal(blocks[0].id, 'source#投资是什么#001')
+})
+
+test('manual decisions match exactly one source unit and record discards and fragments', () => {
+  const blocks = [
+    { id: 'a', sourceSlug: 'source', markdown: '网友：保留？\n\n大道：保留。' },
+    { id: 'b', sourceSlug: 'source', markdown: '网友：删除？\n\n大道：重复回答。' },
+    { id: 'c', sourceSlug: 'source', markdown: '大道：有效回答。\n\n无关编辑尾注' },
+  ]
+  const result = applyManualDecisions(blocks, [
+    { id: 'discard-b', sourceSlug: 'source', contains: '网友：删除？', action: 'discard', reason: 'manual-cleanup' },
+    { id: 'trim-c', sourceSlug: 'source', contains: '无关编辑尾注', action: 'remove-fragment', reason: 'manual-cleanup' },
+  ])
+
+  assert.deepEqual(result.kept.map((block) => block.id), ['a', 'c'])
+  assert.deepEqual(result.discarded.map((item) => item.block.id), ['b'])
+  assert.equal(result.kept[1].markdown, '大道：有效回答。')
+  assert.equal(result.fragmentChanges[0].decisionId, 'trim-c')
+  assert.equal(blocks[2].markdown, '大道：有效回答。\n\n无关编辑尾注')
+
+  assert.throws(() => applyManualDecisions(blocks, [
+    { id: 'missing', sourceSlug: 'source', contains: '不存在', action: 'discard', reason: 'manual-cleanup' },
+  ]), /must match exactly one source block; found 0/)
+  assert.throws(() => applyManualDecisions([
+    { id: 'x', sourceSlug: 'source', markdown: '同一句' },
+    { id: 'y', sourceSlug: 'source', markdown: '同一句' },
+  ], [
+    { id: 'ambiguous', sourceSlug: 'source', contains: '同一句', action: 'discard', reason: 'manual-cleanup' },
+  ]), /must match exactly one source block; found 2/)
+})
+
+test('manual decision registry preserves accepted removals from the current articles', () => {
+  assert.equal(MANUAL_DECISIONS.length, 6)
+  assert.equal(new Set(MANUAL_DECISIONS.map((decision) => decision.id)).size, MANUAL_DECISIONS.length)
+  assert.ok(MANUAL_DECISIONS.every((decision) => decision.action === 'discard'))
+  assert.ok(MANUAL_DECISIONS.every((decision) => decision.reason === 'manual-cleanup-f45ab92'))
+  assert.deepEqual(MANUAL_DECISIONS.map((decision) => decision.contains), [
+    '这个忠实信徒很有趣哈',
+    '网友Y：《穷查理宝典》',
+    '网友黑色伤：我用了两天',
+    '网友X：他的网站整理了好多Buffett',
+    '开始卖点put了。投入资金',
+    '家庭保险配置问题',
+  ])
+})
+
+test('question answer integrity accepts complete and answer-only units but rejects orphan questions', () => {
+  assert.deepEqual(validateQuestionAnswerIntegrity({
+    id: 'complete',
+    markdown: '网友：问题？\n\n**段永平：** 回答。（2025-01-01）',
+    hasQuestion: true,
+    hasAnswer: true,
+  }), [])
+  assert.deepEqual(validateQuestionAnswerIntegrity({
+    id: 'statement',
+    markdown: '**段永平：** 独立观点。',
+    hasQuestion: false,
+    hasAnswer: true,
+  }), [])
+  assert.deepEqual(validateQuestionAnswerIntegrity({
+    id: 'orphan',
+    markdown: '网友：问题？',
+    hasQuestion: true,
+    hasAnswer: false,
+  }), ['question-without-answer:orphan'])
+  assert.deepEqual(validateQuestionAnswerIntegrity({
+    id: 'hard-break-answer',
+    markdown: '网友：问题？  \n没有署名的简短回答。',
+    hasQuestion: true,
+    hasAnswer: false,
+  }), [])
+
+  const blocks = splitQuestionAnswerBlocks([
+    '网友：第一个问题？',
+    '',
+    '**段永平：** 第一个回答。',
+    '',
+    '网友：第二个问题？',
+    '',
+    '**段永平：** 第二个回答。',
+  ].join('\n'), { sourceSlug: 'integrity' })
+  assert.equal(blocks.length, 2)
+  assert.ok(blocks.every((block) => block.hasQuestion && block.hasAnswer))
+})
+
+test('multi-paragraph questions stay with one answer while the next answered question starts a new unit', () => {
+  const blocks = splitQuestionAnswerBlocks([
+    '网友：第一个问题的背景很长，请问应该怎么办？',
+    '',
+    '另外，请问：如果价格已经合理呢？',
+    '',
+    '**段永平：** 先看懂公司。',
+    '',
+    '网友：第二个问题？',
+    '',
+    '**段永平：** 不懂不做。',
+  ].join('\n'), { sourceSlug: 'multi-question' })
+
+  assert.equal(blocks.length, 2)
+  assert.match(blocks[0].markdown, /另外，请问/)
+  assert.match(blocks[0].markdown, /先看懂公司/)
+  assert.match(blocks[1].markdown, /第二个问题/)
+})
+
+test('a new reader speaker starts a separate unit even when the previous reader comment has no answer', () => {
+  const blocks = splitQuestionAnswerBlocks([
+    '网友：这是一条没有回答的评论。',
+    '',
+    '网友：真正的问题是什么？',
+    '',
+    '**段永平：** 买股票就是买公司。',
+  ].join('\n'), { sourceSlug: 'reader-comments' })
+
+  assert.equal(blocks.length, 2)
+  assert.equal(blocks[0].hasAnswer, false)
+  assert.equal(blocks[1].hasAnswer, true)
+})
+
+test('compact legacy reader ordinals are recognized as unanswered reader units', () => {
+  for (const markdown of ['05网友：只有评论。', '07 .网友：只有评论。']) {
+    const [block] = splitQuestionAnswerBlocks(markdown, { sourceSlug: 'legacy-ordinal' })
+    assert.equal(block.hasQuestion, true)
+    assert.deepEqual(classifyNoInformation(block), { discard: true, reason: 'unanswered-question' })
+  }
+})
+
+test('conversation groups keep explicit follow-ups and same-date supplemental answers together', () => {
+  const blocks = [
+    {
+      id: 'a',
+      sourceSlug: 'source',
+      headingPath: ['主题'],
+      markdown: '网友：什么是价值投资？\n\n大道：买股票就是买公司。（2020-01-01）',
+      hasQuestion: true,
+      hasAnswer: true,
+      sourceOrder: 1,
+    },
+    {
+      id: 'b',
+      sourceSlug: 'source',
+      headingPath: ['主题'],
+      markdown: '网友追问：那为什么很多人做不到？\n\n大道：因为知易行难。（2020-01-01）',
+      hasQuestion: true,
+      hasAnswer: true,
+      sourceOrder: 2,
+    },
+    {
+      id: 'c',
+      sourceSlug: 'source',
+      headingPath: ['主题'],
+      markdown: '大道：再补充一句，不懂不做。（2020-01-01）',
+      hasQuestion: false,
+      hasAnswer: true,
+      sourceOrder: 3,
+    },
+    {
+      id: 'd',
+      sourceSlug: 'source',
+      headingPath: ['主题'],
+      markdown: '网友：家庭重要吗？\n\n大道：重要。（2020-01-01）',
+      hasQuestion: true,
+      hasAnswer: true,
+      sourceOrder: 4,
+    },
+  ]
+  const groups = buildConversationGroups(blocks)
+
+  assert.equal(groups.length, 2)
+  assert.deepEqual(groups[0].memberIds, ['a', 'b', 'c'])
+  assert.deepEqual(groups[1].memberIds, ['d'])
+  assert.equal(groups[0].date, '2020-01-01')
+})
+
+test('conversation group validation rejects members split across articles or sections', () => {
+  const groups = [{ id: 'group-a', memberIds: ['a', 'b'] }]
+  const valid = new Map([
+    ['a', { targetSlug: 'wenda-invest-01', sectionTitle: '原则' }],
+    ['b', { targetSlug: 'wenda-invest-01', sectionTitle: '原则' }],
+  ])
+  const split = new Map([
+    ['a', { targetSlug: 'wenda-invest-01', sectionTitle: '原则' }],
+    ['b', { targetSlug: 'wenda-invest-02', sectionTitle: '定义' }],
+  ])
+
+  assert.deepEqual(validateConversationGroups(groups, valid), [])
+  assert.deepEqual(validateConversationGroups(groups, split), ['split-conversation-group:group-a'])
+})
+
+test('logic stage classification covers principles definitions boundaries methods cases and updates', () => {
+  const topic = 'wenda-invest-01'
+  const section = { title: '价值投资', order: 1 }
+  const classify = (markdown, headingPath = ['价值投资'], topicSlug = topic, sectionInfo = section) => (
+    logicStageForBlock(topicSlug, { headingPath, markdown }, sectionInfo).stage
+  )
+
+  assert.equal(classify('**段永平：** 买股票就是买公司。'), 'principle')
+  assert.equal(classify('网友：什么是价值投资？\n\n大道：买股票就是买公司。'), 'definition')
+  assert.equal(classify('网友：价值投资有什么风险和误区？\n\n大道：不懂不做。'), 'boundary')
+  assert.equal(classify('网友：应该如何判断买入时机？\n\n大道：先看懂公司。'), 'method')
+  assert.equal(classify('网友：苹果这个案例说明什么？\n\n大道：产品很好。', ['苹果'], 'wenda-company-apple-01', { title: '产品', order: 1, subsectionTitle: '苹果', subsectionOrder: 1 }), 'case')
+  assert.equal(classify('网友：什么是最新观点？\n\n大道：补充一下。', ['第六章 读者更新', '出版后补充']), 'update')
+})
+
+test('logic-first ordering keeps conversation members contiguous and uses date then source order', () => {
+  const topic = TOPICS.find((item) => item.slug === 'wenda-invest-01')
+  const blocks = [
+    { id: 'method-late', sourceSlug: 's', headingPath: ['价值投资'], markdown: '网友：如何判断？\n\n大道：看公司。（2021-01-01）', sourceOrder: 4 },
+    { id: 'definition-late', sourceSlug: 's', headingPath: ['价值投资'], markdown: '网友：什么是价值投资？\n\n大道：买公司。（2020-01-01）', sourceOrder: 2, conversationGroupId: 'definition-group', conversationGroupIndex: 0 },
+    { id: 'principle', sourceSlug: 's', headingPath: ['价值投资'], markdown: '大道：买股票就是买公司。', sourceOrder: 1 },
+    { id: 'definition-followup', sourceSlug: 's', headingPath: ['价值投资'], markdown: '网友追问：那为什么？\n\n大道：因为如此。（2020-01-01）', sourceOrder: 3, conversationGroupId: 'definition-group', conversationGroupIndex: 1 },
+    { id: 'method-early', sourceSlug: 's', headingPath: ['价值投资'], markdown: '网友：应该怎么做？\n\n大道：先理解。（2019-01-01）', sourceOrder: 5 },
+    { id: 'method-undated-a', sourceSlug: 's', headingPath: ['价值投资'], markdown: '网友：如何学习？\n\n大道：阅读。', sourceOrder: 6 },
+    { id: 'method-undated-b', sourceSlug: 's', headingPath: ['价值投资'], markdown: '网友：怎么练习？\n\n大道：实践。', sourceOrder: 7 },
+  ]
+  const result = orderTopicUnits(topic, blocks)
+
+  assert.deepEqual(result.ordered.map((block) => block.id), [
+    'principle',
+    'definition-late',
+    'definition-followup',
+    'method-early',
+    'method-late',
+    'method-undated-a',
+    'method-undated-b',
+  ])
+  assert.equal(result.placements.get('definition-followup').groupId, 'definition-group')
+  assert.ok(result.moves.some((move) => move.blockId === 'principle'))
 })
 
 test('markdown hard breaks between unmarked Q&A pairs create separate source blocks', () => {
@@ -345,6 +581,21 @@ test('no-information editorial boundary removes reactions but keeps ability-circ
   }
 })
 
+test('no-information boundary removes reader-only questions and comments without an answer', () => {
+  assert.deepEqual(classifyNoInformation({
+    id: 'unanswered',
+    markdown: '网友：这个问题应该怎么理解？',
+    hasQuestion: true,
+    hasAnswer: false,
+  }), { discard: true, reason: 'unanswered-question' })
+  assert.deepEqual(classifyNoInformation({
+    id: 'reader-comment',
+    markdown: '网友：这句话让我很受启发。',
+    hasQuestion: true,
+    hasAnswer: false,
+  }), { discard: true, reason: 'unanswered-question' })
+})
+
 test('topic builder emits one unlimited chapter with continuous numbered sections', () => {
   const topic = {
     slug: 'wenda-test',
@@ -478,6 +729,21 @@ test('topic builder orders curated sections and dated Q&A chronologically', () =
   assert.ok(article.body.indexOf('不做空') < article.body.indexOf('不用margin'))
 })
 
+test('topic builder renders logic stage before chronology inside one section', () => {
+  const topic = TOPICS.find((item) => item.slug === 'wenda-invest-01')
+  const blocks = [
+    { id: 'method', headingPath: ['价值投资'], sectionInfo: { title: '统一小节', order: 1 }, markdown: '网友：如何学习价值投资？\n\n**段永平：** 先阅读。（2019-01-01）', sourceOrder: 3 },
+    { id: 'definition', headingPath: ['价值投资'], sectionInfo: { title: '统一小节', order: 1 }, markdown: '网友：什么是价值投资？\n\n**段永平：** 买股票就是买公司。（2020-01-01）', sourceOrder: 2 },
+    { id: 'principle', headingPath: ['价值投资'], sectionInfo: { title: '统一小节', order: 1 }, markdown: '**段永平：** 买股票就是买公司。', sourceOrder: 1 },
+  ]
+  const article = buildTopicChapter(topic, blocks)
+
+  assert.ok(article.body.indexOf('买股票就是买公司。') < article.body.indexOf('什么是价值投资'))
+  assert.ok(article.body.indexOf('什么是价值投资') < article.body.indexOf('如何学习价值投资'))
+  assert.equal(article.orderingMoves.length, 2)
+  assert.equal(article.placements.size, 3)
+})
+
 test('long English prose splits at original sentence boundaries', () => {
   const prose = `${'This is an original sentence with useful context. '.repeat(5)}This is the final sentence.`
   const shortened = shortenParagraphs(prose, 90)
@@ -504,6 +770,12 @@ test('question blocks receive a missing answer speaker marker without changing t
 
   const marked = '网友：投资是什么？\n\n**段永平：** 买股票就是买公司。'
   assert.equal(standardizeQaMarkers(marked), marked)
+
+  const hardBreak = '网友：投资还是投机？  \n投机。'
+  assert.equal(
+    standardizeQaMarkers(hardBreak),
+    '网友：投资还是投机？\n\n**段永平：** 投机。',
+  )
 
   const multiParagraphQuestion = [
     '网友：苹果的投资者结构发生变化，谁会成为买家？',

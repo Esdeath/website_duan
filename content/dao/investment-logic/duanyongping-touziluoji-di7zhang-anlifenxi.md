@@ -25,7 +25,6 @@ tags: ["投资问答录","旧版导读","主题索引"]
 - [护城河与差异化](/wenda-business-03)
 - [好产品与用户导向](/wenda-business-04)
 - [创新与敢为天下后](/wenda-business-05)
-- [品牌的本质](/wenda-business-06)
 - [营销、广告、渠道与出海](/wenda-business-07)
 - [企业文化](/wenda-business-08)
 - [创始人、CEO、团队与激励](/wenda-business-10)

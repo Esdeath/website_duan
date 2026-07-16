@@ -9,6 +9,7 @@ import {
   parseFrontmatter,
   reviewNearDuplicateBlocks,
   splitQuestionAnswerBlocks,
+  validateQuestionAnswerIntegrity,
   visibleTextLength,
 } from './qanda-cleaning-lib.mjs'
 import { findEditorialResidues, validateAuditData } from './qanda-cleaning-audit-lib.mjs'
@@ -74,7 +75,13 @@ async function main() {
     const length = visibleTextLength(parsed.body)
     const article = { file, ...parsed, length }
     active.push(article)
-    activeBlocks.push(...splitQuestionAnswerBlocks(parsed.body, { sourceSlug: parsed.data.slug }))
+    const articleBlocks = splitQuestionAnswerBlocks(parsed.body, { sourceSlug: parsed.data.slug })
+    activeBlocks.push(...articleBlocks)
+    for (const block of articleBlocks) {
+      for (const integrityError of validateQuestionAnswerIntegrity(block)) {
+        errors.push(`Generated Q&A integrity failure: ${integrityError}`)
+      }
+    }
     if (/-part-\d+$/.test(parsed.data.slug)) errors.push(`Chapter still uses a part slug: ${parsed.data.slug}`)
     if (!volumeChapters.has(parsed.data.volume)) errors.push(`Unknown chapter volume: ${parsed.data.slug}`)
     else volumeChapters.get(parsed.data.volume).push(parsed.data.chapterOrder)
@@ -204,6 +211,12 @@ async function main() {
     typoCorrections: audit.editorialChanges?.filter((change) => change.type === 'typo-corrected').length || 0,
     formatNormalizations: audit.editorialChanges?.filter((change) => change.type === 'format-normalized').length || 0,
     discardedEditorial: audit.editorialChanges?.filter((change) => change.type.startsWith('discarded-')).length || 0,
+    unansweredQuestionsRemoved: audit.records?.filter((record) => record.reason === 'unanswered-question').length || 0,
+    manualDecisionsApplied: audit.records?.filter((record) => record.manualDecisionId).length || 0,
+    orderingMoves: audit.orderingMoves?.length || 0,
+    conversationGroups: audit.conversationGroups?.length || 0,
+    integrityErrors: audit.integrityErrors?.length || 0,
+    restoredManualDecisions: audit.restoredManualDecisions?.length || 0,
     dangerousNumericChanges: audit.dangerousNumericChanges?.length || 0,
     editorialResidues: editorialResidues.length,
     errors: errors.length,
