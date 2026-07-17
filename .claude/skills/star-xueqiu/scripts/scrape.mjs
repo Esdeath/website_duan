@@ -95,6 +95,7 @@ if (!authed && !ANON) log('WARNING: no xq_a_token — only the latest ~20 posts 
 
 const browser = await puppeteer.launch({
   headless: 'new',
+  protocolTimeout: 300000,
   args: ['--no-sandbox', '--disable-setuid-sandbox', '--lang=zh-CN,zh',
     '--disable-blink-features=AutomationControlled', '--window-size=1400,900'],
 });
@@ -122,13 +123,19 @@ try {
   log('page title:', title);
   if (/验证|verify/i.test(title)) throw new Error('hit WAF/CAPTCHA wall (title="' + title + '"). Try re-running.');
 
-  const fetchPage = (pg) => page.evaluate(async (uid, pg) => {
-    const r = await fetch(`https://xueqiu.com/v4/statuses/user_timeline.json?user_id=${uid}&page=${pg}`,
-      { headers: { Accept: 'application/json' }, credentials: 'include' });
-    const t = await r.text();
-    try { return { status: r.status, data: JSON.parse(t) }; }
-    catch { return { status: r.status, raw: t.slice(0, 140) }; }
-  }, USER_ID, pg);
+  const fetchPage = async (pg) => {
+    try {
+      return await page.evaluate(async (uid, pg) => {
+        const r = await fetch(`https://xueqiu.com/v4/statuses/user_timeline.json?user_id=${uid}&page=${pg}`,
+          { headers: { Accept: 'application/json' }, credentials: 'include', signal: AbortSignal.timeout(30000) });
+        const t = await r.text();
+        try { return { status: r.status, data: JSON.parse(t) }; }
+        catch { return { status: r.status, raw: t.slice(0, 140) }; }
+      }, USER_ID, pg);
+    } catch (e) {
+      return { status: 0, raw: String(e && e.message || e).slice(0, 140) };
+    }
+  };
 
   const all = [];
   const seen = new Set();
@@ -136,12 +143,18 @@ try {
   const cap = PAGES ?? MAX_PAGES;
   for (let pg = 1; pg <= cap && !reached; pg++) {
     let res = await fetchPage(pg);
+    let attempt = 0;
+    while ((res.status !== 200 || !res.data) && attempt < 3) {
+      if (res.raw && res.raw.includes('10022')) break;
+      attempt++;
+      log(`page ${pg} status=${res.status} (${res.raw || 'no body'}); retry ${attempt}/3`);
+      await sleep(3000 * attempt);
+      res = await fetchPage(pg);
+    }
     if (res.status !== 200 || !res.data) {
       if (res.raw && res.raw.includes('10022')) { log('login wall reached (10022); stopping.'); break; }
-      log(`page ${pg} status=${res.status}; retry once`);
-      await sleep(3000);
-      res = await fetchPage(pg);
-      if (res.status !== 200 || !res.data) { log(`page ${pg} failed, stopping.`); break; }
+      log(`page ${pg} failed after retries, stopping.`);
+      break;
     }
     const list = res.data.statuses || [];
     if (!list.length) { log(`page ${pg} empty, stopping.`); break; }
@@ -150,6 +163,11 @@ try {
     const oldest = Math.min(...list.map((s) => s.created_at));
     log(`page ${pg}/${res.data.maxPage}: +${added} total=${all.length} oldest=${new Date(oldest + 8 * 3600e3).toISOString().slice(0, 10)}`);
     if (PAGES == null && reached) { log('reached date cutoff.'); }
+    if (pg % 10 === 0) {
+      fs.mkdirSync(path.dirname(OUT), { recursive: true });
+      fs.writeFileSync(OUT + '.partial', JSON.stringify(all));
+      log(`checkpoint: ${all.length} posts -> ${OUT}.partial`);
+    }
     await sleep(1100 + (pg % 5) * 250);
   }
 
@@ -157,6 +175,7 @@ try {
   kept.sort((a, b) => b.created_at - a.created_at);
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, JSON.stringify(kept));
+  fs.rmSync(OUT + '.partial', { force: true });
   log(`DONE fetched=${all.length} kept=${kept.length} -> ${OUT}`);
   console.log(`OUT=${OUT} COUNT=${kept.length}`);
 } finally {

@@ -18,7 +18,19 @@
       "Bash(npm install:*)",
       "Bash(node scripts/fix-buffett-slugs.mjs)",
       "Bash(curl:*)",
-      "Bash(find /Users/ruimin/Desktop/code/mental-model/content -name \"*.md\" -exec grep -l \"\\\\]\\\\\\(/\" {} \\\\;)"
+      "Bash(find /Users/ruimin/Desktop/code/mental-model/content -name \"*.md\" -exec grep -l \"\\\\]\\\\\\(/\" {} \\\\;)",
+      "Bash(node .claude/skills/star-xueqiu/scripts/scrape.mjs --months=4)",
+      "Bash(node .claude/skills/star-xueqiu/scripts/scrape.mjs --months=4 --out=raw/xueqiu/duan_since_2026-04-01.raw.json)",
+      "Bash(kill %1)",
+      "Bash(pkill -f \"star-xueqiu/scripts/scrape.mjs\")",
+      "Bash(node .claude/skills/star-xueqiu/scripts/scrape.mjs --pages=1 --out=/tmp/xq_probe.raw.json)",
+      "Bash(node -e ' *)",
+      "Bash(node .claude/skills/star-xueqiu/scripts/format.mjs --in=raw/xueqiu/duan_since_2026-04-01.raw.json)",
+      "Bash(node scripts/audit-qanda-cleaning.mjs)",
+      "Bash(node --test tests/*.test.mjs)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
