@@ -19,6 +19,12 @@ function escapeHtml(value: string) {
     .replaceAll("'", '&#039;')
 }
 
+export function unwrapArticleBodyLinks(root: ParentNode) {
+  for (const link of root.querySelectorAll('a')) {
+    link.replaceWith(link.textContent ?? '')
+  }
+}
+
 export function buildArticleShareContent(source: ArticleShareSource): ArticleShareContent {
   const safeUrl = escapeHtml(source.url)
   const safeTitle = escapeHtml(source.title)

@@ -5,6 +5,7 @@ import fs from 'node:fs'
 import {
   buildArticleShareContent,
   copyArticleShareContent,
+  unwrapArticleBodyLinks,
 } from '../app/utils/articleShare.ts'
 
 test('buildArticleShareContent puts the source link and title before the complete body', () => {
@@ -79,6 +80,22 @@ test('copyArticleShareContent falls back to plain text when rich writing fails',
   assert.deepEqual(copied, ['标题'])
 })
 
+test('unwrapArticleBodyLinks replaces body anchors with plain text', () => {
+  const replacements = []
+  const root = {
+    querySelectorAll(selector) {
+      assert.equal(selector, 'a')
+      return [
+        { textContent: '能力圈', replaceWith(value) { replacements.push(value) } },
+        { textContent: '本分', replaceWith(value) { replacements.push(value) } },
+      ]
+    },
+  }
+
+  unwrapArticleBodyLinks(root)
+  assert.deepEqual(replacements, ['能力圈', '本分'])
+})
+
 const readProjectFile = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 
 test('article page exposes only one full-article share control', () => {
@@ -89,6 +106,8 @@ test('article page exposes only one full-article share control', () => {
   assert.match(page, /content-id="article-share-content"/)
   assert.match(component, /buildArticleShareContent/)
   assert.match(component, /copyArticleShareContent/)
+  assert.match(component, /unwrapArticleBodyLinks\(clone\)/)
+  assert.doesNotMatch(component, /absoluteHref|setAttribute\('href'/)
   assert.equal((component.match(/<button\b/g) || []).length, 1)
   assert.doesNotMatch(component, /分享链接|分享图片|QRCode/)
 })

@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { buildArticleShareContent, copyArticleShareContent } from '~/utils/articleShare'
+import {
+  buildArticleShareContent,
+  copyArticleShareContent,
+  unwrapArticleBodyLinks,
+} from '~/utils/articleShare'
 
 const props = defineProps<{
   title: string
@@ -39,12 +43,7 @@ async function shareArticle() {
   state.value = 'copying'
   try {
     const clone = body.cloneNode(true) as HTMLElement
-    const sourceLinks = body.querySelectorAll('a[href]')
-    const clonedLinks = clone.querySelectorAll('a[href]')
-    clonedLinks.forEach((link, index) => {
-      const absoluteHref = (sourceLinks[index] as HTMLAnchorElement | undefined)?.href
-      if (absoluteHref) link.setAttribute('href', absoluteHref)
-    })
+    unwrapArticleBodyLinks(clone)
 
     await copyArticleShareContent(buildArticleShareContent({
       title: props.title,
