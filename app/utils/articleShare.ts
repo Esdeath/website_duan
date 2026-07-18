@@ -10,6 +10,8 @@ export interface ArticleShareContent {
   text: string
 }
 
+const SHARE_SOURCE_NAME = '段永平投资问答录'
+
 function escapeHtml(value: string) {
   return value
     .replaceAll('&', '&amp;')
@@ -25,15 +27,27 @@ export function unwrapArticleBodyLinks(root: ParentNode) {
   }
 }
 
+export function removeLeadingArticleTitle(root: ParentNode) {
+  const firstElement = root.firstElementChild
+  if (firstElement?.tagName !== 'H1') return null
+
+  const title = firstElement.textContent?.trim() || null
+  firstElement.remove()
+  return title
+}
+
 export function buildArticleShareContent(source: ArticleShareSource): ArticleShareContent {
   const safeUrl = escapeHtml(source.url)
   const safeTitle = escapeHtml(source.title)
   const bodyHtml = source.bodyHtml.trim()
   const bodyText = source.bodyText.trim()
+  const attributionHtml = `<p><strong>来源：</strong>${SHARE_SOURCE_NAME}<br><strong>原文链接：</strong><a href="${safeUrl}">${safeUrl}</a></p>`
+  const attributionText = `来源：${SHARE_SOURCE_NAME}\n原文链接：${source.url}`
+  const articleText = [source.title, bodyText].filter(Boolean).join('\n\n')
 
   return {
-    html: `<p><strong>原文链接：</strong><a href="${safeUrl}">${safeUrl}</a></p><h1>${safeTitle}</h1>${bodyHtml}`,
-    text: `原文链接：${source.url}\n\n${source.title}\n\n${bodyText}`,
+    html: `${attributionHtml}<h1>${safeTitle}</h1>${bodyHtml}${attributionHtml}`,
+    text: `${attributionText}\n\n${articleText}\n\n${attributionText}`,
   }
 }
 

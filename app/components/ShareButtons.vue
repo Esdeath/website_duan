@@ -2,6 +2,7 @@
 import {
   buildArticleShareContent,
   copyArticleShareContent,
+  removeLeadingArticleTitle,
   unwrapArticleBodyLinks,
 } from '~/utils/articleShare'
 
@@ -43,13 +44,18 @@ async function shareArticle() {
   state.value = 'copying'
   try {
     const clone = body.cloneNode(true) as HTMLElement
+    const leadingTitle = removeLeadingArticleTitle(clone)
     unwrapArticleBodyLinks(clone)
+    const bodyText = body.innerText.trimStart()
+    const sharedBodyText = leadingTitle && bodyText.startsWith(leadingTitle)
+      ? bodyText.slice(leadingTitle.length).trimStart()
+      : bodyText
 
     await copyArticleShareContent(buildArticleShareContent({
       title: props.title,
       url: articleUrl.value,
       bodyHtml: clone.innerHTML,
-      bodyText: body.innerText,
+      bodyText: sharedBodyText,
     }))
     showTemporaryState('copied')
   } catch {

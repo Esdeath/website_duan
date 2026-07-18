@@ -5,6 +5,7 @@ import fs from 'node:fs'
 import {
   buildArticleShareContent,
   copyArticleShareContent,
+  removeLeadingArticleTitle,
   unwrapArticleBodyLinks,
 } from '../app/utils/articleShare.ts'
 
@@ -18,11 +19,11 @@ test('buildArticleShareContent puts the source link and title before the complet
 
   assert.equal(
     content.html,
-    '<p><strong>原文链接：</strong><a href="https://duan.example/maigupiao">https://duan.example/maigupiao</a></p><h1>买股票就是买公司</h1><h2>第一节</h2><p>正文 <strong>重点</strong></p><blockquote>引用</blockquote>',
+    '<p><strong>来源：</strong>段永平投资问答录<br><strong>原文链接：</strong><a href="https://duan.example/maigupiao">https://duan.example/maigupiao</a></p><h1>买股票就是买公司</h1><h2>第一节</h2><p>正文 <strong>重点</strong></p><blockquote>引用</blockquote><p><strong>来源：</strong>段永平投资问答录<br><strong>原文链接：</strong><a href="https://duan.example/maigupiao">https://duan.example/maigupiao</a></p>',
   )
   assert.equal(
     content.text,
-    '原文链接：https://duan.example/maigupiao\n\n买股票就是买公司\n\n第一节\n正文 重点\n引用',
+    '来源：段永平投资问答录\n原文链接：https://duan.example/maigupiao\n\n买股票就是买公司\n\n第一节\n正文 重点\n引用\n\n来源：段永平投资问答录\n原文链接：https://duan.example/maigupiao',
   )
 })
 
@@ -36,7 +37,7 @@ test('buildArticleShareContent escapes title and URL markup without changing ren
 
   assert.match(content.html, /<h1>&lt;投资 &amp; 经营&gt;<\/h1>/)
   assert.match(content.html, /href="https:\/\/duan\.example\/a\?x=1&amp;y=&quot;2&quot;"/)
-  assert.match(content.html, /<ul><li><a href="https:\/\/duan\.example\/b">正文链接<\/a><\/li><\/ul>$/)
+  assert.match(content.html, /<ul><li><a href="https:\/\/duan\.example\/b">正文链接<\/a><\/li><\/ul>/)
 })
 
 test('copyArticleShareContent writes HTML and plain text in one ClipboardItem', async () => {
@@ -96,6 +97,21 @@ test('unwrapArticleBodyLinks replaces body anchors with plain text', () => {
   assert.deepEqual(replacements, ['能力圈', '本分'])
 })
 
+test('removeLeadingArticleTitle removes only a leading h1', () => {
+  const removed = []
+
+  const leadingTitle = removeLeadingArticleTitle({
+    firstElementChild: { tagName: 'H1', textContent: '渠道', remove() { removed.push('h1') } },
+  })
+  const sectionTitle = removeLeadingArticleTitle({
+    firstElementChild: { tagName: 'H2', textContent: '定义', remove() { removed.push('h2') } },
+  })
+
+  assert.equal(leadingTitle, '渠道')
+  assert.equal(sectionTitle, null)
+  assert.deepEqual(removed, ['h1'])
+})
+
 const readProjectFile = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 
 test('article page exposes only one full-article share control', () => {
@@ -106,7 +122,9 @@ test('article page exposes only one full-article share control', () => {
   assert.match(page, /content-id="article-share-content"/)
   assert.match(component, /buildArticleShareContent/)
   assert.match(component, /copyArticleShareContent/)
+  assert.match(component, /leadingTitle = removeLeadingArticleTitle\(clone\)/)
   assert.match(component, /unwrapArticleBodyLinks\(clone\)/)
+  assert.match(component, /bodyText: sharedBodyText/)
   assert.doesNotMatch(component, /absoluteHref|setAttribute\('href'/)
   assert.equal((component.match(/<button\b/g) || []).length, 1)
   assert.doesNotMatch(component, /分享链接|分享图片|QRCode/)
