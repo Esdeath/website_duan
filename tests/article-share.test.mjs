@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import fs from 'node:fs'
 
 import {
   buildArticleShareContent,
@@ -76,4 +77,18 @@ test('copyArticleShareContent falls back to plain text when rich writing fails',
 
   assert.equal(mode, 'plain')
   assert.deepEqual(copied, ['标题'])
+})
+
+const readProjectFile = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
+
+test('article page exposes only one full-article share control', () => {
+  const page = readProjectFile('app/pages/[slug].vue')
+  const component = readProjectFile('app/components/ShareButtons.vue')
+
+  assert.match(page, /id="article-share-content"/)
+  assert.match(page, /content-id="article-share-content"/)
+  assert.match(component, /buildArticleShareContent/)
+  assert.match(component, /copyArticleShareContent/)
+  assert.equal((component.match(/<button\b/g) || []).length, 1)
+  assert.doesNotMatch(component, /分享链接|分享图片|QRCode/)
 })

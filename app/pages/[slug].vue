@@ -198,12 +198,16 @@ useHead({
       <div v-if="pageTags.length" class="article-tags" aria-label="文章标签">
         <span v-for="tag in pageTags" :key="tag">{{ tag }}</span>
       </div>
-      <ShareButtons :title="(page as any).title" :description="(page as any).description" :slug="slug" />
+      <ShareButtons
+        :title="displayTitle"
+        :slug="slug"
+        content-id="article-share-content"
+      />
     </header>
 
     <div class="article-content">
       <article class="article-body">
-        <ContentRenderer class="prose" :value="page" />
+        <ContentRenderer id="article-share-content" class="prose" :value="page" />
         <footer v-if="sourceInfo" class="article-source">
           <p class="source-label">原始出处</p>
           <p class="source-body">
