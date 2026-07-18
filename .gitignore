@@ -8,6 +8,7 @@ node_modules
 .DS_Store
 npm-debug.log*
 output/
+.worktrees/
 
 # 抓取的原始素材（雪球等），仅本地留存，不提交、不上线
 raw/
