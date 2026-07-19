@@ -81,20 +81,28 @@ test('copyArticleShareContent falls back to plain text when rich writing fails',
   assert.deepEqual(copied, ['标题'])
 })
 
-test('unwrapArticleBodyLinks replaces body anchors with plain text', () => {
+test('unwrapArticleBodyLinks replaces body anchors with bold text', () => {
   const replacements = []
+  const ownerDocument = {
+    createElement(tagName) {
+      return { tagName: tagName.toUpperCase(), textContent: '' }
+    },
+  }
   const root = {
     querySelectorAll(selector) {
       assert.equal(selector, 'a')
       return [
-        { textContent: '能力圈', replaceWith(value) { replacements.push(value) } },
-        { textContent: '本分', replaceWith(value) { replacements.push(value) } },
+        { ownerDocument, textContent: '能力圈', replaceWith(value) { replacements.push(value) } },
+        { ownerDocument, textContent: '本分', replaceWith(value) { replacements.push(value) } },
       ]
     },
   }
 
   unwrapArticleBodyLinks(root)
-  assert.deepEqual(replacements, ['能力圈', '本分'])
+  assert.deepEqual(replacements, [
+    { tagName: 'STRONG', textContent: '能力圈' },
+    { tagName: 'STRONG', textContent: '本分' },
+  ])
 })
 
 test('removeLeadingArticleTitle removes only a leading h1', () => {

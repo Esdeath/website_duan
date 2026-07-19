@@ -23,7 +23,9 @@ function escapeHtml(value: string) {
 
 export function unwrapArticleBodyLinks(root: ParentNode) {
   for (const link of root.querySelectorAll('a')) {
-    link.replaceWith(link.textContent ?? '')
+    const strong = link.ownerDocument.createElement('strong')
+    strong.textContent = link.textContent ?? ''
+    link.replaceWith(strong)
   }
 }
 

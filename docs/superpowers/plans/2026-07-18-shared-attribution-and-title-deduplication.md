@@ -14,7 +14,7 @@
 - Both the opening and closing blocks contain `来源：段永平投资问答录`.
 - Both the opening and closing blocks contain a clickable full article URL.
 - Do not read or append any article `source`, `sourceUrl`, or `sourceDate` metadata.
-- Preserve the prior behavior that removes hyperlinks from the article body while retaining their text.
+- Preserve the behavior that removes hyperlinks from the article body while retaining their words as bold text.
 - Do not modify the live article DOM or add dependencies.
 
 ---

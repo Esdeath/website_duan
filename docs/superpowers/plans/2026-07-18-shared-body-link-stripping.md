@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Keep the clickable source link at the top of copied articles while turning every link inside the copied article body into plain text.
+**Goal:** Keep the clickable source link at the top of copied articles while turning every link inside the copied article body into bold text without a destination.
 
 **Architecture:** Add a small DOM helper to the existing article sharing utility. `ShareButtons.vue` applies it only to the cloned `ContentRenderer` body before building clipboard HTML, leaving the live page and generated source link unchanged.
 
@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - Keep the generated `原文链接` anchor clickable.
-- Replace every article-body anchor with its text content.
+- Replace every article-body anchor with a `strong` element containing its text content.
 - Preserve the surrounding body markup and linked words.
 - Do not change the live article DOM.
 - Do not add dependencies.
@@ -34,20 +34,28 @@
 Add a test that passes two fake anchor nodes through the real helper and asserts that `replaceWith` receives only their text content:
 
 ```js
-test('unwrapArticleBodyLinks replaces body anchors with plain text', () => {
+test('unwrapArticleBodyLinks replaces body anchors with bold text', () => {
   const replacements = []
+  const ownerDocument = {
+    createElement(tagName) {
+      return { tagName: tagName.toUpperCase(), textContent: '' }
+    },
+  }
   const root = {
     querySelectorAll(selector) {
       assert.equal(selector, 'a')
       return [
-        { textContent: '能力圈', replaceWith(value) { replacements.push(value) } },
-        { textContent: '本分', replaceWith(value) { replacements.push(value) } },
+        { ownerDocument, textContent: '能力圈', replaceWith(value) { replacements.push(value) } },
+        { ownerDocument, textContent: '本分', replaceWith(value) { replacements.push(value) } },
       ]
     },
   }
 
   unwrapArticleBodyLinks(root)
-  assert.deepEqual(replacements, ['能力圈', '本分'])
+  assert.deepEqual(replacements, [
+    { tagName: 'STRONG', textContent: '能力圈' },
+    { tagName: 'STRONG', textContent: '本分' },
+  ])
 })
 ```
 
@@ -64,7 +72,9 @@ Add the following focused helper to `app/utils/articleShare.ts`:
 ```ts
 export function unwrapArticleBodyLinks(root: ParentNode) {
   for (const link of root.querySelectorAll('a')) {
-    link.replaceWith(link.textContent ?? '')
+    const strong = link.ownerDocument.createElement('strong')
+    strong.textContent = link.textContent ?? ''
+    link.replaceWith(strong)
   }
 }
 ```
