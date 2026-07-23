@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const daoCategoryOrder = ['核心哲学', '投资理念', '企业经营', '品格与心性', '财务指标', '访谈实录', '投资问答录', '公司与人物', '推荐书单']
+const daoCategoryOrder = ['投资问答录', '核心哲学', '投资理念', '企业经营', '品格与心性', '财务指标', '访谈实录', '公司与人物', '推荐书单']
 
 const categoryMeta: Record<string, { icon: string; desc: string }> = {
   '核心哲学': { icon: '道', desc: '段永平的核心思想体系：本分、平常心、做对的事情。商业与人生的底层逻辑。' },
@@ -183,6 +183,22 @@ useHead({
       </div>
     </section>
 
+    <div class="overview-grid">
+      <NuxtLink v-for="(group, i) in groups" :key="group.category" class="overview-card"
+        :to="group.href" :style="{ animationDelay: `${0.1 + i * 0.06}s` }">
+        <div class="card-icon-wrap">
+          <span class="card-icon">{{ group.icon }}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <h2>{{ group.category }}</h2>
+            <span class="card-count">{{ group.count }} 篇</span>
+          </div>
+          <p class="card-desc">{{ group.desc }}</p>
+        </div>
+      </NuxtLink>
+    </div>
+
     <section class="book-shelf">
       <div class="shelf-divider"><span>段永平荐读书单</span></div>
       <p class="shelf-hint">
@@ -223,21 +239,6 @@ useHead({
       <NuxtLink class="shelf-source" to="/tuijianshudan">评点摘自《段永平推荐书单》（按出处时间核对）›</NuxtLink>
     </section>
 
-    <div class="overview-grid">
-      <NuxtLink v-for="(group, i) in groups" :key="group.category" class="overview-card"
-        :to="group.href" :style="{ animationDelay: `${0.1 + i * 0.06}s` }">
-        <div class="card-icon-wrap">
-          <span class="card-icon">{{ group.icon }}</span>
-        </div>
-        <div class="card-body">
-          <div class="card-top">
-            <h2>{{ group.category }}</h2>
-            <span class="card-count">{{ group.count }} 篇</span>
-          </div>
-          <p class="card-desc">{{ group.desc }}</p>
-        </div>
-      </NuxtLink>
-    </div>
   </div>
 </template>
 
@@ -603,6 +604,7 @@ useHead({
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
+  margin-bottom: 40px;
 }
 
 .overview-card {
